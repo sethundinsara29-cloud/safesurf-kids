@@ -5,22 +5,22 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SafeSurf Kids • Spark Edition</title>
-  <meta name="description" content="SafeSurf Kids: colorful lessons, quick quizzes, handy safety tools, Spark AI chat, and a fun runner game to learn safe ICT." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <meta name="description" content="SafeSurf Kids: lessons, tools, Spark AI chat, and a runner game to learn safe ICT." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet" />
   <style>
     :root{
-      --red:#E63946;         /* primary red */
-      --red-dark:#C1121F;    /* deep red */
-      --yellow:#FFD166;      /* light warm yellow */
-      --ink:#1D1D1F;         /* main text */
+      --blue:#2563EB;        /* primary blue */
+      --blue-dark:#1E40AF;   /* deep blue */
+      --sky:#38BDF8;         /* accent blue */
+      --ink:#0F172A;         /* main text */
       --muted:#6B7280;       /* muted text */
       --white:#FFFFFF;
-      --bg:#FFFFFF;          /* white background */
-      --soft:#FFF7DF;        /* soft yellow panel */
+      --bg:#FFFFFF;          /* white base */
+      --soft:#EFF6FF;        /* soft light-blue surfaces */
       --card:#FFFFFF;
-      --shadow:0 16px 44px rgba(0,0,0,.10);
+      --shadow:0 16px 44px rgba(2, 6, 23, .10);
       --radius:16px;
     }
 
@@ -29,79 +29,87 @@
       margin:0; padding:0; color:var(--ink);
       font-family:'Nunito',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       background:
-        radial-gradient(1100px 650px at -10% -20%, rgba(255,209,102,.22), transparent 60%),
-        radial-gradient(900px 600px at 110% -10%, rgba(230,57,70,.1), transparent 55%),
+        radial-gradient(1100px 650px at -10% -20%, rgba(56,189,248,.18), transparent 60%),
+        radial-gradient(900px 600px at 110% -10%, rgba(37,99,235,.10), transparent 55%),
         var(--bg);
       line-height:1.45; scroll-behavior:smooth;
     }
 
     .visually-hidden{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap;border:0;padding:0;margin:-1px}
 
-    /* Header */
+    /* Header (centered brand + icon) */
     header.site-header{
       position:sticky; top:0; z-index:1000; background:var(--white);
-      border-bottom:4px solid var(--yellow);
-      box-shadow:0 10px 26px rgba(0,0,0,.06);
+      border-bottom:4px solid var(--sky);
+      box-shadow:0 10px 26px rgba(2,6,23,.06);
     }
-    .bar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px}
-    .brand{display:flex;align-items:center;gap:12px}
-    /* Better shield star icon */
+    .bar{
+      display:grid; grid-template-columns:1fr; row-gap:10px;
+      align-items:center; justify-items:center; padding:14px 16px;
+      text-align:center;
+    }
+    .brand{display:flex; flex-direction:column; align-items:center; gap:10px}
     .logo{
-      width:56px;height:56px;filter:drop-shadow(0 10px 18px rgba(230,57,70,.30));
+      width:64px; height:64px; filter:drop-shadow(0 10px 18px rgba(37,99,235,.30));
       animation:float 4.8s ease-in-out infinite; transform-origin:50% 50%;
     }
     @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
     .title{margin:0;font-weight:900;letter-spacing:.3px}
     .tagline{margin:2px 0 0;color:var(--muted);font-weight:800}
-    .actions{display:flex;align-items:center;gap:12px}
+
+    .actions{
+      display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:center
+    }
     .progress{
-      display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:999px;background:#FFF3F3;border:2px solid #FFE0E0;font-weight:900;color:#7a161c
+      display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:999px;
+      background:#E0EAFF;border:2px solid #C7D2FE;font-weight:900;color:#0B255F
     }
     .ring{
-      --size:42px;width:var(--size);height:var(--size);border-radius:50%;
+      --size:46px;width:var(--size);height:var(--size);border-radius:50%;
       background:
-        conic-gradient(var(--red) var(--angle,0%), rgba(255,255,255,.7) 0),
+        conic-gradient(var(--blue) var(--angle,0%), rgba(255,255,255,.7) 0),
         radial-gradient(circle at 50% 50%, #fff 64%, transparent 66%);
-      display:grid;place-items:center;font-size:12px;color:#7a161c;box-shadow:inset 0 0 0 3px #fff
+      display:grid;place-items:center;font-size:12px;color:#0B255F;box-shadow:inset 0 0 0 3px #fff
     }
-    .lang select{border:2px solid #FFE3A1;background:#fff;border-radius:999px;padding:6px 10px;font-weight:900}
+    .lang select{border:2px solid #C7D2FE;background:#fff;border-radius:999px;padding:6px 10px;font-weight:900}
 
+    /* Nav (centered) */
     nav.main{
-      display:flex;gap:10px;flex-wrap:wrap;padding:10px 16px;background:#fff;border-top:1px dashed #FFE3A1
+      display:flex;gap:10px;flex-wrap:wrap;justify-content:center;
+      padding:10px 16px;background:#fff;border-top:1px dashed #C7D2FE
     }
     .tab{
       appearance:none;border:0;border-radius:999px;padding:10px 16px;font-weight:900;cursor:pointer;
-      color:#7a161c;background:var(--yellow);
-      box-shadow:0 6px 14px rgba(255,209,102,.35);
+      color:#0B255F;background:#DBEAFE;
+      box-shadow:0 6px 14px rgba(37,99,235,.15);
       transition:transform .08s ease, box-shadow .2s ease, background .2s ease
     }
-    .tab:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(255,209,102,.5)}
-    .tab.active{background:var(--red);color:#fff;box-shadow:0 10px 22px rgba(230,57,70,.35)}
-    .tab:focus-visible{outline:3px solid var(--red-dark)}
+    .tab:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(37,99,235,.25)}
+    .tab.active{background:var(--blue);color:#fff;box-shadow:0 10px 22px rgba(37,99,235,.35)}
+    .tab:focus-visible{outline:3px solid var(--blue-dark)}
 
     main{max-width:1140px;margin:0 auto;padding:20px 14px 100px}
     .view{display:none}.view.active{display:block}
 
-    /* Hero */
+    /* Hero + cards (center icons and headings) */
     .hero{
-      position:relative;overflow:hidden;isolation:isolate;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:26px
+      position:relative;overflow:hidden;isolation:isolate;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:26px;text-align:center
     }
     .hero::after{
       content:"";position:absolute;right:-120px;top:-120px;width:300px;height:300px;border-radius:50%;
-      background:radial-gradient(closest-side, rgba(255,209,102,.55), transparent 70%);filter:blur(18px);animation:pulse 6s ease-in-out infinite
+      background:radial-gradient(closest-side, rgba(56,189,248,.35), transparent 70%);filter:blur(18px);animation:pulse 6s ease-in-out infinite
     }
     @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
     .cta{
-      display:inline-block;margin-top:12px;margin-right:10px;text-decoration:none;font-weight:900;padding:12px 16px;border-radius:12px;color:#7a161c;background:var(--yellow);box-shadow:0 10px 20px rgba(255,209,102,.4);transition:transform .1s ease, box-shadow .2s ease
+      display:inline-block;margin-top:12px;margin-right:10px;text-decoration:none;font-weight:900;padding:12px 16px;border-radius:12px;color:#082B7F;background:#DBEAFE;box-shadow:0 10px 20px rgba(37,99,235,.18);transition:transform .1s ease, box-shadow .2s ease
     }
-    .cta:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(255,209,102,.55)}
-    .cta.secondary{background:var(--red);color:#fff;box-shadow:0 10px 22px rgba(230,57,70,.35)}
+    .cta:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(37,99,235,.28)}
+    .cta.secondary{background:var(--blue);color:#fff;box-shadow:0 10px 22px rgba(37,99,235,.30)}
 
-    /* Cards/Grid */
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:16px}
-    .card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;position:relative;overflow:hidden;transition:transform .08s ease, box-shadow .2s ease, background .2s ease}
-    .card::before{content:"";position:absolute;inset:-40% auto auto -40%;width:180px;height:180px;border-radius:50%;background:radial-gradient(closest-side, rgba(230,57,70,.08), transparent 70%);transform:rotate(18deg)}
-    .card:hover{transform:translateY(-3px);box-shadow:0 18px 38px rgba(0,0,0,.16)}
+    .card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;position:relative;overflow:hidden;text-align:center;transition:transform .08s ease, box-shadow .2s ease}
+    .card::before{content:"";position:absolute;inset:-40% auto auto -40%;width:180px;height:180px;border-radius:50%;background:radial-gradient(closest-side, rgba(37,99,235,.08), transparent 70%);transform:rotate(18deg)}
+    .card:hover{transform:translateY(-3px);box-shadow:0 18px 38px rgba(2,6,23,.16)}
 
     .muted{color:var(--muted)} .tiny{font-size:.92rem}
     .panel{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
@@ -109,40 +117,36 @@
     /* Tools */
     .tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
     .toggle{display:flex;align-items:center;gap:10px;margin:.35rem 0}
-    .toggle input{accent-color:var(--red)}
+    .toggle input{accent-color:var(--blue)}
     .flash{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
     .flip{position:relative;perspective:800px;height:120px;cursor:pointer}
     .flip>div{position:absolute;inset:0;border-radius:12px;display:grid;place-items:center;padding:10px;backface-visibility:hidden;transition:transform .5s;box-shadow:var(--shadow)}
-    .flip .front{background:#fff5f5;border:2px solid #ffd0d0}
-    .flip .back{background:#fffbe8;border:2px solid #ffe9a8;transform:rotateY(180deg)}
+    .flip .front{background:#F0F7FF;border:2px solid #D8E6FF}
+    .flip .back{background:#E6F6FF;border:2px solid #CDEBFF;transform:rotateY(180deg)}
     .flip.active .front{transform:rotateY(180deg)} .flip.active .back{transform:rotateY(360deg)}
 
     /* Chat */
-    .safety{background:#fff7df;border:2px dashed var(--yellow);padding:12px;border-radius:12px;margin:8px 0;font-weight:900}
-    .age{display:flex;gap:12px;align-items:center;font-weight:900}
+    .safety{background:#E6F6FF;border:2px dashed var(--sky);padding:12px;border-radius:12px;margin:8px 0;font-weight:900;text-align:center}
+    .age{display:flex;gap:12px;align-items:center;justify-content:center;font-weight:900}
     .chat{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
-    .log{max-height:420px;min-height:240px;overflow:auto;padding:16px;background:linear-gradient(180deg,#fff,#fffdf7)}
+    .log{max-height:420px;min-height:240px;overflow:auto;padding:16px;background:linear-gradient(180deg,#fff,#F8FBFF)}
     .b{display:inline-block;padding:10px 12px;border-radius:14px;margin:8px 0;max-width:80%;line-height:1.45;animation:fadeIn .18s ease}
-    .b.u{background:var(--red);color:#fff;border-bottom-right-radius:4px}
-    .b.s{background:#fff; border:2px solid var(--yellow); color:#7a161c; border-bottom-left-radius:4px}
+    .b.u{background:var(--blue);color:#fff;border-bottom-right-radius:4px}
+    .b.s{background:#fff; border:2px solid var(--sky); color:#0B255F; border-bottom-left-radius:4px}
     @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
-    .chat-form{display:flex;gap:10px;border-top:1px solid #f2e9da;padding:12px}
-    .chat-form input{flex:1;padding:12px 14px;border-radius:12px;border:2px solid #f0d9a1}
-    .chat-form input:focus-visible{outline:none;border-color:var(--red)}
-    .send{background:var(--yellow);color:#7a161c;border:0;border-radius:12px;font-weight:900;padding:12px 16px;cursor:pointer;box-shadow:0 8px 16px rgba(255,209,102,.35)}
-    .typing{display:inline-flex;gap:3px}
-    .typing span{width:6px;height:6px;border-radius:999px;background:#7a161c;opacity:.35;animation:blink 1s infinite}
-    .typing span:nth-child(2){animation-delay:.15s}.typing span:nth-child(3){animation-delay:.3s}
-    @keyframes blink{50%{opacity:1}}
+    .chat-form{display:flex;gap:10px;border-top:1px solid #E3F0FF;padding:12px}
+    .chat-form input{flex:1;padding:12px 14px;border-radius:12px;border:2px solid #D6E8FF}
+    .chat-form input:focus-visible{outline:none;border-color:var(--blue)}
+    .send{background:#DBEAFE;color:#082B7F;border:0;border-radius:12px;font-weight:900;padding:12px 16px;cursor:pointer;box-shadow:0 8px 16px rgba(37,99,235,.20)}
 
     /* Game */
     .game-wrap{display:grid;grid-template-columns:1.4fr .9fr;gap:16px}
     .hud{display:flex;justify-content:space-between;gap:10px;margin:8px 0;font-weight:900}
-    .btn{background:var(--red);color:#fff;border:0;border-radius:10px;padding:10px 12px;font-weight:900;cursor:pointer;box-shadow:0 8px 18px rgba(230,57,70,.35)}
-    .btn.secondary{background:var(--yellow);color:#7a161c;box-shadow:0 8px 18px rgba(255,209,102,.4)}
-    .pill{display:inline-block;background:#fff3f3;border:2px solid #ffd0d0;color:#7a161c;border-radius:999px;padding:4px 8px;font-weight:900}
-    .canvas-wrap{background:#fff;border-radius:12px;border:2px solid #ffe5a6;padding:10px}
-    .canvas-wrap:focus{outline:3px solid var(--red)}
+    .btn{background:var(--blue);color:#fff;border:0;border-radius:10px;padding:10px 12px;font-weight:900;cursor:pointer;box-shadow:0 8px 18px rgba(37,99,235,.30)}
+    .btn.secondary{background:#DBEAFE;color:#082B7F;box-shadow:0 8px 18px rgba(37,99,235,.18)}
+    .pill{display:inline-block;background:#F0F7FF;border:2px solid #D8E6FF;color:#0B255F;border-radius:999px;padding:4px 8px;font-weight:900}
+    .canvas-wrap{background:#fff;border-radius:12px;border:2px solid #CDEBFF;padding:10px}
+    .canvas-wrap:focus{outline:3px solid var(--blue)}
 
     /* Reveal */
     .reveal{opacity:0;transform:translateY(10px);transition:all .5s ease}
@@ -159,20 +163,20 @@
   <header class="site-header">
     <div class="bar">
       <div class="brand">
-        <!-- Nicer icon: shield with star -->
+        <!-- Centered, nicer blue shield icon with star -->
         <svg class="logo" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
             <linearGradient id="g1" x1="0" x2="1">
-              <stop offset="0%" stop-color="#E63946"/>
-              <stop offset="100%" stop-color="#FFD166"/>
+              <stop offset="0%" stop-color="#2563EB"/>
+              <stop offset="100%" stop-color="#38BDF8"/>
             </linearGradient>
           </defs>
-          <path d="M48 10c10 8 19 10 30 12-1 24-11 40-30 52C29 62 19 46 18 22c11-2 20-4 30-12z" fill="url(#g1)" stroke="#C1121F" stroke-width="2"/>
+          <path d="M48 10c10 8 19 10 30 12-1 24-11 40-30 52C29 62 19 46 18 22c11-2 20-4 30-12z" fill="url(#g1)" stroke="#1E40AF" stroke-width="2"/>
           <path d="M48 28l4 8 9 1-7 6 2 9-8-4-8 4 2-9-7-6 9-1 4-8z" fill="#fff"/>
         </svg>
         <div>
           <h1 class="title">SafeSurf Kids</h1>
-          <p class="tagline">Learn smart, safe, and kind ICT 💛</p>
+          <p class="tagline">Learn smart, safe, and kind ICT 💙</p>
         </div>
       </div>
       <div class="actions">
@@ -210,10 +214,18 @@
         <a href="#ask" class="cta secondary" data-go="ask">Ask the AI</a>
       </div>
       <div class="grid" role="list">
-        <article class="card reveal" role="listitem" tabindex="0"><h3>🔐 Strong Passwords</h3><p>Use long, secret passwords. Turn on 2FA!</p></article>
-        <article class="card reveal" role="listitem" tabindex="0"><h3>🎣 Spot Scams</h3><p>Check links. Don’t share logins. Ask an adult.</p></article>
-        <article class="card reveal" role="listitem" tabindex="0"><h3>💬 Be Kind Online</h3><p>Block/report meanness. Save evidence. Talk to an adult.</p></article>
-        <article class="card reveal" role="listitem" tabindex="0"><h3>👣 Digital Footprints</h3><p>Think before you post; the internet remembers.</p></article>
+        <article class="card reveal" role="listitem" tabindex="0">
+          <h3>🔐 Strong Passwords</h3><p>Use long, secret passwords. Turn on 2FA!</p>
+        </article>
+        <article class="card reveal" role="listitem" tabindex="0">
+          <h3>🎣 Spot Scams</h3><p>Check links. Don’t share logins. Ask an adult.</p>
+        </article>
+        <article class="card reveal" role="listitem" tabindex="0">
+          <h3>💬 Be Kind Online</h3><p>Block/report meanness. Save evidence. Talk to an adult.</p>
+        </article>
+        <article class="card reveal" role="listitem" tabindex="0">
+          <h3>👣 Digital Footprints</h3><p>Think before you post; the internet remembers.</p>
+        </article>
       </div>
     </section>
 
@@ -244,13 +256,13 @@
             <div class="flip"><div class="front">Share strong passwords?</div><div class="back">Don’t share passwords — keep them secret 🔐</div></div>
             <div class="flip"><div class="front">Click weird prize links?</div><div class="back">Don’t click — likely scams 🎣</div></div>
             <div class="flip"><div class="front">Ask before posting friends?</div><div class="back">Yes — ask permission 📸</div></div>
-            <div class="flip"><div class="front">Be kind in comments?</div><div class="back">Yes — kindness first 💛</div></div>
+            <div class="flip"><div class="front">Be kind in comments?</div><div class="back">Yes — kindness first 💙</div></div>
           </div>
         </div>
         <div class="panel reveal">
           <h3>🔐 Password Helper</h3>
           <p class="tiny muted">Try a pretend password (don’t use a real one).</p>
-          <input id="pw" type="text" placeholder="Type a pretend password…" style="width:100%;padding:10px;border-radius:10px;border:2px solid #ffd9d9">
+          <input id="pw" type="text" placeholder="Type a pretend password…" style="width:100%;padding:10px;border-radius:10px;border:2px solid #D6E8FF">
           <p class="tiny"><strong>Strength:</strong> <span id="pwOut">–</span></p>
           <button class="btn secondary" id="pwIdea">Give me ideas</button>
           <p class="tiny muted" id="pwIdeas"></p>
@@ -258,7 +270,7 @@
         <div class="panel reveal">
           <h3>🎣 Phishing Spotter</h3>
           <p class="tiny">Is this message safe?</p>
-          <blockquote style="background:#fffef2;border-left:6px solid var(--yellow);padding:8px;border-radius:8px">“URGENT! Free phone! Click this link and log in now.”</blockquote>
+          <blockquote style="background:#F8FBFF;border-left:6px solid var(--sky);padding:8px;border-radius:8px">“URGENT! Free phone! Click this link and log in now.”</blockquote>
           <button class="btn secondary" id="phishBtn">Check</button>
           <p id="phishOut" class="tiny muted"></p>
         </div>
@@ -301,13 +313,13 @@
             <button class="btn" id="startBtn">Start</button>
             <button class="btn secondary" id="pauseBtn">Pause</button>
             <button class="btn secondary" id="resetBtn">Reset</button>
-            <div class="pill">Jump: Space/↑ • Tap canvas</div>
+            <div class="pill">Jump: ↑ (Arrow Up)</div>
           </div>
         </div>
         <div class="panel reveal">
           <h3>How to play</h3>
           <ul>
-            <li>Press Space or ↑ (or tap the canvas) to jump over bad ICT obstacles: 🎣 phishing, 😡 bullying, 🔗 weird links, 📸 oversharing.</li>
+            <li>Press Arrow Up to jump over bad ICT obstacles: 🎣 phishing, 😡 bullying, 🔗 weird links, 📸 oversharing.</li>
             <li>Collect ⭐ stars for points.</li>
             <li>3 lives. The longer you run, the faster it gets.</li>
           </ul>
@@ -326,8 +338,7 @@
     <section id="parents" class="view" aria-labelledby="parents-h">
       <h2 id="parents-h" class="reveal">Parent & Carer Corner</h2>
       <div class="grid">
-        <article class="card reveal">
-          <h3>Quick Tips</h3>
+        <article class="card reveal"><h3>Quick Tips</h3>
           <ul>
             <li>Talk early and often about online kindness and privacy.</li>
             <li>Set clear, shared rules (no devices in bedrooms at night).</li>
@@ -336,16 +347,14 @@
             <li>Use strong passwords & 2FA; keep devices updated.</li>
           </ul>
         </article>
-        <article class="card reveal">
-          <h3>Conversation Starters</h3>
+        <article class="card reveal"><h3>Conversation Starters</h3>
           <ul>
             <li>How do you decide what to share online?</li>
             <li>What would you do if someone asked for private info?</li>
             <li>Which creators make you feel good? Why?</li>
           </ul>
         </article>
-        <article class="card reveal">
-          <h3>Signs to Watch</h3>
+        <article class="card reveal"><h3>Signs to Watch</h3>
           <ul>
             <li>Worry about going online, mood shifts.</li>
             <li>Secret new accounts or hiding screens.</li>
@@ -359,16 +368,14 @@
     <section id="resources" class="view" aria-labelledby="resources-h">
       <h2 id="resources-h" class="reveal">Resources</h2>
       <div class="grid">
-        <article class="card reveal">
-          <h3>If you need help</h3>
+        <article class="card reveal"><h3>If you need help</h3>
           <ul>
             <li>Talk to a trusted adult (parent, carer, teacher, counselor).</li>
             <li>If you are in danger, contact local emergency services right away.</li>
             <li>Use app/game “Report” and “Block”.</li>
           </ul>
         </article>
-        <article class="card reveal">
-          <h3>Helpful links</h3>
+        <article class="card reveal"><h3>Helpful links</h3>
           <ul>
             <li><a href="https://www.childline.org.uk" target="_blank" rel="noopener">Childline (UK)</a></li>
             <li><a href="https://www.kidshelpphone.ca" target="_blank" rel="noopener">Kids Help Phone (CA)</a></li>
@@ -480,7 +487,7 @@
       const m=LESSONS.find(x=>x.id===id); const box=$('#moduleDetail'); if(!m) return;
       box.hidden=false; window.location.hash=`#module-${id}`; const done=completed.has(id);
       box.innerHTML=`
-        <div><h3>${m.emoji} ${m.title}</h3><p class="muted">${m.subtitle}</p></div>
+        <div><h3 style="text-align:center">${m.emoji} ${m.title}</h3><p class="muted" style="text-align:center">${m.subtitle}</p></div>
         <div class="tips"><h4>Top Tips</h4><ul>${m.tips.map(t=>`<li>${t}</li>`).join('')}</ul></div>
         <div class="scenario"><h4>Try a Scenario</h4><p>${m.scenario.prompt}</p>
           <div class="grid">${m.scenario.choices.map((c,i)=>`<button class="btn secondary" data-choice="${i}">${c.text}</button>`).join('')}</div>
@@ -512,7 +519,7 @@
       });
     }
 
-    // ===== Tools =====
+    // Tools
     $$('#tools .toggle input').forEach(inp=>{
       inp.addEventListener('change',()=>{
         const n=$$('#tools .toggle input').filter(i=>i.checked).length;
@@ -560,11 +567,9 @@
       }catch{ removeTyping(); addSpark('Network error. Please try again in a moment.'); }
     });
 
-    // ===== Game: reliable obstacles + hi‑DPI + Space/ArrowUp fix =====
+    // ===== Game: Arrow Up only =====
     const cvs=$('#runner'), ctx=cvs.getContext('2d');
-    const wrap=$('#canvasWrap');
     const startBtn=$('#startBtn'), pauseBtn=$('#pauseBtn'), resetBtn=$('#resetBtn');
-    const scoreEl=$('#score'), hiEl=$('#hi'), livesEl=$('#lives');
 
     // Hi‑DPI scaling
     let dpr = Math.max(1, Math.floor(window.devicePixelRatio || 1));
@@ -590,13 +595,13 @@
     let player = { x:80, y:groundY, w:28, h:34, vy:0, onGround:true, blink:0 };
     const obstacles=[], stars=[];
     const types = [
-      {label:'Phish', emoji:'🎣', color:'#E63946', w:28, h:28},
-      {label:'Bullying', emoji:'😡', color:'#C1121F', w:30, h:30},
-      {label:'Weird', emoji:'🔗', color:'#7a161c', w:26, h:26},
-      {label:'Share', emoji:'📸', color:'#D97706', w:28, h:28}
+      {label:'Phish', emoji:'🎣', color:'#2563EB', w:28, h:28},
+      {label:'Bullying', emoji:'😡', color:'#1E40AF', w:30, h:30},
+      {label:'Weird', emoji:'🔗', color:'#0B255F', w:26, h:26},
+      {label:'Share', emoji:'📸', color:'#0284C7', w:28, h:28}
     ];
 
-    function updateHUD(){ scoreEl.textContent=score; hiEl.textContent=hi; livesEl.textContent=lives; }
+    function updateHUD(){ $('#score').textContent=score; $('#hi').textContent=hi; $('#lives').textContent=lives; }
     function resetGame(){
       running=false; paused=false; ended=false;
       score=0; lives=3; speed=220; lastTime=0;
@@ -607,25 +612,25 @@
 
     function drawGround(){
       const W = cvs.width/dpr;
-      ctx.fillStyle='#FFF3C4'; ctx.fillRect(0, groundY+20, W, 6);
-      ctx.fillStyle='#FFF9E2'; ctx.fillRect(0, groundY+26, W, 999);
+      ctx.fillStyle='#DBEAFE'; ctx.fillRect(0, groundY+20, W, 6);
+      ctx.fillStyle='#EFF6FF'; ctx.fillRect(0, groundY+26, W, 999);
     }
     function drawPlayer(){
       const {x,y,w,h}=player;
-      ctx.fillStyle=player.blink>0 && Math.floor(player.blink*10)%2===0 ? '#ffd9d9' : '#E63946';
+      ctx.fillStyle=player.blink>0 && Math.floor(player.blink*10)%2===0 ? '#C7D2FE' : '#2563EB';
       ctx.fillRect(x-w/2, y-h, w, h);
       ctx.fillStyle='#fff'; ctx.fillRect(x-w/2+4, y-h+4, w-8, 10);
-      ctx.fillStyle='#1d1d1f'; ctx.fillRect(x-w/2+7, y-h+6, 6,6); ctx.fillRect(x+w/2-13, y-h+6, 6,6);
-      ctx.fillStyle='#C1121F'; ctx.fillRect(x-w/2+2, y-6, 10,6); ctx.fillRect(x+4, y-6, 10,6);
+      ctx.fillStyle='#0F172A'; ctx.fillRect(x-w/2+7, y-h+6, 6,6); ctx.fillRect(x+w/2-13, y-h+6, 6,6);
+      ctx.fillStyle='#1E40AF'; ctx.fillRect(x-w/2+2, y-6, 10,6); ctx.fillRect(x+4, y-6, 10,6);
     }
     function drawObstacles(){
       obstacles.forEach(o=>{
         ctx.fillStyle=o.color; ctx.fillRect(o.x, o.y-o.h, o.w, o.h);
-        ctx.font='14px system-ui'; ctx.fillStyle='#1d1d1f'; ctx.fillText(o.emoji, o.x+o.w/2-7, o.y-o.h-4);
+        ctx.font='14px system-ui'; ctx.fillStyle='#0F172A'; ctx.fillText(o.emoji, o.x+o.w/2-7, o.y-o.h-4);
       });
     }
     function drawStars(){
-      ctx.fillStyle='#FFD166';
+      ctx.fillStyle='#38BDF8';
       stars.forEach(s=>{ ctx.beginPath(); ctx.arc(s.x, s.y, 7, 0, Math.PI*2); ctx.fill(); });
     }
     function draw(){
@@ -639,7 +644,7 @@
     function spawn(dt){
       spawnObstacleTimer += dt*1000;
       spawnStarTimer += dt*1000;
-      const obstacleEvery = Math.max(500, 1300 - (score/5)); // faster as score grows
+      const obstacleEvery = Math.max(500, 1300 - (score/5));
       if(spawnObstacleTimer >= obstacleEvery){
         spawnObstacleTimer = 0;
         const t = types[Math.floor(Math.random()*types.length)];
@@ -707,42 +712,28 @@
       confetti();
       ctx.save();
       ctx.fillStyle='rgba(255,255,255,.85)'; ctx.fillRect(0,0,cvs.width/dpr,cvs.height/dpr);
-      ctx.fillStyle= '#C1121F'; ctx.font='bold 28px Nunito'; ctx.fillText('Great run! Final score: '+score, 220, 120);
-      ctx.fillStyle= '#7a161c'; ctx.font='bold 18px Nunito'; ctx.fillText('Press Start to try again.', 300, 160);
+      ctx.fillStyle= '#1E40AF'; ctx.font='bold 28px Nunito'; ctx.fillText('Great run! Final score: '+score, 220, 120);
+      ctx.fillStyle= '#0B255F'; ctx.font='bold 18px Nunito'; ctx.fillText('Press Start to try again.', 300, 160);
       ctx.restore();
     }
 
-    function setGameFocus(){
-      // Focus the canvas wrapper so Space works even if nothing else is focused
-      wrap.focus({preventScroll:true});
-    }
-
-    // Controls (Space/ArrowUp fix + touch)
-    startBtn.addEventListener('click', ()=>{
-      setGameFocus();
+    // Controls (ONLY Arrow Up)
+    $('#startBtn').addEventListener('click', ()=>{
+      $('#canvasWrap').focus({preventScroll:true});
       if(running && !paused) return;
       if(!running || ended){ resetGame(); running=true; lastTime=0; requestAnimationFrame(loop); }
       else { paused=false; requestAnimationFrame(loop); }
     });
-    pauseBtn.addEventListener('click', ()=>{ if(running && !ended){ paused=!paused; if(!paused) requestAnimationFrame(loop); } });
-    resetBtn.addEventListener('click', ()=>{ resetGame(); setGameFocus(); });
+    $('#pauseBtn').addEventListener('click', ()=>{ if(running && !ended){ paused=!paused; if(!paused) requestAnimationFrame(loop); } });
+    $('#resetBtn').addEventListener('click', ()=>{ resetGame(); $('#canvasWrap').focus({preventScroll:true}); });
 
-    // Global key handler (captures even if nothing focused; ignores when typing)
-    function handleKey(e){
+    // Arrow Up only; ignore typing in inputs; prevent page scroll
+    window.addEventListener('keydown', (e)=>{
       const tag = (document.activeElement && document.activeElement.tagName || '').toLowerCase();
-      if(tag==='input' || tag==='textarea' || tag==='select') return; // don't block typing
-      const isSpace = e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar';
+      if(tag==='input' || tag==='textarea' || tag==='select') return;
       const isUp = e.code === 'ArrowUp' || e.key === 'ArrowUp' || e.key === 'Up';
-      if(isSpace || isUp){
-        e.preventDefault();
-        jump();
-      }
-    }
-    window.addEventListener('keydown', handleKey, {capture:true});
-
-    // Click / touch to jump on canvas
-    wrap.addEventListener('click', ()=>{ setGameFocus(); jump(); });
-    wrap.addEventListener('touchstart', (e)=>{ e.preventDefault(); setGameFocus(); jump(); }, {passive:false});
+      if(isUp){ e.preventDefault(); jump(); }
+    }, {capture:true});
 
     // Confetti
     function confetti(){
@@ -754,10 +745,9 @@
       }
     }
 
-    // ===== Init =====
-    function init(){
-      $('#hi').textContent = hi; renderModules(); updateStars(); updateProgress(); draw();
-    }
+    // Progress + modules
+    const LESSONS = window.LESSONS || LESSONS; // keep ESLint calm if any tool parses
+    function init(){ $('#hi').textContent = hi; renderModules(); updateStars(); updateProgress(); draw(); }
     init();
   </script>
 </body>
