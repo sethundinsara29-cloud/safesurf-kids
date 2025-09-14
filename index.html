@@ -5,552 +5,985 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SafeSurf Kids • Spark Edition</title>
-  <meta name="description" content="SafeSurf Kids: lessons, tools, Spark AI chat, and quizzes to learn safe ICT." />
+  <meta name="description" content="SafeSurf Kids helps children learn how to stay safe with ICT — colorful lessons, quick quizzes, and Spark the AI helper." />
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&display=swap" rel="stylesheet" />
   <style>
-    :root{
-      --blue:#2563EB;        /* primary blue */
-      --blue-dark:#1E40AF;   /* deep blue */
-      --sky:#38BDF8;         /* accent blue */
-      --ink:#0F172A;         /* main text */
-      --muted:#6B7280;       /* muted text */
-      --white:#FFFFFF;
-      --bg:#FFFFFF;          /* white base */
-      --soft:#EFF6FF;        /* soft light-blue surfaces */
-      --card:#FFFFFF;
-      --shadow:0 16px 44px rgba(2, 6, 23, .10);
-      --radius:16px;
+    :root {
+      --mint: #06D6A0;
+      --blue: #118AB2;
+      --yellow: #FFD166;
+      --pink: #EF476F;
+      --purple: #8E63D1;
+      --ink: #173043;
+      --bg: #f7fbff;
+      --card: #ffffff;
+      --muted: #527288;
+      --radius: 16px;
+      --shadow: 0 12px 30px rgba(17, 138, 178, 0.18);
     }
 
-    *{box-sizing:border-box}
-    html,body{
-      margin:0; padding:0; color:var(--ink);
-      font-family:'Nunito',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(1200px 800px at 10% -10%, #e7fff5 0%, #f7fbff 48%, #ffffff 100%);
+      color: var(--ink);
+      font-family: 'Nunito', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      line-height: 1.45;
+      scroll-behavior: smooth;
+    }
+
+    .visually-hidden {
+      position: absolute !important; height: 1px; width: 1px; overflow: hidden;
+      clip: rect(1px, 1px, 1px, 1px); white-space: nowrap; border: 0; padding: 0; margin: -1px;
+    }
+
+    /* Animated header */
+    .site-header {
+      position: relative;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 20px;
+      color: white;
+      overflow: hidden;
+      border-bottom-left-radius: 18px;
+      border-bottom-right-radius: 18px;
+      box-shadow: 0 10px 40px rgba(17,138,178,.25);
+      background: linear-gradient(135deg, var(--mint), var(--blue), var(--purple));
+      background-size: 300% 300%;
+      animation: moveGrad 12s ease infinite;
+    }
+    @keyframes moveGrad {
+      0% { background-position: 0% 50% }
+      50% { background-position: 100% 50% }
+      100% { background-position: 0% 50% }
+    }
+
+    .brand { display: flex; align-items: center; gap: 14px; }
+    .logo {
+      width: 54px; height: 54px;
+      filter: drop-shadow(0 6px 16px rgba(0,0,0,.25));
+      transform-origin: 50% 50%;
+      animation: float 4.6s ease-in-out infinite;
+    }
+    @keyframes float { 0%,100% { transform: translateY(0) } 50% { transform: translateY(4px) } }
+
+    .title { margin: 0; font-weight: 800; letter-spacing: 0.2px; }
+    .tagline { margin: 2px 0 0; opacity: 0.98; font-weight: 700; }
+
+    .header-actions { display: flex; gap: 16px; align-items: center; }
+
+    .achievements {
+      background: rgba(255, 255, 255, 0.16);
+      padding: 8px 12px; border-radius: 999px;
+      display: flex; gap: 10px; align-items: center;
+      backdrop-filter: blur(2px);
+    }
+    .star { font-size: 18px; }
+
+    .progress-ring {
+      --size: 42px;
+      width: var(--size); height: var(--size);
+      border-radius: 50%;
       background:
-        radial-gradient(1100px 650px at -10% -20%, rgba(56,189,248,.18), transparent 60%),
-        radial-gradient(900px 600px at 110% -10%, rgba(37,99,235,.10), transparent 55%),
-        var(--bg);
-      line-height:1.45; scroll-behavior:smooth;
+        conic-gradient(var(--yellow) var(--angle, 0%), rgba(255,255,255,.25) 0),
+        radial-gradient(circle at 50% 50%, #fff 60%, transparent 61%);
+      display: grid; place-items: center; color: #073b32; font-weight: 900; font-size: 12px;
+      box-shadow: inset 0 0 0 3px rgba(255,255,255,.6);
     }
 
-    .visually-hidden{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap;border:0;padding:0;margin:-1px}
-
-    /* Header (centered) */
-    header.site-header{
-      position:sticky; top:0; z-index:1000; background:var(--white);
-      border-bottom:4px solid var(--sky);
-      box-shadow:0 10px 26px rgba(2,6,23,.06);
+    .lang-toggle select {
+      border: none; border-radius: 999px; padding: 8px 12px;
+      background: #fff; color: var(--ink); font-weight: 800;
     }
-    .bar{
-      display:grid; grid-template-columns:1fr; row-gap:10px;
-      align-items:center; justify-items:center; padding:14px 16px;
-      text-align:center;
+
+    .main-nav {
+      display: flex; flex-wrap: wrap; gap: 10px; padding: 10px 16px;
+      background: #fff; box-shadow: var(--shadow); margin: 10px 12px 0; border-radius: 14px;
     }
-    .brand{display:flex; flex-direction:column; align-items:center; gap:10px}
-    .logo{
-      width:64px; height:64px; filter:drop-shadow(0 10px 18px rgba(37,99,235,.30));
-      animation:float 4.8s ease-in-out infinite; transform-origin:50% 50%;
+    .nav-btn {
+      background: var(--yellow); border: 0; border-radius: 999px; padding: 10px 16px;
+      font-weight: 900; color: var(--ink); cursor: pointer;
+      transition: transform 0.06s ease, background 0.2s ease, box-shadow .2s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,.06);
     }
-    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
-    .title{margin:0;font-weight:900;letter-spacing:.3px}
-    .tagline{margin:2px 0 0;color:var(--muted);font-weight:800}
+    .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(0,0,0,.10) }
+    .nav-btn:focus-visible { outline: 3px solid var(--purple); }
+    .nav-btn.active { background: var(--mint); color: #083d2f; }
 
-    .actions{display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:center}
-    .progress{
-      display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:999px;
-      background:#E0EAFF;border:2px solid #C7D2FE;font-weight:900;color:#0B255F
+    main { padding: 22px 16px 90px; max-width: 1120px; margin: 0 auto; }
+
+    .view { display: none }
+    .view.active { display: block }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      background: linear-gradient(135deg, #ffffff, #f5fff9);
+      border-radius: var(--radius); box-shadow: var(--shadow); padding: 26px; overflow: hidden;
+      isolation: isolate;
     }
-    .ring{
-      --size:46px;width:var(--size);height:var(--size);border-radius:50%;
-      background:
-        conic-gradient(var(--blue) var(--angle,0%), rgba(255,255,255,.7) 0),
-        radial-gradient(circle at 50% 50%, #fff 64%, transparent 66%);
-      display:grid;place-items:center;font-size:12px;color:#0B255F;box-shadow:inset 0 0 0 3px #fff
+    .hero::after {
+      content: "";
+      position: absolute; right: -120px; top: -120px; width: 320px; height: 320px;
+      background: radial-gradient(closest-side, rgba(6,214,160,.45), transparent 70%);
+      filter: blur(20px); z-index: -1; border-radius: 50%;
+      animation: pulse 6s ease-in-out infinite;
     }
-    .lang select{border:2px solid #C7D2FE;background:#fff;border-radius:999px;padding:6px 10px;font-weight:900}
+    @keyframes pulse { 0%,100% { transform: scale(1) } 50% { transform: scale(1.05) } }
 
-    /* Nav (centered) */
-    nav.main{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding:10px 16px;background:#fff;border-top:1px dashed #C7D2FE}
-    .tab{
-      appearance:none;border:0;border-radius:999px;padding:10px 16px;font-weight:900;cursor:pointer;
-      color:#0B255F;background:#DBEAFE; box-shadow:0 6px 14px rgba(37,99,235,.15);
-      transition:transform .08s ease, box-shadow .2s ease, background .2s ease
+    .hero-actions { display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+    .cta {
+      display: inline-block; background: var(--pink); color: #fff;
+      padding: 12px 18px; border-radius: 14px; text-decoration: none; font-weight: 900;
+      transition: transform 0.06s ease, opacity 0.2s ease, box-shadow .2s ease;
+      box-shadow: 0 8px 16px rgba(239,71,111,.25);
     }
-    .tab:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(37,99,235,.25)}
-    .tab.active{background:var(--blue);color:#fff;box-shadow:0 10px 22px rgba(37,99,235,.35)}
-    .tab:focus-visible{outline:3px solid var(--blue-dark)}
+    .cta:hover { transform: translateY(-2px); opacity: .96; box-shadow: 0 12px 22px rgba(239,71,111,.32) }
+    .cta.secondary { background: var(--blue); box-shadow: 0 8px 16px rgba(17,138,178,.25); }
 
-    main{max-width:1140px;margin:0 auto;padding:20px 14px 100px}
-    .view{display:none}.view.active{display:block}
+    /* Cards */
+    .quick-cards, .modules {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px; margin-top: 16px;
+    }
 
-    /* Hero + cards */
-    .hero{position:relative;overflow:hidden;isolation:isolate;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:26px;text-align:center}
-    .hero::after{content:"";position:absolute;right:-120px;top:-120px;width:300px;height:300px;border-radius:50%;background:radial-gradient(closest-side, rgba(56,189,248,.35), transparent 70%);filter:blur(18px);animation:pulse 6s ease-in-out infinite}
-    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
-    .cta{display:inline-block;margin-top:12px;margin-right:10px;text-decoration:none;font-weight:900;padding:12px 16px;border-radius:12px;color:#082B7F;background:#DBEAFE;box-shadow:0 10px 20px rgba(37,99,235,.18);transition:transform .1s ease, box-shadow .2s ease}
-    .cta:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(37,99,235,.28)}
-    .cta.secondary{background:var(--blue);color:#fff;box-shadow:0 10px 22px rgba(37,99,235,.30)}
+    .card {
+      background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 16px; transition: transform 0.06s ease, box-shadow 0.2s ease, background .2s ease;
+      text-align: left; position: relative; overflow: hidden;
+    }
+    .card::before {
+      content: ""; position: absolute; right: -50px; top: -50px; width: 140px; height: 140px;
+      background: radial-gradient(closest-side, rgba(17,138,178,.12), transparent 70%); transform: rotate(12deg);
+    }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(17, 138, 178, 0.28); }
 
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:16px}
-    .card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;position:relative;overflow:hidden;text-align:center;transition:transform .08s ease, box-shadow .2s ease}
-    .card::before{content:"";position:absolute;inset:-40% auto auto -40%;width:180px;height:180px;border-radius:50%;background:radial-gradient(closest-side, rgba(37,99,235,.08), transparent 70%);transform:rotate(18deg)}
-    .card:hover{transform:translateY(-3px);box-shadow:0 18px 38px rgba(2,6,23,.16)}
+    .module-detail {
+      background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 18px; margin-top: 18px;
+    }
 
-    .muted{color:var(--muted)} .tiny{font-size:.92rem}
-    .panel{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
-
-    /* Tools */
-    .tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
-    .toggle{display:flex;align-items:center;gap:10px;margin:.35rem 0}
-    .toggle input{accent-color:var(--blue)}
-    .flash{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-    .flip{position:relative;perspective:800px;height:120px;cursor:pointer}
-    .flip>div{position:absolute;inset:0;border-radius:12px;display:grid;place-items:center;padding:10px;backface-visibility:hidden;transition:transform .5s;box-shadow:var(--shadow)}
-    .flip .front{background:#F0F7FF;border:2px solid #D8E6FF}
-    .flip .back{background:#E6F6FF;border:2px solid #CDEBFF;transform:rotateY(180deg)}
-    .flip.active .front{transform:rotateY(180deg)} .flip.active .back{transform:rotateY(360deg)}
+    .muted { color: var(--muted); }
+    .tiny { font-size: .92rem; }
 
     /* Chat */
-    .safety{background:#E6F6FF;border:2px dashed var(--sky);padding:12px;border-radius:12px;margin:8px 0;font-weight:900;text-align:center}
-    .age{display:flex;gap:12px;align-items:center;justify-content:center;font-weight:900}
-    .chat{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
-    .log{max-height:420px;min-height:240px;overflow:auto;padding:16px;background:linear-gradient(180deg,#fff,#F8FBFF)}
-    .b{display:inline-block;padding:10px 12px;border-radius:14px;margin:8px 0;max-width:80%;line-height:1.45;animation:fadeIn .18s ease}
-    .b.u{background:var(--blue);color:#fff;border-bottom-right-radius:4px}
-    .b.s{background:#fff; border:2px solid var(--sky); color:#0B255F; border-bottom-left-radius:4px}
-    @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
-    .chat-form{display:flex;gap:10px;border-top:1px solid #E3F0FF;padding:12px}
-    .chat-form input{flex:1;padding:12px 14px;border-radius:12px;border:2px solid #D6E8FF}
-    .chat-form input:focus-visible{outline:none;border-color:var(--blue)}
-    .send{background:#DBEAFE;color:#082B7F;border:0;border-radius:12px;font-weight:900;padding:12px 16px;cursor:pointer;box-shadow:0 8px 16px rgba(37,99,235,.20)}
+    .safety-banner {
+      background: #fff3c9; border: 2px dashed var(--yellow); padding: 12px; border-radius: 12px; margin-bottom: 12px; font-weight: 900;
+    }
+    .age-toggle { display: flex; gap: 16px; margin-bottom: 10px; align-items: center; font-weight: 800; }
+    .chat { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+    .chat-log {
+      max-height: 400px; min-height: 240px; overflow: auto; padding: 16px;
+      background: linear-gradient(180deg, #fdfdff, #f5fbff);
+    }
+    .chat-bubble {
+      display: inline-block; padding: 10px 12px; border-radius: 14px; margin: 8px 0; max-width: 80%;
+      line-height: 1.45; animation: slideIn .18s ease;
+    }
+    .chat-bubble.user { background: var(--blue); color: #fff; border-bottom-right-radius: 4px; }
+    .chat-bubble.spark { background: #eefcf6; border: 2px solid var(--mint); color: #0b5a49; border-bottom-left-radius: 4px; }
+    @keyframes slideIn { from { transform: translateY(4px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
 
-    /* Reveal */
-    .reveal{opacity:0;transform:translateY(10px);transition:all .5s ease}
-    .reveal.show{opacity:1;transform:translateY(0)}
+    .typing-dots { display: inline-flex; gap: 3px; }
+    .typing-dots span { width: 6px; height: 6px; border-radius: 999px; background: #0b5a49; opacity: .4; animation: blink 1s infinite; }
+    .typing-dots span:nth-child(2){ animation-delay: .15s } .typing-dots span:nth-child(3){ animation-delay: .3s }
+    @keyframes blink { 50% { opacity: 1 } }
 
-    footer{padding:26px 12px;text-align:center;color:var(--muted)}
-    #confetti{pointer-events:none;position:fixed;inset:0}
-    .confetti{position:absolute;font-size:18px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.12));animation:fall 1.8s ease-out forwards}
-    @keyframes fall{0%{transform:translateY(-20px) rotate(0);opacity:0}15%{opacity:1}100%{transform:translateY(92vh) rotate(260deg);opacity:0}}
+    .chat-form { display: flex; gap: 10px; border-top: 1px solid #e7eef5; padding: 12px; }
+    .chat-form input[type="text"] { flex: 1; padding: 12px 14px; border-radius: 12px; border: 2px solid #d6e5f2; font-size: 1rem; }
+    .chat-form input:focus-visible { outline: none; border-color: var(--purple); }
+    .send-btn { background: var(--mint); color: #083d2f; border: 0; border-radius: 12px; font-weight: 900; padding: 12px 16px; cursor: pointer; box-shadow: 0 8px 16px rgba(6,214,160,.22); }
+    .send-btn:hover { filter: brightness(0.95); }
+
+    .parent-grid, .resources-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+    .badge {
+      background: #f1f6ff; color: #0a3e8c; border-radius: 999px; padding: 6px 10px; font-weight: 800; font-size: .9rem;
+      border: 2px solid #cde2ff;
+    }
+
+    .site-footer { text-align: center; color: var(--muted); padding: 28px 16px; }
+    button, a, input, select { transition: transform .05s ease, box-shadow .2s ease, background .2s ease }
+    button:active, a:active { transform: translateY(1px) }
+
+    /* Confetti */
+    #confetti { pointer-events: none; position: fixed; inset: 0; }
+    .confetti-star {
+      position: absolute; font-size: 18px; line-height: 1; animation: floatDown 1.8s ease-out forwards; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.12));
+    }
+    @keyframes floatDown { 0% { transform: translateY(-20px) rotate(0); opacity: 0 } 15% { opacity: 1 } 100% { transform: translateY(90vh) rotate(260deg); opacity: 0 } }
+
+    /* Reveal animations */
+    .reveal { opacity: 0; transform: translateY(10px); transition: all .5s ease; }
+    .reveal.show { opacity: 1; transform: translateY(0) }
+
+    @media (max-width: 720px) {
+      .title { font-size: 1.2rem; }
+      .tagline { font-size: 0.95rem; }
+    }
   </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="bar">
-      <div class="brand">
-        <!-- Centered shield icon -->
-        <svg class="logo" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs>
-            <linearGradient id="g1" x1="0" x2="1">
-              <stop offset="0%" stop-color="#2563EB"/>
-              <stop offset="100%" stop-color="#38BDF8"/>
-            </linearGradient>
-          </defs>
-          <path d="M48 10c10 8 19 10 30 12-1 24-11 40-30 52C29 62 19 46 18 22c11-2 20-4 30-12z" fill="url(#g1)" stroke="#1E40AF" stroke-width="2"/>
-          <path d="M48 28l4 8 9 1-7 6 2 9-8-4-8 4 2-9-7-6 9-1 4-8z" fill="#fff"/>
-        </svg>
-        <div>
-          <h1 class="title">SafeSurf Kids</h1>
-          <p class="tagline">Learn smart, safe, and kind ICT 💙</p>
-        </div>
-      </div>
-      <div class="actions">
-        <div class="progress" aria-live="polite" title="Your progress">
-          <div class="ring" id="ring"><span id="pct">0%</span></div>
-          <span>Stars:</span><strong id="stars">0</strong>
-        </div>
-        <div class="lang">
-          <label class="visually-hidden" for="langSel">Language</label>
-          <select id="langSel">
-            <option value="en" selected>EN</option>
-            <option value="es">ES</option>
-          </select>
+  <header class="site-header" role="banner">
+    <div class="brand">
+      <!-- Animated gradient logo -->
+      <svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#06D6A0"/>
+            <stop offset="100%" stop-color="#118AB2"/>
+          </linearGradient>
+        </defs>
+        <circle cx="48" cy="48" r="44" fill="url(#g)"></circle>
+        <path d="M48 18c14 8 22 10 32 12-1 20-7 34-32 48-25-14-31-28-32-48 10-2 18-4 32-12z" fill="#fff" opacity="0.9"/>
+        <path d="M35 49l8 8 18-18" stroke="#06D6A0" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <h1 id="app-title" class="title" data-i18n="app.title">SafeSurf Kids</h1>
+        <p class="tagline" data-i18n="app.tagline">Learn to stay safe online with Spark! ✨</p>
+        <div class="badges">
+          <span class="badge">Child-friendly</span>
+          <span class="badge">No personal data</span>
+          <span class="badge">Mobile ready</span>
         </div>
       </div>
     </div>
-    <nav class="main" aria-label="Main">
-      <button class="tab active" data-target="home">Home</button>
-      <button class="tab" data-target="learn">Learn</button>
-      <button class="tab" data-target="tools">Tools</button>
-      <button class="tab" data-target="ask">Ask Spark</button>
-      <button class="tab" data-target="parents">Parents</button>
-      <button class="tab" data-target="resources">Resources</button>
-    </nav>
+
+    <div class="header-actions">
+      <div class="achievements" aria-live="polite" title="Your progress">
+        <div class="progress-ring" id="progress-ring"><span id="progress-text">0%</span></div>
+        <span class="star">⭐</span>
+        <span data-i18n="app.stars">Stars:</span>
+        <strong id="star-count">0</strong>
+      </div>
+
+      <div class="lang-toggle" aria-label="Language">
+        <label for="lang-select" class="visually-hidden">Language</label>
+        <select id="lang-select" aria-label="Language select">
+          <option value="en" selected>English</option>
+          <option value="es">Español</option>
+        </select>
+      </div>
+    </div>
   </header>
+
+  <nav class="main-nav" role="navigation" aria-label="Main">
+    <button class="nav-btn active" data-target="home" data-i18n="nav.home">Home</button>
+    <button class="nav-btn" data-target="learn" data-i18n="nav.learn">Learn</button>
+    <button class="nav-btn" data-target="ask" data-i18n="nav.ask">Ask Spark</button>
+    <button class="nav-btn" data-target="parents" data-i18n="nav.parents">Parent & Carer Corner</button>
+    <button class="nav-btn" data-target="resources" data-i18n="nav.resources">Resources</button>
+  </nav>
 
   <main>
     <!-- Home -->
-    <section id="home" class="view active" aria-labelledby="home-h">
+    <section id="home" class="view active" aria-labelledby="home-heading">
       <div class="hero reveal">
-        <h2 id="home-h">Welcome! 🌈</h2>
-        <p class="muted">Quick lessons, playful tools, a friendly AI helper — all about staying safe with ICT.</p>
-        <a href="#learn" class="cta" data-go="learn">Start Learning</a>
-        <a href="#ask" class="cta secondary" data-go="ask">Ask the AI</a>
+        <h2 id="home-heading" data-i18n="home.heading">Welcome! 🌈</h2>
+        <p data-i18n="home.sub">Let’s learn how to be safe and kind with ICT — on the internet, in apps, and games.</p>
+        <div class="hero-actions">
+          <a href="#learn" class="cta" data-nav="learn" data-i18n="home.startLearning">Start Learning</a>
+          <a href="#ask" class="cta secondary" data-nav="ask" data-i18n="home.askSpark">Ask the AI</a>
+        </div>
       </div>
-      <div class="grid" role="list">
-        <article class="card reveal" role="listitem" tabindex="0"><h3>🔐 Strong Passwords</h3><p>Use long, secret passwords. Turn on 2FA!</p></article>
-        <article class="card reveal" role="listitem" tabindex="0"><h3>🎣 Spot Scams</h3><p>Check links. Don’t share logins. Ask an adult.</p></article>
-        <article class="card reveal" role="listitem" tabindex="0"><h3>💬 Be Kind Online</h3><p>Block/report meanness. Save evidence. Tell an adult.</p></article>
-        <article class="card reveal" role="listitem" tabindex="0"><h3>👣 Digital Footprints</h3><p>Think before you post; the internet remembers.</p></article>
+
+      <div class="quick-cards" role="list">
+        <div class="card reveal" role="listitem" tabindex="0">
+          <h3>🔐 Strong Passwords</h3>
+          <p>Use long, secret passwords. Turn on 2FA!</p>
+        </div>
+        <div class="card reveal" role="listitem" tabindex="0">
+          <h3>🛡️ Privacy & Sharing</h3>
+          <p>Think before you post. Keep personal info private.</p>
+        </div>
+        <div class="card reveal" role="listitem" tabindex="0">
+          <h3>💬 Be Kind Online</h3>
+          <p>Report bullying. Save messages. Talk to an adult.</p>
+        </div>
+        <div class="card reveal" role="listitem" tabindex="0">
+          <h3>🎮 Gaming Safety</h3>
+          <p>Use safe chats. Watch in‑app purchases. Take breaks!</p>
+        </div>
       </div>
     </section>
 
     <!-- Learn -->
-    <section id="learn" class="view" aria-labelledby="learn-h">
-      <h2 id="learn-h" class="reveal">Learn: Safety Modules</h2>
-      <p class="muted reveal">Tap a card to read tips, try a scenario, and take a quick quiz.</p>
-      <div id="modules" class="grid" role="list"></div>
-      <div id="moduleDetail" class="panel reveal" hidden aria-live="polite"></div>
+    <section id="learn" class="view" aria-labelledby="learn-heading">
+      <h2 id="learn-heading" class="reveal" data-i18n="learn.heading">Learn: Safety Modules</h2>
+      <p class="muted reveal" data-i18n="learn.desc">Tap a card to read tips, try a scenario, and take a quick quiz.</p>
+      <div id="modules" class="modules" role="list"></div>
+      <div id="module-detail" class="module-detail reveal" hidden aria-live="polite"></div>
     </section>
 
-    <!-- Tools -->
-    <section id="tools" class="view" aria-labelledby="tools-h">
-      <h2 id="tools-h" class="reveal">Tools & Activities</h2>
-      <div class="tools">
-        <div class="panel reveal">
-          <h3>✅ Safety Checklist</h3>
-          <div class="toggle"><input type="checkbox" id="t1"><label for="t1">I use long passwords (12+)</label></div>
-          <div class="toggle"><input type="checkbox" id="t2"><label for="t2">I turned on 2FA</label></div>
-          <div class="toggle"><input type="checkbox" id="t3"><label for="t3">My profiles are private</label></div>
-          <div class="toggle"><input type="checkbox" id="t4"><label for="t4">I don’t post location</label></div>
-          <div class="toggle"><input type="checkbox" id="t5"><label for="t5">I block/report unkind messages</label></div>
-          <p class="tiny muted" id="checkDone"></p>
-        </div>
-        <div class="panel reveal">
-          <h3>🧠 Flashcards: Do / Don’t</h3>
-          <div class="flash">
-            <div class="flip"><div class="front">Share strong passwords?</div><div class="back">Don’t share passwords — keep them secret 🔐</div></div>
-            <div class="flip"><div class="front">Click weird prize links?</div><div class="back">Don’t click — likely scams 🎣</div></div>
-            <div class="flip"><div class="front">Ask before posting friends?</div><div class="back">Yes — ask permission 📸</div></div>
-            <div class="flip"><div class="front">Be kind in comments?</div><div class="back">Yes — kindness first 💙</div></div>
-          </div>
-        </div>
-        <div class="panel reveal">
-          <h3>🔐 Password Helper</h3>
-          <p class="tiny muted">Try a pretend password (don’t use a real one).</p>
-          <input id="pw" type="text" placeholder="Type a pretend password…" style="width:100%;padding:10px;border-radius:10px;border:2px solid #D6E8FF">
-          <p class="tiny"><strong>Strength:</strong> <span id="pwOut">–</span></p>
-          <button class="btn secondary" id="pwIdea">Give me ideas</button>
-          <p class="tiny muted" id="pwIdeas"></p>
-        </div>
-        <div class="panel reveal">
-          <h3>🎣 Phishing Spotter</h3>
-          <p class="tiny">Is this message safe?</p>
-          <blockquote style="background:#F8FBFF;border-left:6px solid var(--sky);padding:8px;border-radius:8px">“URGENT! Free phone! Click this link and log in now.”</blockquote>
-          <button class="btn secondary" id="phishBtn">Check</button>
-          <p id="phishOut" class="tiny muted"></p>
-        </div>
+    <!-- Ask Spark (AI chat) -->
+    <section id="ask" class="view" aria-labelledby="ask-heading">
+      <h2 id="ask-heading" class="reveal" data-i18n="ask.heading">Ask Spark (AI)</h2>
+      <div class="safety-banner reveal" role="note" data-i18n="ask.banner">
+        Never share your real name, address, phone, school, or passwords.
       </div>
-    </section>
 
-    <!-- Ask Spark -->
-    <section id="ask" class="view" aria-labelledby="ask-h">
-      <h2 id="ask-h" class="reveal">Ask Spark (AI)</h2>
-      <div class="safety reveal">Never share your real name, address, phone, school, or passwords.</div>
-      <div class="age reveal">
-        <label><input type="radio" name="age" value="8-10" checked> 8–10</label>
-        <label><input type="radio" name="age" value="11-13"> 11–13</label>
+      <div class="age-toggle reveal" role="group" aria-label="Age group">
+        <label><input type="radio" name="age" value="8-10" checked /> 8–10</label>
+        <label><input type="radio" name="age" value="11-13" /> 11–13</label>
       </div>
-      <div class="chat reveal">
-        <div id="chatLog" class="log" role="log" aria-live="polite" aria-relevant="additions"></div>
-        <form id="chatForm" class="chat-form" autocomplete="off">
-          <label for="chatInput" class="visually-hidden">Your message</label>
-          <input id="chatInput" type="text" minlength="1" maxlength="600" placeholder="Ask me about staying safe online!" required />
-          <button class="send" type="submit">Send</button>
+
+      <div class="chat reveal" aria-label="Chat with Spark">
+        <div id="chat-log" class="chat-log" role="log" aria-live="polite" aria-relevant="additions"></div>
+
+        <form id="chat-form" class="chat-form" autocomplete="off">
+          <label for="chat-input" class="visually-hidden">Your message</label>
+          <input id="chat-input" name="message" type="text" minlength="1" maxlength="600"
+                 placeholder="Ask me about staying safe online!" aria-label="Ask me about staying safe online!" required />
+          <button type="submit" class="send-btn">Send</button>
         </form>
-        <p class="tiny muted">We don’t store chats. Keep info private.</p>
+        <p class="tiny muted" data-i18n="ask.footer">We don’t store chats. Be kind and keep info private.</p>
       </div>
     </section>
 
-    <!-- Parents -->
-    <section id="parents" class="view" aria-labelledby="parents-h">
-      <h2 id="parents-h" class="reveal">Parent & Carer Corner</h2>
-      <div class="grid">
-        <article class="card reveal"><h3>Quick Tips</h3>
+    <!-- Parent & Carer Corner -->
+    <section id="parents" class="view" aria-labelledby="parents-heading">
+      <h2 id="parents-heading" class="reveal" data-i18n="parents.heading">Parent & Carer Corner</h2>
+      <div class="parent-grid">
+        <article class="card reveal">
+          <h3 data-i18n="parents.tipsTitle">Quick Tips</h3>
           <ul>
-            <li>Talk early and often about online kindness and privacy.</li>
-            <li>Set clear, shared rules (no devices in bedrooms at night).</li>
-            <li>Use family accounts and enable parental controls where helpful.</li>
-            <li>Play/learn the apps together; keep dialogue open.</li>
-            <li>Use strong passwords & 2FA; keep devices updated.</li>
+            <li data-i18n="parents.tip1">Talk early and often about online kindness and privacy.</li>
+            <li data-i18n="parents.tip2">Set clear rules together (bedtime, screens out of bedrooms).</li>
+            <li data-i18n="parents.tip3">Use family accounts and turn on parental controls where helpful.</li>
+            <li data-i18n="parents.tip4">Learn the games and apps they use; play together sometimes.</li>
+            <li data-i18n="parents.tip5">Keep devices updated; use strong passwords & 2FA.</li>
           </ul>
         </article>
-        <article class="card reveal"><h3>Conversation Starters</h3>
+        <article class="card reveal">
+          <h3 data-i18n="parents.startersTitle">Conversation Starters</h3>
           <ul>
-            <li>How do you decide what to share online?</li>
-            <li>What would you do if someone asked for private info?</li>
-            <li>Which creators make you feel good? Why?</li>
+            <li data-i18n="parents.start1">How do you decide what to share online?</li>
+            <li data-i18n="parents.start2">What would you do if someone was unkind or asked for private info?</li>
+            <li data-i18n="parents.start3">Which games or creators make you feel good? Why?</li>
           </ul>
         </article>
-        <article class="card reveal"><h3>Signs to Watch</h3>
+        <article class="card reveal">
+          <h3 data-i18n="parents.signsTitle">Signs to Watch For</h3>
           <ul>
-            <li>Worry about going online, mood shifts.</li>
-            <li>Secret new accounts or hiding screens.</li>
-            <li>Unexpected charges or “new friends”.</li>
+            <li data-i18n="parents.sign1">Sudden worry about going online or changes in mood.</li>
+            <li data-i18n="parents.sign2">Secret new accounts or hiding screens.</li>
+            <li data-i18n="parents.sign3">Unexplained charges or new “friends.”</li>
           </ul>
+        </article>
+        <article class="card reveal">
+          <h3 data-i18n="parents.controlsTitle">Parental Controls Basics</h3>
+          <p data-i18n="parents.controlsDesc">Use built‑in tools on devices, consoles, and routers to filter content, set time limits, and restrict purchases. Review settings together so kids understand why.</p>
         </article>
       </div>
     </section>
 
     <!-- Resources -->
-    <section id="resources" class="view" aria-labelledby="resources-h">
-      <h2 id="resources-h" class="reveal">Resources</h2>
-      <div class="grid">
-        <article class="card reveal"><h3>If you need help</h3>
+    <section id="resources" class="view" aria-labelledby="resources-heading">
+      <h2 id="resources-heading" class="reveal" data-i18n="resources.heading">Resources</h2>
+      <div class="resources-grid">
+        <article class="card reveal">
+          <h3 data-i18n="resources.helpTitle">If you need help</h3>
           <ul>
-            <li>Talk to a trusted adult (parent, carer, teacher, counselor).</li>
-            <li>If you are in danger, contact local emergency services right away.</li>
-            <li>Use app/game “Report” and “Block”.</li>
+            <li data-i18n="resources.help1">Talk to a trusted adult (parent, carer, teacher, counselor).</li>
+            <li data-i18n="resources.help2">If you are in danger, contact local emergency services right away.</li>
+            <li data-i18n="resources.help3">Use app/game “Report” and “Block” features when needed.</li>
           </ul>
         </article>
-        <article class="card reveal"><h3>Helpful links</h3>
-          <ul>
+        <article class="card reveal">
+          <h3 data-i18n="resources.linksTitle">Helpful links</h3>
+          <ul class="links">
             <li><a href="https://www.childline.org.uk" target="_blank" rel="noopener">Childline (UK)</a></li>
             <li><a href="https://www.kidshelpphone.ca" target="_blank" rel="noopener">Kids Help Phone (CA)</a></li>
             <li><a href="https://www.stopbullying.gov" target="_blank" rel="noopener">StopBullying.gov (US)</a></li>
             <li><a href="https://www.commonsensemedia.org" target="_blank" rel="noopener">Common Sense Media</a></li>
           </ul>
-          <p class="tiny muted">Links are examples — find local help in your area.</p>
+          <p class="tiny muted" data-i18n="resources.note">Links are examples — find local resources for your area.</p>
         </article>
       </div>
     </section>
   </main>
 
   <div id="confetti" aria-hidden="true"></div>
-  <footer>© <span id="year"></span> SafeSurf Kids · <span class="tiny">We don’t collect personal data.</span></footer>
+
+  <footer class="site-footer">
+    <p>© <span id="year"></span> SafeSurf Kids · <span class="tiny" data-i18n="footer.privacy">We don’t collect personal data.</span></p>
+  </footer>
 
   <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      // ===== Config (unchanged; uses your Worker) =====
-      const USE_BACKEND = true;
-      const BACKEND_URL = 'https://spark-ai-sethu.sethu-spark.workers.dev';
+    // ===== Config (kept as-is to use your existing Worker) =====
+    const USE_BACKEND = true;
+    const BACKEND_URL = 'https://spark-ai-sethu.sethu-spark.workers.dev';
 
-      // ===== Helpers & State =====
-      const $ = (s, c=document) => c.querySelector(s);
-      const $$ = (s, c=document) => Array.from(c.querySelectorAll(s));
-      let completed = new Set(JSON.parse(localStorage.getItem('ss-completed')||'[]'));
-      let ageGroup = '8-10';
-      const yearEl = $('#year'); if (yearEl) yearEl.textContent = new Date().getFullYear();
+    // ===== Utilities & State =====
+    const $ = (sel, ctx = document) => ctx.querySelector(sel);
+    const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 
-      // Tabs
-      $$('.tab').forEach(btn=>{
-        btn.addEventListener('click',()=>{
-          const id=btn.dataset.target;
-          $$('.view').forEach(v=>v.classList.toggle('active', v.id===id));
-          $$('.tab').forEach(b=>b.classList.toggle('active', b===btn));
-          window.scrollTo({top:0,behavior:'smooth'});
-        });
+    let strings = {};
+    let lang = 'en';
+    let completedModules = new Set(JSON.parse(localStorage.getItem('ss-completed') || '[]'));
+    let ageGroup = '8-10';
+
+    // Year in footer
+    $('#year').textContent = new Date().getFullYear();
+
+    // Nav handling
+    $$('.nav-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.target;
+        $$('.view').forEach(v => v.classList.toggle('active', v.id === target));
+        $$('.nav-btn').forEach(b => b.classList.toggle('active', b === btn));
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
-      $$('[data-go]').forEach(a=>a.addEventListener('click',e=>{
-        e.preventDefault();
-        const id=a.getAttribute('data-go');
-        document.querySelector(`.tab[data-target="${id}"]`)?.click();
-      }));
-
-      // Reveal on scroll
-      const io = new IntersectionObserver(entries=>{
-        entries.forEach(e=>e.target.classList.toggle('show', e.isIntersecting));
-      },{threshold:.12});
-      $$('.reveal').forEach(el=>io.observe(el));
-
-      // ===== 10 Learning Modules =====
-      const LESSONS = [
-        { id:'passwords',emoji:'🔐',title:'Strong Passwords & 2FA',subtitle:'Make your accounts tough to crack!',
-          tips:['Use long passwords (12+). Try three random words.','Never share passwords with friends.','Use a different password for each account.','Turn on 2FA — a code from an app or text.','Keep devices locked with a PIN or passcode.'],
-          scenario:{ prompt:'A message says: “Your account is locked! Send your password to fix it.” What do you do?',
-            choices:[{text:'Send my password to unlock it',feedback:'Nope! Never share passwords. This is likely a scam.'},{text:'Ignore and go to the official app/website',feedback:'Yes! Use the real app/website and change your password if worried.'},{text:'Ask friends if they got the same message',feedback:'Better to check the official site instead of asking friends.'}]
-          },
-          quiz:[{q:'What makes a strong password?',options:['Your name + birthday','12+ characters with random words','12345678'],answerIndex:1},{q:'What is 2FA?',options:['A gaming level','A code to prove it’s you','An emoji'],answerIndex:1},{q:'Should you share passwords?',options:['Yes','No'],answerIndex:1}]
-        },
-        { id:'privacy',emoji:'🛡️',title:'Privacy & Sharing',subtitle:'Think before you post.',
-          tips:['Keep real name, address, phone, and school private.','Turn off location sharing.','Check privacy settings for posts and profiles.','Ask before sharing photos of friends.','Be kind — your future self will thank you!'],
-          scenario:{ prompt:'A new friend asks for your address to send a gift. What do you do?',
-            choices:[{text:'Share it in chat',feedback:'Not safe. Never share your home address online.'},{text:'Say no and ask a trusted adult',feedback:'Great choice! Keep private info safe and talk to an adult.'},{text:'Give a nearby place instead',feedback:'Still risky. Don’t share locations online.'}]
-          },
-          quiz:[{q:'What info should stay private?',options:['Real name & address','Favorite color'],answerIndex:0},{q:'Ask before posting a group photo?',options:['No','Yes — ask them'],answerIndex:1},{q:'Location sharing?',options:['Always on','Turn it off unless needed'],answerIndex:1}]
-        },
-        { id:'cyberbullying',emoji:'💬',title:'Cyberbullying',subtitle:'Be kind, block, and report.',
-          tips:['If someone is unkind, don’t reply. Save evidence.','Use block and report — it’s safety.','Talk to a trusted adult right away.','Be kind when you comment and message.','Check in on friends who seem down.'],
-          scenario:{ prompt:'Someone keeps sending mean messages in a group chat. What now?',
-            choices:[{text:'Send mean messages back',feedback:'This can make it worse. Don’t reply.'},{text:'Block, report, and tell a trusted adult',feedback:'That’s right! Block/report and talk to an adult.'},{text:'Leave the group and never tell anyone',feedback:'Leaving can help, but also tell a trusted adult.'}]
-          },
-          quiz:[{q:'Keep as evidence?',options:['Screenshots','Nothing'],answerIndex:0},{q:'Who can you talk to?',options:['A trusted adult','No one'],answerIndex:0},{q:'Apps can help you…',options:['Block/report','Be mean back'],answerIndex:0}]
-        },
-        { id:'scams',emoji:'🎣',title:'Scams & Phishing',subtitle:'Spot tricks before they get you.',
-          tips:['Don’t click strange links or attachments.','Check the sender — fakes look similar.','Look for urgent threats & spelling mistakes.','Use the official app/website to check accounts.','Ask an adult if anything feels off.'],
-          scenario:{ prompt:'You win a “free phone” if you click a link. It asks for your login. What now?',
-            choices:[{text:'Enter my login to get the prize',feedback:'This is a phishing trick. Don’t share logins.'},{text:'Close it and tell a trusted adult',feedback:'Good move! Stay safe and double-check with an adult.'},{text:'Click the link but don’t type anything',feedback:'Even clicking can be risky. Better to close it.'}]
-          },
-          quiz:[{q:'Which looks suspicious?',options:['Weird links & urgent prizes','A message from your parent'],answerIndex:0},{q:'Where to check your account?',options:['Official app/website','Random link'],answerIndex:0},{q:'Who can help if unsure?',options:['Trusted adult','A stranger online'],answerIndex:0}]
-        },
-        { id:'gaming',emoji:'🎮',title:'Gaming Safety',subtitle:'Play fun, play fair, take breaks.',
-          tips:['Use family-friendly chats and block rude players.','Ask before buying in-game items.','Take eye-and-body breaks every 30–60 mins.','Don’t share private info in voice chat.','Balance games with sleep, school, and friends.'],
-          scenario:{ prompt:'A player asks for your login to “boost” your account. What do you do?',
-            choices:[{text:'Share it — I want better items',feedback:'Nope! Never share logins. They could steal your account.'},{text:'Say no, block, and report',feedback:'Perfect. Protect your account and move on.'},{text:'Share only the password',feedback:'That’s the most secret part. Keep it private!'}]
-          },
-          quiz:[{q:'Breaks?',options:['Every 30–60 mins','Never'],answerIndex:0},{q:'In‑app purchases?',options:['Ask a parent first','Buy anything'],answerIndex:0},{q:'Keep private in voice chat?',options:['Address & school','Game tips'],answerIndex:0}]
-        },
-        { id:'footprints',emoji:'👣',title:'Digital Footprints',subtitle:'What you post can last.',
-          tips:['Posts can travel fast and be saved.','Be proud of what future‑you will see.','Think: Kind? True? Needed?','Ask before posting others.','Review old posts and clean up.'],
-          scenario:{ prompt:'You find a silly video of your friend and want to post it. What now?',
-            choices:[{text:'Post it — it’s funny!',feedback:'It could hurt feelings. Always ask first.'},{text:'Ask your friend if it’s okay',feedback:'Yes! Get permission before posting.'},{text:'Post now, remove later',feedback:'It might be copied. Better to ask first.'}]
-          },
-          quiz:[{q:'Digital footprint is…',options:['Your shoe size','Your online posts/actions'],answerIndex:1},{q:'Share group pics?',options:['No ask','Ask people in photo'],answerIndex:1},{q:'Do deleted posts vanish?',options:['Always','Not always — others may save'],answerIndex:1}]
-        },
-        { id:'ai',emoji:'🧠',title:'AI, Photos & Deepfakes',subtitle:'Not everything is real.',
-          tips:['Weird videos may be AI‑made.','Check trusted news or official pages.','Look for odd eyes, lighting, or lips.','Don’t share shocking clips before checking.','Ask an adult if unsure.'],
-          scenario:{ prompt:'A video shows your favorite creator saying something rude. It looks off. What do you do?',
-            choices:[{text:'Share it fast!',feedback:'Wait! It could be fake. Don’t spread it.'},{text:'Check their official page',feedback:'Smart! Verify first.'},{text:'Post a rude comment',feedback:'Be kind — verify first.'}]
-          },
-          quiz:[{q:'Deepfake is…',options:['A cookie','A realistic fake made with AI'],answerIndex:1},{q:'Share shocking clips quickly?',options:['Yes','No — check first'],answerIndex:1},{q:'If unsure…',options:['Ask an adult','Guess'],answerIndex:0}]
-        },
-        { id:'social',emoji:'📱',title:'Smart Social Sharing',subtitle:'Share happy, share wisely.',
-          tips:['Use private accounts if possible.','Hide personal info from profiles.','Turn off location on posts.','Be kind in comments and messages.','Report fake or rude accounts.'],
-          scenario:{ prompt:'An app asks to access your contacts and location. What now?',
-            choices:[{text:'Allow everything',feedback:'Only allow what you need.'},{text:'Allow only needed or say no',feedback:'Nice! Keep info safe.'},{text:'Share your password too',feedback:'Never share passwords.'}]
-          },
-          quiz:[{q:'Safer for kids?',options:['Public','Private'],answerIndex:1},{q:'Share location?',options:['Always','Only if needed'],answerIndex:1},{q:'Rude person?',options:['Be rude back','Block/report & tell adult'],answerIndex:1}]
-        },
-        { id:'devices',emoji:'🔧',title:'Device & Wi‑Fi Safety',subtitle:'Keep tech healthy.',
-          tips:['Update apps and system often.','Use secure Wi‑Fi; avoid unknown public Wi‑Fi for logins.','Don’t install random files.','Use PIN/biometrics to lock your device.','Ask an adult before changing settings.'],
-          scenario:{ prompt:'You’re on free public Wi‑Fi. A site asks for your login. What do you do?',
-            choices:[{text:'Log in now',feedback:'Public Wi‑Fi can be risky. Avoid logins there.'},{text:'Wait and log in at home/data',feedback:'Great choice — stay safe!'},{text:'Download a random “security” app',feedback:'Only install trusted apps.'}]
-          },
-          quiz:[{q:'Updates?',options:['Ignore','Install'],answerIndex:1},{q:'Public Wi‑Fi is…',options:['Always safe','Risky for logins'],answerIndex:1},{q:'Best phone lock?',options:['No lock','PIN/biometrics'],answerIndex:1}]
-        },
-        { id:'wellbeing',emoji:'🧘',title:'Screen Time & Well‑being',subtitle:'Balance screens and life.',
-          tips:['Take breaks for eyes and body.','Sleep phones outside bedrooms.','Spend time offline with friends and hobbies.','Notice how apps make you feel.','Ask for help if you feel stressed.'],
-          scenario:{ prompt:'You feel grumpy after lots of scrolling. What can help?',
-            choices:[{text:'Scroll more to feel better',feedback:'More scrolling can make it worse.'},{text:'Take a break and do something offline',feedback:'Great idea — move, stretch, or chat with family.'},{text:'Send rude comments',feedback:'Kindness first — take a break instead.'}]
-          },
-          quiz:[{q:'Good break time?',options:['Every 30–60 mins','Never'],answerIndex:0},{q:'Phones at bedtime?',options:['Outside bedrooms','Under the pillow'],answerIndex:0},{q:'Feeling bad online?',options:['Keep scrolling','Talk to a trusted adult'],answerIndex:1}]
-        }
-      ];
-
-      function updateStars(){ const s=$('#stars'); if (s) s.textContent = String(completed.size); }
-      function updateProgress(){
-        const total = LESSONS.length, done = completed.size;
-        const pct = Math.round((done/total)*100);
-        $('#pct')?.textContent = pct + '%';
-        $('#ring')?.style.setProperty('--angle', pct + '%');
-      }
-
-      function renderModules(){
-        const wrap = $('#modules'); if (!wrap) return;
-        wrap.innerHTML='';
-        LESSONS.forEach(m=>{
-          const card=document.createElement('button'); card.className='card reveal'; card.setAttribute('role','listitem');
-          card.innerHTML=`<h3>${m.emoji} ${m.title}</h3><p class="muted">${m.subtitle}</p><div class="tiny">${m.tips.slice(0,3).map(t=>'• '+t).join('<br>')}</div>`;
-          io.observe(card);
-          card.addEventListener('click',()=>openModule(m.id));
-          wrap.appendChild(card);
-        });
-        updateProgress();
-      }
-
-      function openModule(id){
-        const m=LESSONS.find(x=>x.id===id); const box=$('#moduleDetail'); if(!m||!box) return;
-        box.hidden=false; window.location.hash=`#module-${id}`; const done=completed.has(id);
-        box.innerHTML=`
-          <div><h3 style="text-align:center">${m.emoji} ${m.title}</h3><p class="muted" style="text-align:center">${m.subtitle}</p></div>
-          <div class="tips"><h4>Top Tips</h4><ul>${m.tips.map(t=>`<li>${t}</li>`).join('')}</ul></div>
-          <div class="scenario"><h4>Try a Scenario</h4><p>${m.scenario.prompt}</p>
-            <div class="grid">${m.scenario.choices.map((c,i)=>`<button class="btn secondary" data-choice="${i}">${c.text}</button>`).join('')}</div>
-            <p id="scOut" class="tiny muted" aria-live="polite"></p>
-          </div>
-          <div class="quiz"><h4>Quick Quiz</h4>
-            <form id="q-${id}">
-              ${m.quiz.map((q,qi)=>`
-                <fieldset class="card" style="padding:12px">
-                  <legend><strong>${qi+1}.</strong> ${q.q}</legend>
-                  ${q.options.map((opt,oi)=>`<label><input type="radio" name="q${qi}" value="${oi}" required> ${opt}</label><br>`).join('')}
-                </fieldset>
-              `).join('')}
-              <button class="cta" type="submit">Check Answers</button>
-            </form>
-            <p id="qr" class="muted" aria-live="polite"></p>
-            <div class="tiny">${done?'✅ Quiz completed — star awarded!':''}</div>
-          </div>`;
-        $$('.scenario .btn',box).forEach(b=>b.addEventListener('click',()=>{$('#scOut',box).textContent=m.scenario.choices[Number(b.dataset.choice)].feedback;}));
-        $('#q-'+id,box).addEventListener('submit',e=>{
-          e.preventDefault();
-          const data=new FormData(e.target); let correct=0;
-          m.quiz.forEach((q,qi)=>{ const v=data.get('q'+qi); if(v!==null && Number(v)===q.answerIndex) correct++; });
-          const qr=$('#qr',box);
-          if(correct===m.quiz.length){
-            qr.textContent=`Great job! You got ${correct}/${m.quiz.length} 🎉`;
-            if(!completed.has(id)){ completed.add(id); localStorage.setItem('ss-completed',JSON.stringify([...completed])); updateStars(); confetti(); updateProgress(); }
-          }else qr.textContent=`You got ${correct}/${m.quiz.length}. Try again — you can do it! 💪`;
-        });
-      }
-
-      // Tools
-      $$('#tools .toggle input').forEach(inp=>{
-        inp.addEventListener('change',()=>{
-          const n=$$('#tools .toggle input').filter(i=>i.checked).length;
-          $('#checkDone')?.textContent = n>=5 ? 'Awesome! You checked all safety steps. ⭐' : `${n}/5 done — keep going!`;
-        });
-      });
-      $$('.flip').forEach(f=>f.addEventListener('click',()=>f.classList.toggle('active')));
-      $('#pw')?.addEventListener('input',e=>{
-        const v=e.target.value; const s=pwScore(v); const w=['Very Weak','Weak','Okay','Good','Strong','Very Strong']; $('#pwOut')?.textContent=w[Math.min(w.length-1,s)];
-      });
-      function pwScore(p){ let s=0; if(p.length>=8)s++; if(p.length>=12)s++; if(/[A-Z]/.test(p))s++; if(/[0-9]/.test(p))s++; if(/[^A-Za-z0-9]/.test(p))s++; if(/\b(password|1234|qwerty|admin)\b/i.test(p)) s=Math.max(0,s-2); return s; }
-      $('#pwIdea')?.addEventListener('click',()=>{
-        const words=['Sunny','Rocket','Panda','Jazz','Mango','River','Puzzle','Galaxy','Ninja','Koala','Lemon','Zebra','Maple','Toast','Pixel'];
-        const pick=()=>words[Math.floor(Math.random()*words.length)];
-        const idea = `${pick()}-${pick()}-${pick()}-${Math.floor(10+Math.random()*89)}!`;
-        $('#pwIdeas')?.textContent = `Try: ${idea} (don’t use real info)`;
-      });
-      $('#phishBtn')?.addEventListener('click',()=>{$('#phishOut')?.textContent='Looks phishing! 🚫 Don’t click. Use the official app/site and ask a trusted adult.';});
-
-      // ===== Chat (unchanged backend call) =====
-      const chatLog=$('#chatLog'), chatForm=$('#chatForm'), chatInput=$('#chatInput');
-      $$('input[name="age"]').forEach(r=>r.addEventListener('change',()=>ageGroup=r.value));
-      function containsPII(t){
-        const email=/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i;
-        const phone=/(\+?\d{1,2}[\s.-]?)?(KATEX_INLINE_OPEN?\d{3}KATEX_INLINE_CLOSE?[\s.-]?)\d{3}[\s.-]?\d{4}\b/;
-        const address=/\b\d{1,5}\s+\w+(?:\s+\w+){0,3}\s+(street|st|avenue|ave|road|rd|boulevard|blvd|lane|ln|drive|dr|court|ct)\b/i;
-        const school=/\b(school|elementary|middle\s+school|high\s+school|academy|ps\s?\d+)\b/i;
-        const password=/\bpassword\b\s*[:=]\s*\S+/i;
-        const username=/\b(user(name)?|login)\b\s*[:=]\s*\S+/i;
-        return email.test(t)||phone.test(t)||address.test(t)||school.test(t)||password.test(t)||username.test(t);
-      }
-      function addUser(t){ if(!chatLog) return; const b=document.createElement('div'); b.className='b u'; b.textContent=t; chatLog.appendChild(b); chatLog.scrollTop=chatLog.scrollHeight; }
-      function addSpark(t){ if(!chatLog) return; const b=document.createElement('div'); b.className='b s'; b.textContent=t; chatLog.appendChild(b); chatLog.scrollTop=chatLog.scrollHeight; }
-      function addTyping(){ if(!chatLog) return; const b=document.createElement('div'); b.className='b s'; b.innerHTML='<span class="typing"><span></span><span></span><span></span></span>'; b.dataset.t='1'; chatLog.appendChild(b); chatLog.scrollTop=chatLog.scrollHeight; }
-      function removeTyping(){ if(!chatLog) return; const last=[...chatLog.querySelectorAll('.b.s')].reverse().find(x=>x.dataset.t==='1'); if(last) last.remove(); }
-      chatForm?.addEventListener('submit', async e=>{
-        e.preventDefault();
-        const text=chatInput.value.trim(); if(!text) return;
-        if(containsPII(text)){ addSpark("Let’s keep personal info private 👍 Please don’t share your real name, address, phone number, school, email, or passwords. You can ask me about staying safe online, like passwords, privacy, bullying, or games! 🌟"); chatInput.value=''; return; }
-        addUser(text); chatInput.value=''; addTyping();
-        try{
-          const res=await fetch(BACKEND_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,ageGroup})});
-          const data=await res.json(); removeTyping();
-          if(data.ok) addSpark(data.reply||'Thanks for your message! 😊'); else addSpark(data.error||'Oops, I had trouble replying. Please try again.');
-        }catch{ removeTyping(); addSpark('Network error. Please try again in a moment.'); }
-      });
-
-      // Confetti
-      function confetti(){
-        const wrap=document.getElementById('confetti');
-        for(let i=0;i<26;i++){
-          const c=document.createElement('div'); c.className='confetti'; c.textContent=['⭐','✨','🌟'][Math.floor(Math.random()*3)];
-          c.style.left=Math.random()*100+'vw'; c.style.top='-10px'; c.style.animationDelay=(Math.random()*0.5)+'s';
-          c.style.transform=`scale(${0.7+Math.random()*0.8})`; wrap.appendChild(c); setTimeout(()=>c.remove(),2000);
-        }
-      }
-
-      // Init
-      function init(){
-        const hiEl=$('#hi'); if (hiEl) hiEl.textContent = '0';
-        renderModules(); updateStars(); updateProgress();
-      }
-      init();
     });
+    $$('[data-nav="learn"]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); $('[data-target="learn"]').click(); }));
+    $$('[data-nav="ask"]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); $('[data-target="ask"]').click(); }));
+
+    // Reveal animations
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => e.target.classList.toggle('show', e.isIntersecting));
+    }, { threshold: 0.12 });
+    $$('.reveal').forEach(el => io.observe(el));
+
+    // ===== Localization =====
+    const STRINGS = {
+      en: {
+        app: { title: "SafeSurf Kids", tagline: "Learn to stay safe online with Spark! ✨", stars: "Stars:" },
+        nav: { home: "Home", learn: "Learn", ask: "Ask Spark", parents: "Parent & Carer Corner", resources: "Resources" },
+        home: { heading: "Welcome! 🌈", sub: "Let’s learn how to be safe and kind with ICT — on the internet, in apps, and games.", startLearning: "Start Learning", askSpark: "Ask the AI" },
+        learn: { heading: "Learn: Safety Modules", desc: "Tap a card to read tips, try a scenario, and take a quick quiz." },
+        ask: { heading: "Ask Spark (AI)", banner: "Never share your real name, address, phone, school, or passwords.", footer: "We don’t store chats. Be kind and keep info private." },
+        parents: {
+          heading: "Parent & Carer Corner", tipsTitle: "Quick Tips",
+          tip1: "Talk early and often about online kindness and privacy.",
+          tip2: "Set clear rules together (bedtime, screens out of bedrooms).",
+          tip3: "Use family accounts and turn on parental controls where helpful.",
+          tip4: "Learn the games and apps they use; play together sometimes.",
+          tip5: "Keep devices updated; use strong passwords & 2FA.",
+          startersTitle: "Conversation Starters",
+          start1: "How do you decide what to share online?",
+          start2: "What would you do if someone was unkind or asked for private info?",
+          start3: "Which games or creators make you feel good? Why?",
+          signsTitle: "Signs to Watch For",
+          sign1: "Sudden worry about going online or changes in mood.",
+          sign2: "Secret new accounts or hiding screens.",
+          sign3: "Unexplained charges or new “friends.”",
+          controlsTitle: "Parental Controls Basics",
+          controlsDesc: "Use built‑in tools on devices, consoles, and routers to filter content, set time limits, and restrict purchases. Review settings together so kids understand why."
+        },
+        resources: {
+          heading: "Resources",
+          helpTitle: "If you need help",
+          help1: "Talk to a trusted adult (parent, carer, teacher, counselor).",
+          help2: "If you are in danger, contact local emergency services right away.",
+          help3: "Use app/game “Report” and “Block” features when needed.",
+          linksTitle: "Helpful links",
+          note: "Links are examples — find local resources for your area."
+        },
+        footer: { privacy: "We don’t collect personal data." }
+      },
+      es: {
+        app: { title: "SafeSurf Kids", tagline: "¡Aprende a estar seguro en línea con Spark! ✨", stars: "Estrellas:" },
+        nav: { home: "Inicio", learn: "Aprender", ask: "Preguntar a Spark", parents: "Para familias y cuidadores", resources: "Recursos" },
+        home: { heading: "¡Bienvenid@! 🌈", sub: "Aprendamos a ser seguros y amables con las TIC — en internet, apps y juegos.", startLearning: "Comenzar", askSpark: "Preguntar a la IA" },
+        learn: { heading: "Aprender: Módulos de seguridad", desc: "Toca una tarjeta para leer consejos, probar un escenario y hacer un mini cuestionario." },
+        ask: { heading: "Pregunta a Spark (IA)", banner: "Nunca compartas tu nombre real, dirección, teléfono, escuela ni contraseñas.", footer: "No guardamos los chats. Sé amable y cuida tu privacidad." },
+        parents: {
+          heading: "Para familias y cuidadores", tipsTitle: "Consejos rápidos",
+          tip1: "Hablen temprano y con frecuencia sobre amabilidad y privacidad.",
+          tip2: "Acordar reglas claras (hora de dormir, sin pantallas en el dormitorio).",
+          tip3: "Usar cuentas familiares y controles parentales cuando ayuden.",
+          tip4: "Conozcan los juegos y apps que usan; jueguen juntos a veces.",
+          tip5: "Mantener dispositivos actualizados; contraseñas fuertes y 2FA.",
+          startersTitle: "Para conversar",
+          start1: "¿Cómo decides qué compartir en línea?",
+          start2: "¿Qué harías si alguien es agresivo o pide info privada?",
+          start3: "¿Qué juegos o creadores te hacen sentir bien? ¿Por qué?",
+          signsTitle: "Señales a observar",
+          sign1: "Preocupación por conectarse o cambios de ánimo.",
+          sign2: "Cuentas nuevas secretas u ocultar la pantalla.",
+          sign3: "Cargos extraños o “amigos” nuevos.",
+          controlsTitle: "Controles parentales básicos",
+          controlsDesc: "Usa herramientas en dispositivos, consolas y routers para filtrar contenido, limitar tiempo y restringir compras. Revisen ajustes juntos para entender el porqué."
+        },
+        resources: {
+          heading: "Recursos",
+          helpTitle: "Si necesitas ayuda",
+          help1: "Habla con un adulto de confianza (madre/padre, cuidador, profesor, orientador).",
+          help2: "Si estás en peligro, contacta a los servicios de emergencia locales.",
+          help3: "Usa “Reportar” y “Bloquear” en las apps/juegos cuando haga falta.",
+          linksTitle: "Enlaces útiles",
+          note: "Los enlaces son ejemplos — busca recursos locales de tu zona."
+        },
+        footer: { privacy: "No recopilamos datos personales." }
+      }
+    };
+
+    function applyStrings() {
+      $$('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        const val = key.split('.').reduce((acc, k) => acc && acc[k], strings);
+        if (typeof val === 'string') el.textContent = val;
+      });
+    }
+    $('#lang-select').addEventListener('change', (e) => {
+      lang = e.target.value;
+      strings = STRINGS[lang] || STRINGS.en;
+      applyStrings();
+    });
+
+    // ===== Lessons / Modules (expanded to 9) =====
+    const LESSONS = [
+      {
+        id: "passwords",
+        emoji: "🔐",
+        title: "Strong Passwords & 2FA",
+        subtitle: "Make your accounts tough to crack!",
+        tips: [
+          "Use long passwords (12+). Try three random words.",
+          "Never share passwords with friends.",
+          "Use a different password for each account.",
+          "Turn on 2FA — a code from an app or text.",
+          "Keep devices locked with a PIN or passcode."
+        ],
+        scenario: {
+          prompt: "A message says: “Your account is locked! Send your password to fix it.” What do you do?",
+          choices: [
+            { text: "Send my password to unlock it", isCorrect: false, feedback: "Nope! Never share passwords. This is likely a scam." },
+            { text: "Ignore and go to the official app/website", isCorrect: true, feedback: "Yes! Use the real app/website and change your password if worried." },
+            { text: "Ask friends if they got the same message", isCorrect: false, feedback: "Better to check the official site instead of asking friends." }
+          ]
+        },
+        quiz: [
+          { q: "What makes a strong password?", options: ["Your name + birthday", "12+ characters with random words", "12345678"], answerIndex: 1 },
+          { q: "What is 2FA?", options: ["A gaming level", "A code to prove it’s you", "An emoji"], answerIndex: 1 },
+          { q: "Should you share passwords?", options: ["Yes", "No"], answerIndex: 1 }
+        ]
+      },
+      {
+        id: "privacy",
+        emoji: "🛡️",
+        title: "Privacy & Sharing",
+        subtitle: "Think before you post.",
+        tips: [
+          "Keep real name, address, phone, and school private.",
+          "Turn off location sharing in apps you don’t trust.",
+          "Check privacy settings for posts and profiles.",
+          "Ask before sharing photos of friends.",
+          "Post kindly — your future self will thank you!"
+        ],
+        scenario: {
+          prompt: "A new friend asks for your address to send a gift. What do you do?",
+          choices: [
+            { text: "Share it in chat", isCorrect: false, feedback: "Not safe. Never share your home address online." },
+            { text: "Say no and ask a trusted adult", isCorrect: true, feedback: "Great choice! Keep private info safe and talk to an adult." },
+            { text: "Give a nearby place instead", isCorrect: false, feedback: "Still risky. Don’t share locations online." }
+          ]
+        },
+        quiz: [
+          { q: "What info should stay private?", options: ["Real name & address", "Favorite color"], answerIndex: 0 },
+          { q: "Who should you ask before posting a group photo?", options: ["No one", "The people in the photo"], answerIndex: 1 },
+          { q: "What should you do with location sharing?", options: ["Leave it on always", "Turn it off unless needed"], answerIndex: 1 }
+        ]
+      },
+      {
+        id: "cyberbullying",
+        emoji: "💬",
+        title: "Cyberbullying",
+        subtitle: "Be kind, block, and report.",
+        tips: [
+          "If someone is unkind, don’t reply. Save evidence.",
+          "Use block and report. It’s not tattling — it’s safety.",
+          "Talk to a trusted adult right away.",
+          "Be kind when you comment and message.",
+          "Check in on friends who seem down."
+        ],
+        scenario: {
+          prompt: "Someone keeps sending mean messages in a group chat. What now?",
+          choices: [
+            { text: "Send mean messages back", isCorrect: false, feedback: "This can make it worse. Don’t reply." },
+            { text: "Block, report, and tell a trusted adult", isCorrect: true, feedback: "That’s right! Block/report and talk to an adult." },
+            { text: "Leave the group and never tell anyone", isCorrect: false, feedback: "Leaving can help, but also tell a trusted adult." }
+          ]
+        },
+        quiz: [
+          { q: "What should you keep as evidence?", options: ["Screenshots", "Nothing"], answerIndex: 0 },
+          { q: "Who can you talk to?", options: ["A trusted adult", "No one"], answerIndex: 0 },
+          { q: "What can apps help you do?", options: ["Block and report", "Send mean messages"], answerIndex: 0 }
+        ]
+      },
+      {
+        id: "scams",
+        emoji: "🕵️",
+        title: "Scams & Phishing",
+        subtitle: "Spot tricks before they get you.",
+        tips: [
+          "Don’t click strange links or attachments.",
+          "Check the sender’s address — fakes look similar.",
+          "Look for spelling mistakes and urgent threats.",
+          "Use the official website or app to check your account.",
+          "Ask an adult if anything feels off."
+        ],
+        scenario: {
+          prompt: "You win a “free phone” if you click a link. It asks for your login. What now?",
+          choices: [
+            { text: "Enter my login to get the prize", isCorrect: false, feedback: "This is a phishing trick. Don’t share logins." },
+            { text: "Close it and tell a trusted adult", isCorrect: true, feedback: "Good move! Stay safe and double-check with an adult." },
+            { text: "Click the link but don’t type anything", isCorrect: false, feedback: "Even clicking can be risky. Better to close it." }
+          ]
+        },
+        quiz: [
+          { q: "Which looks suspicious?", options: ["Urgent prizes & weird links", "A message from your parent"], answerIndex: 0 },
+          { q: "Where should you check your account?", options: ["Official app/website", "Random link"], answerIndex: 0 },
+          { q: "Who can help if unsure?", options: ["A trusted adult", "A stranger online"], answerIndex: 0 }
+        ]
+      },
+      {
+        id: "gaming",
+        emoji: "🎮",
+        title: "Gaming Safety & Screen Time",
+        subtitle: "Play fun, play fair, take breaks.",
+        tips: [
+          "Use family-friendly chats and block rude players.",
+          "Ask before buying in-game items.",
+          "Take eye-and-body breaks every 30–60 mins.",
+          "Don’t share private info in voice chat.",
+          "Balance games with sleep, school, and friends."
+        ],
+        scenario: {
+          prompt: "A player asks for your login to ‘boost’ your account. What do you do?",
+          choices: [
+            { text: "Share it — I want better items", isCorrect: false, feedback: "Nope! Never share logins. They could steal your account." },
+            { text: "Say no, block the player, and report", isCorrect: true, feedback: "Perfect. Protect your account and move on." },
+            { text: "Share only the password", isCorrect: false, feedback: "That’s the most secret part. Keep it private!" }
+          ]
+        },
+        quiz: [
+          { q: "How often to take breaks?", options: ["Every 30–60 mins", "Never"], answerIndex: 0 },
+          { q: "What about in-app purchases?", options: ["Ask a parent/carer first", "Buy anything"], answerIndex: 0 },
+          { q: "What info should you keep private in voice chat?", options: ["Your address & school", "Game tips"], answerIndex: 0 }
+        ]
+      },
+      {
+        id: "footprints",
+        emoji: "👣",
+        title: "Digital Footprints",
+        subtitle: "What you post can last.",
+        tips: [
+          "Posts can travel fast and be saved.",
+          "Be proud of what future-you will see.",
+          "Think: Is it kind? Is it true? Is it needed?",
+          "Ask before posting photos of others.",
+          "Review old posts and clean up."
+        ],
+        scenario: {
+          prompt: "You find a silly video of your friend and want to post it. What now?",
+          choices: [
+            { text: "Post it — it’s funny!", isCorrect: false, feedback: "It could hurt feelings. Always ask first." },
+            { text: "Ask your friend if it’s okay to share", isCorrect: true, feedback: "Yes! Get permission before posting." },
+            { text: "Post it and remove later", isCorrect: false, feedback: "It might be copied. Better to ask first." }
+          ]
+        },
+        quiz: [
+          { q: "What is a digital footprint?", options: ["Your shoe size", "Your online posts and actions"], answerIndex: 1 },
+          { q: "Who should you ask before sharing group pics?", options: ["No one", "The people in the photo"], answerIndex: 1 },
+          { q: "Can deleted posts always vanish?", options: ["Yes", "Not always — others may save them"], answerIndex: 1 }
+        ]
+      },
+      {
+        id: "deepfakes",
+        emoji: "🧠",
+        title: "AI, Photos & Deepfakes",
+        subtitle: "Not everything online is real.",
+        tips: [
+          "Strange videos may be edited or AI-made.",
+          "Check trusted news or official pages.",
+          "Look for odd eyes, lighting, or lips not matching.",
+          "Don’t share shocking clips before checking.",
+          "Ask an adult if unsure."
+        ],
+        scenario: {
+          prompt: "A video shows your favorite creator saying something rude. It looks a bit off. What do you do?",
+          choices: [
+            { text: "Share it fast!", isCorrect: false, feedback: "Wait! It could be fake. Don’t spread it." },
+            { text: "Check their official page or a trusted source", isCorrect: true, feedback: "Smart! Verify before sharing." },
+            { text: "Comment something mean", isCorrect: false, feedback: "Be kind — ask an adult and verify first." }
+          ]
+        },
+        quiz: [
+          { q: "What is a deepfake?", options: ["A fake cookie", "A realistic but fake photo/video made with AI"], answerIndex: 1 },
+          { q: "Should you share shocking clips quickly?", options: ["Yes", "No — check first"], answerIndex: 1 },
+          { q: "If unsure, you should…", options: ["Ask a trusted adult", "Do nothing"], answerIndex: 0 }
+        ]
+      },
+      {
+        id: "social",
+        emoji: "📱",
+        title: "Smart Social Sharing",
+        subtitle: "Share happy, share wisely.",
+        tips: [
+          "Use private accounts if possible.",
+          "Hide personal info from profiles.",
+          "Turn off location on posts.",
+          "Be kind in comments and messages.",
+          "Report fake or rude accounts."
+        ],
+        scenario: {
+          prompt: "An app asks to access your contacts and location to ‘improve experience’. What now?",
+          choices: [
+            { text: "Allow everything", isCorrect: false, feedback: "Only allow what you need." },
+            { text: "Allow only what’s needed or say no", isCorrect: true, feedback: "Nice! Keep your info safe." },
+            { text: "Share your password too", isCorrect: false, feedback: "Never share passwords." }
+          ]
+        },
+        quiz: [
+          { q: "Which is safer for kids?", options: ["Public account", "Private account"], answerIndex: 1 },
+          { q: "Share location on posts?", options: ["Yes, always", "Only if needed (or keep off)"], answerIndex: 1 },
+          { q: "If someone is rude you should…", options: ["Be rude back", "Block, report, and tell an adult"], answerIndex: 1 }
+        ]
+      },
+      {
+        id: "devices",
+        emoji: "🔧",
+        title: "Device & Wi‑Fi Safety",
+        subtitle: "Keep tech healthy and safe.",
+        tips: [
+          "Update apps and system often.",
+          "Use secure Wi‑Fi (avoid unknown public Wi‑Fi).",
+          "Don’t install random files.",
+          "Use PIN/biometrics to lock your device.",
+          "Ask an adult before changing settings."
+        ],
+        scenario: {
+          prompt: "You’re on free public Wi‑Fi. A site asks for your login. What do you do?",
+          choices: [
+            { text: "Log in now", isCorrect: false, feedback: "Public Wi‑Fi can be risky. Avoid logging in there." },
+            { text: "Wait and log in at home or on mobile data", isCorrect: true, feedback: "Great choice — stay safe!" },
+            { text: "Download a random ‘security’ app", isCorrect: false, feedback: "Only install trusted apps." }
+          ]
+        },
+        quiz: [
+          { q: "What should you do with updates?", options: ["Ignore them", "Install them"], answerIndex: 1 },
+          { q: "Public Wi‑Fi is…", options: ["Always safe", "Risky — avoid logins"], answerIndex: 1 },
+          { q: "Best way to lock a phone:", options: ["No lock", "PIN/biometrics"], answerIndex: 1 }
+        ]
+      }
+    ];
+
+    // Render modules list
+    function renderModules() {
+      const wrap = $('#modules');
+      wrap.innerHTML = '';
+      LESSONS.forEach(m => {
+        const card = document.createElement('button');
+        card.className = 'card reveal';
+        card.setAttribute('role', 'listitem');
+        card.innerHTML = `
+          <h3>${m.emoji} ${m.title}</h3>
+          <p class="muted">${m.subtitle}</p>
+          <div class="tiny" aria-hidden="true">${m.tips.slice(0,3).map(t => '• ' + t).join('<br>')}</div>
+        `;
+        io.observe(card);
+        card.addEventListener('click', () => openModule(m.id));
+        wrap.appendChild(card);
+      });
+      updateProgress();
+    }
+
+    // Open a module
+    function openModule(id) {
+      const m = LESSONS.find(x => x.id === id);
+      const box = $('#module-detail');
+      if (!m) return;
+      box.hidden = false;
+      window.location.hash = `#module-${id}`;
+      const completed = completedModules.has(id);
+      box.innerHTML = `
+        <div>
+          <h3>${m.emoji} ${m.title}</h3>
+          <p class="muted">${m.subtitle}</p>
+        </div>
+        <div class="tips">
+          <h4>Top Tips</h4>
+          <ul>${m.tips.map(t => `<li>${t}</li>`).join('')}</ul>
+        </div>
+        <div class="scenario">
+          <h4>Try a Scenario</h4>
+          <p>${m.scenario.prompt}</p>
+          <div class="scenario-actions">
+            ${m.scenario.choices.map((c, i) =>
+              `<button class="nav-btn" data-choice="${i}">${c.text}</button>`
+            ).join('')}
+          </div>
+          <p id="scenario-feedback" class="muted" aria-live="polite"></p>
+        </div>
+        <div class="quiz">
+          <h4>Quick Quiz</h4>
+          <form id="quiz-${id}">
+            ${m.quiz.map((q, qi) => `
+              <fieldset>
+                <legend>${qi + 1}. ${q.q}</legend>
+                ${q.options.map((opt, oi) => `
+                  <label><input type="radio" name="q${qi}" value="${oi}" required /> ${opt}</label><br>
+                `).join('')}
+              </fieldset>
+            `).join('')}
+            <button type="submit" class="cta">Check Answers</button>
+          </form>
+          <p id="quiz-result" class="muted" aria-live="polite"></p>
+        </div>
+        <div class="tiny">${completed ? '✅ Quiz completed — star awarded!' : ''}</div>
+      `;
+
+      $$('.scenario-actions button', box).forEach(btn => {
+        btn.addEventListener('click', () => {
+          const idx = Number(btn.dataset.choice);
+          const choice = m.scenario.choices[idx];
+          const fb = $('#scenario-feedback', box);
+          fb.textContent = choice.feedback;
+        });
+      });
+
+      const form = $(`#quiz-${id}`, box);
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const data = new FormData(form);
+        let correct = 0;
+        m.quiz.forEach((q, qi) => {
+          const v = data.get(`q${qi}`);
+          if (v !== null && Number(v) === q.answerIndex) correct++;
+        });
+        const result = $('#quiz-result', box);
+        if (correct === m.quiz.length) {
+          result.textContent = `Great job! You got ${correct}/${m.quiz.length} 🎉`;
+          if (!completedModules.has(id)) {
+            completedModules.add(id);
+            localStorage.setItem('ss-completed', JSON.stringify([...completedModules]));
+            updateStarCount();
+            fireConfetti();
+            updateProgress();
+          }
+        } else {
+          result.textContent = `You got ${correct}/${m.quiz.length}. Try again — you can do it! 💪`;
+        }
+      });
+    }
+
+    // Progress & stars
+    function updateStarCount() {
+      $('#star-count').textContent = String(completedModules.size);
+    }
+    function updateProgress() {
+      const done = completedModules.size;
+      const total = LESSONS.length;
+      const pct = Math.round((done / total) * 100);
+      const ring = $('#progress-ring');
+      const txt = $('#progress-text');
+      ring.style.setProperty('--angle', pct + '%');
+      txt.textContent = pct + '%';
+    }
+
+    // Confetti stars
+    function fireConfetti() {
+      const wrap = $('#confetti');
+      for (let i = 0; i < 26; i++) {
+        const star = document.createElement('div');
+        star.className = 'confetti-star';
+        star.textContent = ['⭐','✨','🌟'][Math.floor(Math.random()*3)];
+        star.style.left = Math.random() * 100 + 'vw';
+        star.style.top = '-10px';
+        star.style.animationDelay = (Math.random() * 0.6) + 's';
+        star.style.transform = `scale(${0.7 + Math.random() * 0.8})`;
+        wrap.appendChild(star);
+        setTimeout(() => star.remove(), 2200);
+      }
+    }
+
+    // ===== Chat (Ask Spark) — unchanged backend call =====
+    const chatLog = $('#chat-log');
+    const chatForm = $('#chat-form');
+    const chatInput = $('#chat-input');
+    $$('input[name="age"]').forEach(r => r.addEventListener('change', () => { ageGroup = r.value; }));
+
+    // PII detection (fixed phone regex)
+    function containsPII(t) {
+      const email = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i;
+      const phone = /(\+?\d{1,2}[\s.-]?)?(KATEX_INLINE_OPEN?\d{3}KATEX_INLINE_CLOSE?[\s.-]?)\d{3}[\s.-]?\d{4}\b/;
+      const address = /\b\d{1,5}\s+\w+(?:\s+\w+){0,3}\s+(street|st|avenue|ave|road|rd|boulevard|blvd|lane|ln|drive|dr|court|ct)\b/i;
+      const school = /\b(school|elementary|middle\s+school|high\s+school|academy|ps\s?\d+)\b/i;
+      const password = /\bpassword\b\s*[:=]\s*\S+/i;
+      const username = /\b(user(name)?|login)\b\s*[:=]\s*\S+/i;
+      return email.test(t) || phone.test(t) || address.test(t) || school.test(t) || password.test(t) || username.test(t);
+    }
+
+    function addUser(text) {
+      const b = document.createElement('div');
+      b.className = 'chat-bubble user';
+      b.textContent = text;
+      chatLog.appendChild(b);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+    function addSpark(text) {
+      const b = document.createElement('div');
+      b.className = 'chat-bubble spark';
+      b.textContent = text;
+      chatLog.appendChild(b);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+    function addTyping() {
+      const b = document.createElement('div');
+      b.className = 'chat-bubble spark';
+      b.innerHTML = '<span class="typing-dots"><span></span><span></span><span></span></span>';
+      b.dataset.typing = '1';
+      chatLog.appendChild(b);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+    function removeTyping() {
+      const last = Array.from(chatLog.querySelectorAll('.chat-bubble.spark')).reverse().find(x => x.dataset.typing === '1');
+      if (last) last.remove();
+    }
+
+    chatForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const text = chatInput.value.trim();
+      if (!text) return;
+
+      if (containsPII(text)) {
+        addSpark("Let’s keep personal info private 👍 Please don’t share your real name, address, phone number, school, email, or passwords. You can ask me about staying safe online, like passwords, privacy, bullying, or games! 🌟");
+        chatInput.value = '';
+        return;
+      }
+
+      addUser(text);
+      chatInput.value = '';
+      addTyping();
+
+      try {
+        const res = await fetch(BACKEND_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text, ageGroup })
+        });
+        const data = await res.json();
+        removeTyping();
+        if (data.ok) addSpark(data.reply || 'Thanks for your message! 😊');
+        else addSpark(data.error || 'Oops, I had trouble replying. Please try again.');
+      } catch {
+        removeTyping();
+        addSpark('Network error. Please try again in a moment.');
+      }
+    });
+
+    // ===== Init =====
+    strings = STRINGS.en;
+    applyStrings();
+    renderModules();
+    updateStarCount();
   </script>
 </body>
 </html>
