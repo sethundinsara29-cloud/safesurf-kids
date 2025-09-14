@@ -163,7 +163,7 @@
   <header class="site-header">
     <div class="bar">
       <div class="brand">
-        <!-- Centered, nicer blue shield icon with star -->
+        <!-- Centered shield icon -->
         <svg class="logo" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
             <linearGradient id="g1" x1="0" x2="1">
@@ -392,363 +392,370 @@
   <footer>© <span id="year"></span> SafeSurf Kids · <span class="tiny">We don’t collect personal data.</span></footer>
 
   <script>
-    // ===== Config (unchanged; uses your Worker) =====
-    const USE_BACKEND = true;
-    const BACKEND_URL = 'https://spark-ai-sethu.sethu-spark.workers.dev';
+    // Wait for DOM to avoid nulls
+    window.addEventListener('DOMContentLoaded', () => {
+      // ===== Config (unchanged; uses your Worker) =====
+      const USE_BACKEND = true;
+      const BACKEND_URL = 'https://spark-ai-sethu.sethu-spark.workers.dev';
 
-    // ===== Helpers & State =====
-    const $ = (s, c=document) => c.querySelector(s);
-    const $$ = (s, c=document) => Array.from(c.querySelectorAll(s));
-    let completed = new Set(JSON.parse(localStorage.getItem('ss-completed')||'[]'));
-    let ageGroup = '8-10';
-    $('#year').textContent = new Date().getFullYear();
+      // ===== Helpers & State =====
+      const $ = (s, c=document) => c.querySelector(s);
+      const $$ = (s, c=document) => Array.from(c.querySelectorAll(s));
+      let completed = new Set(JSON.parse(localStorage.getItem('ss-completed')||'[]'));
+      let ageGroup = '8-10';
+      $('#year') && ($('#year').textContent = new Date().getFullYear());
 
-    // Tabs
-    $$('.tab').forEach(btn=>{
-      btn.addEventListener('click',()=>{
-        const id=btn.dataset.target;
-        $$('.view').forEach(v=>v.classList.toggle('active', v.id===id));
-        $$('.tab').forEach(b=>b.classList.toggle('active', b===btn));
-        window.scrollTo({top:0,behavior:'smooth'});
+      // Tabs
+      $$('.tab').forEach(btn=>{
+        btn.addEventListener('click',()=>{
+          const id=btn.dataset.target;
+          $$('.view').forEach(v=>v.classList.toggle('active', v.id===id));
+          $$('.tab').forEach(b=>b.classList.toggle('active', b===btn));
+          window.scrollTo({top:0,behavior:'smooth'});
+        });
       });
-    });
-    $$('[data-go]').forEach(a=>a.addEventListener('click',e=>{
-      e.preventDefault();
-      const id=a.getAttribute('data-go');
-      document.querySelector(`.tab[data-target="${id}"]`).click();
-    }));
-
-    // Reveal on scroll
-    const io = new IntersectionObserver(entries=>{entries.forEach(e=>e.target.classList.toggle('show', e.isIntersecting));},{threshold:.12});
-    $$('.reveal').forEach(el=>io.observe(el));
-
-    // Progress
-    function updateStars(){ $('#stars').textContent = String(completed.size); }
-    function updateProgress(){
-      const total = LESSONS.length, done = completed.size;
-      const pct = Math.round((done/total)*100);
-      $('#pct').textContent = pct + '%';
-      $('#ring').style.setProperty('--angle', pct + '%');
-    }
-    $('#langSel').addEventListener('change', e=>{ document.documentElement.lang = e.target.value; });
-
-    // ===== Lessons =====
-    const LESSONS = [
-      { id:'passwords',emoji:'🔐',title:'Strong Passwords & 2FA',subtitle:'Make your accounts tough to crack!',
-        tips:['Use long passwords (12+). Try three random words.','Never share passwords with friends.','Use a different password for each account.','Turn on 2FA — a code from an app or text.','Keep devices locked with a PIN or passcode.'],
-        scenario:{ prompt:'A message says: “Your account is locked! Send your password to fix it.” What do you do?',
-          choices:[{text:'Send my password to unlock it',feedback:'Nope! Never share passwords. This is likely a scam.'},{text:'Ignore and go to the official app/website',feedback:'Yes! Use the real app/website and change your password if worried.'},{text:'Ask friends if they got the same message',feedback:'Better to check the official site instead of asking friends.'}]
-        },
-        quiz:[{q:'What makes a strong password?',options:['Your name + birthday','12+ characters with random words','12345678'],answerIndex:1},{q:'What is 2FA?',options:['A gaming level','A code to prove it’s you','An emoji'],answerIndex:1},{q:'Should you share passwords?',options:['Yes','No'],answerIndex:1}]
-      },
-      { id:'privacy',emoji:'🛡️',title:'Privacy & Sharing',subtitle:'Think before you post.',
-        tips:['Keep real name, address, phone, and school private.','Turn off location sharing.','Check privacy settings for posts and profiles.','Ask before sharing photos of friends.','Be kind — your future self will thank you!'],
-        scenario:{ prompt:'A new friend asks for your address to send a gift. What do you do?',
-          choices:[{text:'Share it in chat',feedback:'Not safe. Never share your home address online.'},{text:'Say no and ask a trusted adult',feedback:'Great choice! Keep private info safe and talk to an adult.'},{text:'Give a nearby place instead',feedback:'Still risky. Don’t share locations online.'}]
-        },
-        quiz:[{q:'What info should stay private?',options:['Real name & address','Favorite color'],answerIndex:0},{q:'Ask before posting a group photo?',options:['No','Yes — ask them'],answerIndex:1},{q:'Location sharing?',options:['Always on','Turn it off unless needed'],answerIndex:1}]
-      },
-      { id:'cyberbullying',emoji:'💬',title:'Cyberbullying',subtitle:'Be kind, block, and report.',
-        tips:['If someone is unkind, don’t reply. Save evidence.','Use block and report — it’s safety.','Talk to a trusted adult right away.','Be kind when you comment and message.','Check in on friends who seem down.'],
-        scenario:{ prompt:'Someone keeps sending mean messages in a group chat. What now?',
-          choices:[{text:'Send mean messages back',feedback:'This can make it worse. Don’t reply.'},{text:'Block, report, and tell a trusted adult',feedback:'That’s right! Block/report and talk to an adult.'},{text:'Leave the group and never tell anyone',feedback:'Leaving can help, but also tell a trusted adult.'}]
-        },
-        quiz:[{q:'Keep as evidence?',options:['Screenshots','Nothing'],answerIndex:0},{q:'Who can you talk to?',options:['A trusted adult','No one'],answerIndex:0},{q:'Apps can help you…',options:['Block/report','Be mean back'],answerIndex:0}]
-      },
-      { id:'scams',emoji:'🕵️',title:'Scams & Phishing',subtitle:'Spot tricks before they get you.',
-        tips:['Don’t click strange links or attachments.','Check the sender — fakes look similar.','Look for urgent threats & spelling mistakes.','Use the official app/website to check accounts.','Ask an adult if anything feels off.'],
-        scenario:{ prompt:'You win a “free phone” if you click a link. It asks for your login. What now?',
-          choices:[{text:'Enter my login to get the prize',feedback:'This is a phishing trick. Don’t share logins.'},{text:'Close it and tell a trusted adult',feedback:'Good move! Stay safe and double-check with an adult.'},{text:'Click the link but don’t type anything',feedback:'Even clicking can be risky. Better to close it.'}]
-        },
-        quiz:[{q:'Which looks suspicious?',options:['Weird links & urgent prizes','A message from your parent'],answerIndex:0},{q:'Where to check your account?',options:['Official app/website','Random link'],answerIndex:0},{q:'Who can help if unsure?',options:['Trusted adult','A stranger online'],answerIndex:0}]
-      },
-      { id:'gaming',emoji:'🎮',title:'Gaming Safety & Screen Time',subtitle:'Play fun, play fair, take breaks.',
-        tips:['Use family-friendly chats and block rude players.','Ask before buying in-game items.','Take eye-and-body breaks every 30–60 mins.','Don’t share private info in voice chat.','Balance games with sleep, school, and friends.'],
-        scenario:{ prompt:'A player asks for your login to “boost” your account. What do you do?',
-          choices:[{text:'Share it — I want better items',feedback:'Nope! Never share logins. They could steal your account.'},{text:'Say no, block, and report',feedback:'Perfect. Protect your account and move on.'},{text:'Share only the password',feedback:'That’s the most secret part. Keep it private!'}]
-        },
-        quiz:[{q:'Breaks?',options:['Every 30–60 mins','Never'],answerIndex:0},{q:'In‑app purchases?',options:['Ask a parent first','Buy anything'],answerIndex:0},{q:'Keep private in voice chat?',options:['Address & school','Game tips'],answerIndex:0}]
-      }
-    ];
-
-    function renderModules(){
-      const wrap = $('#modules'); wrap.innerHTML='';
-      LESSONS.forEach(m=>{
-        const card=document.createElement('button'); card.className='card reveal'; card.setAttribute('role','listitem');
-        card.innerHTML=`<h3>${m.emoji} ${m.title}</h3><p class="muted">${m.subtitle}</p><div class="tiny">${m.tips.slice(0,3).map(t=>'• '+t).join('<br>')}</div>`;
-        io.observe(card);
-        card.addEventListener('click',()=>openModule(m.id));
-        wrap.appendChild(card);
-      });
-      updateProgress();
-    }
-
-    function openModule(id){
-      const m=LESSONS.find(x=>x.id===id); const box=$('#moduleDetail'); if(!m) return;
-      box.hidden=false; window.location.hash=`#module-${id}`; const done=completed.has(id);
-      box.innerHTML=`
-        <div><h3 style="text-align:center">${m.emoji} ${m.title}</h3><p class="muted" style="text-align:center">${m.subtitle}</p></div>
-        <div class="tips"><h4>Top Tips</h4><ul>${m.tips.map(t=>`<li>${t}</li>`).join('')}</ul></div>
-        <div class="scenario"><h4>Try a Scenario</h4><p>${m.scenario.prompt}</p>
-          <div class="grid">${m.scenario.choices.map((c,i)=>`<button class="btn secondary" data-choice="${i}">${c.text}</button>`).join('')}</div>
-          <p id="scOut" class="tiny muted" aria-live="polite"></p>
-        </div>
-        <div class="quiz"><h4>Quick Quiz</h4>
-          <form id="q-${id}">
-            ${m.quiz.map((q,qi)=>`
-              <fieldset class="card" style="padding:12px">
-                <legend><strong>${qi+1}.</strong> ${q.q}</legend>
-                ${q.options.map((opt,oi)=>`<label><input type="radio" name="q${qi}" value="${oi}" required> ${opt}</label><br>`).join('')}
-              </fieldset>
-            `).join('')}
-            <button class="cta" type="submit">Check Answers</button>
-          </form>
-          <p id="qr" class="muted" aria-live="polite"></p>
-          <div class="tiny">${done?'✅ Quiz completed — star awarded!':''}</div>
-        </div>`;
-      $$('.scenario .btn',box).forEach(b=>b.addEventListener('click',()=>{$('#scOut',box).textContent=m.scenario.choices[Number(b.dataset.choice)].feedback;}));
-      $('#q-'+id,box).addEventListener('submit',e=>{
+      $$('[data-go]').forEach(a=>a.addEventListener('click',e=>{
         e.preventDefault();
-        const data=new FormData(e.target); let correct=0;
-        m.quiz.forEach((q,qi)=>{ const v=data.get('q'+qi); if(v!==null && Number(v)===q.answerIndex) correct++; });
-        const qr=$('#qr',box);
-        if(correct===m.quiz.length){
-          qr.textContent=`Great job! You got ${correct}/${m.quiz.length} 🎉`;
-          if(!completed.has(id)){ completed.add(id); localStorage.setItem('ss-completed',JSON.stringify([...completed])); updateStars(); confetti(); updateProgress(); }
-        }else qr.textContent=`You got ${correct}/${m.quiz.length}. Try again — you can do it! 💪`;
+        const id=a.getAttribute('data-go');
+        const targetBtn = document.querySelector(`.tab[data-target="${id}"]`);
+        if (targetBtn) targetBtn.click();
+      }));
+
+      // Reveal on scroll
+      const io = new IntersectionObserver(entries=>{
+        entries.forEach(e=>e.target.classList.toggle('show', e.isIntersecting));
+      },{threshold:.12});
+      $$('.reveal').forEach(el=>io.observe(el));
+
+      // Progress
+      function updateStars(){ const s=$('#stars'); if (s) s.textContent = String(completed.size); }
+      function updateProgress(){
+        const total = LESSONS.length, done = completed.size;
+        const pct = Math.round((done/total)*100);
+        const pctEl = $('#pct'); const ring = $('#ring');
+        if (pctEl) pctEl.textContent = pct + '%';
+        if (ring) ring.style.setProperty('--angle', pct + '%');
+      }
+      $('#langSel')?.addEventListener('change', e=>{ document.documentElement.lang = e.target.value; });
+
+      // ===== Lessons =====
+      const LESSONS = [
+        { id:'passwords',emoji:'🔐',title:'Strong Passwords & 2FA',subtitle:'Make your accounts tough to crack!',
+          tips:['Use long passwords (12+). Try three random words.','Never share passwords with friends.','Use a different password for each account.','Turn on 2FA — a code from an app or text.','Keep devices locked with a PIN or passcode.'],
+          scenario:{ prompt:'A message says: “Your account is locked! Send your password to fix it.” What do you do?',
+            choices:[{text:'Send my password to unlock it',feedback:'Nope! Never share passwords. This is likely a scam.'},{text:'Ignore and go to the official app/website',feedback:'Yes! Use the real app/website and change your password if worried.'},{text:'Ask friends if they got the same message',feedback:'Better to check the official site instead of asking friends.'}]
+          },
+          quiz:[{q:'What makes a strong password?',options:['Your name + birthday','12+ characters with random words','12345678'],answerIndex:1},{q:'What is 2FA?',options:['A gaming level','A code to prove it’s you','An emoji'],answerIndex:1},{q:'Should you share passwords?',options:['Yes','No'],answerIndex:1}]
+        },
+        { id:'privacy',emoji:'🛡️',title:'Privacy & Sharing',subtitle:'Think before you post.',
+          tips:['Keep real name, address, phone, and school private.','Turn off location sharing.','Check privacy settings for posts and profiles.','Ask before sharing photos of friends.','Be kind — your future self will thank you!'],
+          scenario:{ prompt:'A new friend asks for your address to send a gift. What do you do?',
+            choices:[{text:'Share it in chat',feedback:'Not safe. Never share your home address online.'},{text:'Say no and ask a trusted adult',feedback:'Great choice! Keep private info safe and talk to an adult.'},{text:'Give a nearby place instead',feedback:'Still risky. Don’t share locations online.'}]
+          },
+          quiz:[{q:'What info should stay private?',options:['Real name & address','Favorite color'],answerIndex:0},{q:'Ask before posting a group photo?',options:['No','Yes — ask them'],answerIndex:1},{q:'Location sharing?',options:['Always on','Turn it off unless needed'],answerIndex:1}]
+        },
+        { id:'cyberbullying',emoji:'💬',title:'Cyberbullying',subtitle:'Be kind, block, and report.',
+          tips:['If someone is unkind, don’t reply. Save evidence.','Use block and report — it’s safety.','Talk to a trusted adult right away.','Be kind when you comment and message.','Check in on friends who seem down.'],
+          scenario:{ prompt:'Someone keeps sending mean messages in a group chat. What now?',
+            choices:[{text:'Send mean messages back',feedback:'This can make it worse. Don’t reply.'},{text:'Block, report, and tell a trusted adult',feedback:'That’s right! Block/report and talk to an adult.'},{text:'Leave the group and never tell anyone',feedback:'Leaving can help, but also tell a trusted adult.'}]
+          },
+          quiz:[{q:'Keep as evidence?',options:['Screenshots','Nothing'],answerIndex:0},{q:'Who can you talk to?',options:['A trusted adult','No one'],answerIndex:0},{q:'Apps can help you…',options:['Block/report','Be mean back'],answerIndex:0}]
+        },
+        { id:'scams',emoji:'🕵️',title:'Scams & Phishing',subtitle:'Spot tricks before they get you.',
+          tips:['Don’t click strange links or attachments.','Check the sender — fakes look similar.','Look for urgent threats & spelling mistakes.','Use the official app/website to check accounts.','Ask an adult if anything feels off.'],
+          scenario:{ prompt:'You win a “free phone” if you click a link. It asks for your login. What now?',
+            choices:[{text:'Enter my login to get the prize',feedback:'This is a phishing trick. Don’t share logins.'},{text:'Close it and tell a trusted adult',feedback:'Good move! Stay safe and double-check with an adult.'},{text:'Click the link but don’t type anything',feedback:'Even clicking can be risky. Better to close it.'}]
+          },
+          quiz:[{q:'Which looks suspicious?',options:['Weird links & urgent prizes','A message from your parent'],answerIndex:0},{q:'Where to check your account?',options:['Official app/website','Random link'],answerIndex:0},{q:'Who can help if unsure?',options:['Trusted adult','A stranger online'],answerIndex:0}]
+        },
+        { id:'gaming',emoji:'🎮',title:'Gaming Safety & Screen Time',subtitle:'Play fun, play fair, take breaks.',
+          tips:['Use family-friendly chats and block rude players.','Ask before buying in-game items.','Take eye-and-body breaks every 30–60 mins.','Don’t share private info in voice chat.','Balance games with sleep, school, and friends.'],
+          scenario:{ prompt:'A player asks for your login to “boost” your account. What do you do?',
+            choices:[{text:'Share it — I want better items',feedback:'Nope! Never share logins. They could steal your account.'},{text:'Say no, block, and report',feedback:'Perfect. Protect your account and move on.'},{text:'Share only the password',feedback:'That’s the most secret part. Keep it private!'}]
+          },
+          quiz:[{q:'Breaks?',options:['Every 30–60 mins','Never'],answerIndex:0},{q:'In‑app purchases?',options:['Ask a parent first','Buy anything'],answerIndex:0},{q:'Keep private in voice chat?',options:['Address & school','Game tips'],answerIndex:0}]
+        }
+      ];
+
+      function renderModules(){
+        const wrap = $('#modules'); if (!wrap) return;
+        wrap.innerHTML='';
+        LESSONS.forEach(m=>{
+          const card=document.createElement('button'); card.className='card reveal'; card.setAttribute('role','listitem');
+          card.innerHTML=`<h3>${m.emoji} ${m.title}</h3><p class="muted">${m.subtitle}</p><div class="tiny">${m.tips.slice(0,3).map(t=>'• '+t).join('<br>')}</div>`;
+          io.observe(card);
+          card.addEventListener('click',()=>openModule(m.id));
+          wrap.appendChild(card);
+        });
+        updateProgress();
+      }
+
+      function openModule(id){
+        const m=LESSONS.find(x=>x.id===id); const box=$('#moduleDetail'); if(!m||!box) return;
+        box.hidden=false; window.location.hash=`#module-${id}`; const done=completed.has(id);
+        box.innerHTML=`
+          <div><h3 style="text-align:center">${m.emoji} ${m.title}</h3><p class="muted" style="text-align:center">${m.subtitle}</p></div>
+          <div class="tips"><h4>Top Tips</h4><ul>${m.tips.map(t=>`<li>${t}</li>`).join('')}</ul></div>
+          <div class="scenario"><h4>Try a Scenario</h4><p>${m.scenario.prompt}</p>
+            <div class="grid">${m.scenario.choices.map((c,i)=>`<button class="btn secondary" data-choice="${i}">${c.text}</button>`).join('')}</div>
+            <p id="scOut" class="tiny muted" aria-live="polite"></p>
+          </div>
+          <div class="quiz"><h4>Quick Quiz</h4>
+            <form id="q-${id}">
+              ${m.quiz.map((q,qi)=>`
+                <fieldset class="card" style="padding:12px">
+                  <legend><strong>${qi+1}.</strong> ${q.q}</legend>
+                  ${q.options.map((opt,oi)=>`<label><input type="radio" name="q${qi}" value="${oi}" required> ${opt}</label><br>`).join('')}
+                </fieldset>
+              `).join('')}
+              <button class="cta" type="submit">Check Answers</button>
+            </form>
+            <p id="qr" class="muted" aria-live="polite"></p>
+            <div class="tiny">${done?'✅ Quiz completed — star awarded!':''}</div>
+          </div>`;
+        $$('.scenario .btn',box).forEach(b=>b.addEventListener('click',()=>{$('#scOut',box).textContent=m.scenario.choices[Number(b.dataset.choice)].feedback;}));
+        $('#q-'+id,box).addEventListener('submit',e=>{
+          e.preventDefault();
+          const data=new FormData(e.target); let correct=0;
+          m.quiz.forEach((q,qi)=>{ const v=data.get('q'+qi); if(v!==null && Number(v)===q.answerIndex) correct++; });
+          const qr=$('#qr',box);
+          if(correct===m.quiz.length){
+            qr.textContent=`Great job! You got ${correct}/${m.quiz.length} 🎉`;
+            if(!completed.has(id)){ completed.add(id); localStorage.setItem('ss-completed',JSON.stringify([...completed])); updateStars(); confetti(); updateProgress(); }
+          }else qr.textContent=`You got ${correct}/${m.quiz.length}. Try again — you can do it! 💪`;
+        });
+      }
+
+      // Tools
+      $$('#tools .toggle input').forEach(inp=>{
+        inp.addEventListener('change',()=>{
+          const n=$$('#tools .toggle input').filter(i=>i.checked).length;
+          const msg = n>=5 ? 'Awesome! You checked all safety steps. ⭐' : `${n}/5 done — keep going!`;
+          const p = $('#checkDone'); if (p) p.textContent = msg;
+        });
       });
-    }
-
-    // Tools
-    $$('#tools .toggle input').forEach(inp=>{
-      inp.addEventListener('change',()=>{
-        const n=$$('#tools .toggle input').filter(i=>i.checked).length;
-        $('#checkDone').textContent = n>=5 ? 'Awesome! You checked all safety steps. ⭐' : `${n}/5 done — keep going!`;
+      $$('.flip').forEach(f=>f.addEventListener('click',()=>f.classList.toggle('active')));
+      $('#pw')?.addEventListener('input',e=>{
+        const v=e.target.value; const s=pwScore(v); const w=['Very Weak','Weak','Okay','Good','Strong','Very Strong']; const out=$('#pwOut'); if(out) out.textContent=w[Math.min(w.length-1,s)];
       });
-    });
-    $$('.flip').forEach(f=>f.addEventListener('click',()=>f.classList.toggle('active')));
-    $('#pw').addEventListener('input',e=>{
-      const v=e.target.value; const s=pwScore(v); const w=['Very Weak','Weak','Okay','Good','Strong','Very Strong']; $('#pwOut').textContent=w[Math.min(w.length-1,s)];
-    });
-    function pwScore(p){ let s=0; if(p.length>=8)s++; if(p.length>=12)s++; if(/[A-Z]/.test(p))s++; if(/[0-9]/.test(p))s++; if(/[^A-Za-z0-9]/.test(p))s++; if(/\b(password|1234|qwerty|admin)\b/i.test(p)) s=Math.max(0,s-2); return s; }
-    $('#pwIdea').addEventListener('click',()=>{
-      const words=['Sunny','Rocket','Panda','Jazz','Mango','River','Puzzle','Galaxy','Ninja','Koala','Lemon','Zebra','Maple','Toast','Pixel'];
-      const pick=()=>words[Math.floor(Math.random()*words.length)];
-      const idea = `${pick()}-${pick()}-${pick()}-${Math.floor(10+Math.random()*89)}!`;
-      $('#pwIdeas').textContent = `Try: ${idea} (don’t use real info)`;
-    });
-    $('#phishBtn').addEventListener('click',()=>{$('#phishOut').textContent='Looks phishing! 🚫 Don’t click. Use the official app/site and ask a trusted adult.';});
-
-    // ===== Chat (unchanged backend call) =====
-    const chatLog=$('#chatLog'), chatForm=$('#chatForm'), chatInput=$('#chatInput');
-    $$('input[name="age"]').forEach(r=>r.addEventListener('change',()=>ageGroup=r.value));
-    function containsPII(t){
-      const email=/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i;
-      const phone=/(\+?\d{1,2}[\s.-]?)?(KATEX_INLINE_OPEN?\d{3}KATEX_INLINE_CLOSE?[\s.-]?)\d{3}[\s.-]?\d{4}\b/;
-      const address=/\b\d{1,5}\s+\w+(?:\s+\w+){0,3}\s+(street|st|avenue|ave|road|rd|boulevard|blvd|lane|ln|drive|dr|court|ct)\b/i;
-      const school=/\b(school|elementary|middle\s+school|high\s+school|academy|ps\s?\d+)\b/i;
-      const password=/\bpassword\b\s*[:=]\s*\S+/i;
-      const username=/\b(user(name)?|login)\b\s*[:=]\s*\S+/i;
-      return email.test(t)||phone.test(t)||address.test(t)||school.test(t)||password.test(t)||username.test(t);
-    }
-    function addUser(t){ const b=document.createElement('div'); b.className='b u'; b.textContent=t; chatLog.appendChild(b); chatLog.scrollTop=chatLog.scrollHeight; }
-    function addSpark(t){ const b=document.createElement('div'); b.className='b s'; b.textContent=t; chatLog.appendChild(b); chatLog.scrollTop=chatLog.scrollHeight; }
-    function addTyping(){ const b=document.createElement('div'); b.className='b s'; b.innerHTML='<span class="typing"><span></span><span></span><span></span></span>'; b.dataset.t='1'; chatLog.appendChild(b); chatLog.scrollTop=chatLog.scrollHeight; }
-    function removeTyping(){ const last=[...chatLog.querySelectorAll('.b.s')].reverse().find(x=>x.dataset.t==='1'); if(last) last.remove(); }
-    chatForm.addEventListener('submit', async e=>{
-      e.preventDefault();
-      const text=chatInput.value.trim(); if(!text) return;
-      if(containsPII(text)){ addSpark("Let’s keep personal info private 👍 Please don’t share your real name, address, phone number, school, email, or passwords. You can ask me about staying safe online, like passwords, privacy, bullying, or games! 🌟"); chatInput.value=''; return; }
-      addUser(text); chatInput.value=''; addTyping();
-      try{
-        const res=await fetch(BACKEND_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,ageGroup})});
-        const data=await res.json(); removeTyping();
-        if(data.ok) addSpark(data.reply||'Thanks for your message! 😊'); else addSpark(data.error||'Oops, I had trouble replying. Please try again.');
-      }catch{ removeTyping(); addSpark('Network error. Please try again in a moment.'); }
-    });
-
-    // ===== Game: Arrow Up only =====
-    const cvs=$('#runner'), ctx=cvs.getContext('2d');
-    const startBtn=$('#startBtn'), pauseBtn=$('#pauseBtn'), resetBtn=$('#resetBtn');
-
-    // Hi‑DPI scaling
-    let dpr = Math.max(1, Math.floor(window.devicePixelRatio || 1));
-    function fitCanvas(){
-      const cssW = cvs.clientWidth || 800;
-      const cssH = 280;
-      dpr = Math.max(1, Math.floor(window.devicePixelRatio || 1));
-      cvs.width = Math.floor(cssW * dpr);
-      cvs.height = Math.floor(cssH * dpr);
-      ctx.setTransform(dpr,0,0,dpr,0,0);
-      groundY = (cvs.height/dpr) - 50;
-      draw();
-    }
-    addEventListener('resize', fitCanvas);
-    fitCanvas();
-
-    // World
-    let running=false, paused=false, ended=false;
-    let score=0, hi=Number(localStorage.getItem('ss-hi')||0), lives=3;
-    let groundY = (cvs.height/dpr) - 50;
-    let lastTime=0, speed=220; // px/s
-    let spawnObstacleTimer=0, spawnStarTimer=0;
-    let player = { x:80, y:groundY, w:28, h:34, vy:0, onGround:true, blink:0 };
-    const obstacles=[], stars=[];
-    const types = [
-      {label:'Phish', emoji:'🎣', color:'#2563EB', w:28, h:28},
-      {label:'Bullying', emoji:'😡', color:'#1E40AF', w:30, h:30},
-      {label:'Weird', emoji:'🔗', color:'#0B255F', w:26, h:26},
-      {label:'Share', emoji:'📸', color:'#0284C7', w:28, h:28}
-    ];
-
-    function updateHUD(){ $('#score').textContent=score; $('#hi').textContent=hi; $('#lives').textContent=lives; }
-    function resetGame(){
-      running=false; paused=false; ended=false;
-      score=0; lives=3; speed=220; lastTime=0;
-      obstacles.length=0; stars.length=0;
-      player.y=groundY; player.vy=0; player.onGround=true; player.blink=0;
-      updateHUD(); draw();
-    }
-
-    function drawGround(){
-      const W = cvs.width/dpr;
-      ctx.fillStyle='#DBEAFE'; ctx.fillRect(0, groundY+20, W, 6);
-      ctx.fillStyle='#EFF6FF'; ctx.fillRect(0, groundY+26, W, 999);
-    }
-    function drawPlayer(){
-      const {x,y,w,h}=player;
-      ctx.fillStyle=player.blink>0 && Math.floor(player.blink*10)%2===0 ? '#C7D2FE' : '#2563EB';
-      ctx.fillRect(x-w/2, y-h, w, h);
-      ctx.fillStyle='#fff'; ctx.fillRect(x-w/2+4, y-h+4, w-8, 10);
-      ctx.fillStyle='#0F172A'; ctx.fillRect(x-w/2+7, y-h+6, 6,6); ctx.fillRect(x+w/2-13, y-h+6, 6,6);
-      ctx.fillStyle='#1E40AF'; ctx.fillRect(x-w/2+2, y-6, 10,6); ctx.fillRect(x+4, y-6, 10,6);
-    }
-    function drawObstacles(){
-      obstacles.forEach(o=>{
-        ctx.fillStyle=o.color; ctx.fillRect(o.x, o.y-o.h, o.w, o.h);
-        ctx.font='14px system-ui'; ctx.fillStyle='#0F172A'; ctx.fillText(o.emoji, o.x+o.w/2-7, o.y-o.h-4);
+      function pwScore(p){ let s=0; if(p.length>=8)s++; if(p.length>=12)s++; if(/[A-Z]/.test(p))s++; if(/[0-9]/.test(p))s++; if(/[^A-Za-z0-9]/.test(p))s++; if(/\b(password|1234|qwerty|admin)\b/i.test(p)) s=Math.max(0,s-2); return s; }
+      $('#pwIdea')?.addEventListener('click',()=>{
+        const words=['Sunny','Rocket','Panda','Jazz','Mango','River','Puzzle','Galaxy','Ninja','Koala','Lemon','Zebra','Maple','Toast','Pixel'];
+        const pick=()=>words[Math.floor(Math.random()*words.length)];
+        const idea = `${pick()}-${pick()}-${pick()}-${Math.floor(10+Math.random()*89)}!`;
+        const p = $('#pwIdeas'); if (p) p.textContent = `Try: ${idea} (don’t use real info)`;
       });
-    }
-    function drawStars(){
-      ctx.fillStyle='#38BDF8';
-      stars.forEach(s=>{ ctx.beginPath(); ctx.arc(s.x, s.y, 7, 0, Math.PI*2); ctx.fill(); });
-    }
-    function draw(){
-      ctx.clearRect(0,0,cvs.width,cvs.height);
-      drawGround(); drawStars(); drawObstacles(); drawPlayer();
-    }
-    function AABB(ax,ay,aw,ah, bx,by,bw,bh){
-      return ax < bx+bw && ax+aw > bx && ay < by+bh && ay+ah > by;
-    }
+      $('#phishBtn')?.addEventListener('click',()=>{ const o=$('#phishOut'); if(o) o.textContent='Looks phishing! 🚫 Don’t click. Use the official app/site and ask a trusted adult.'; });
 
-    function spawn(dt){
-      spawnObstacleTimer += dt*1000;
-      spawnStarTimer += dt*1000;
-      const obstacleEvery = Math.max(500, 1300 - (score/5));
-      if(spawnObstacleTimer >= obstacleEvery){
-        spawnObstacleTimer = 0;
-        const t = types[Math.floor(Math.random()*types.length)];
-        obstacles.push({ x:(cvs.width/dpr)+10, y:groundY, w:t.w, h:t.h, color:t.color, emoji:t.emoji, label:t.label });
+      // ===== Chat (unchanged backend call) =====
+      const chatLog=$('#chatLog'), chatForm=$('#chatForm'), chatInput=$('#chatInput');
+      $$('input[name="age"]').forEach(r=>r.addEventListener('change',()=>ageGroup=r.value));
+      function containsPII(t){
+        const email=/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i;
+        const phone=/(\+?\d{1,2}[\s.-]?)?(KATEX_INLINE_OPEN?\d{3}KATEX_INLINE_CLOSE?[\s.-]?)\d{3}[\s.-]?\d{4}\b/;
+        const address=/\b\d{1,5}\s+\w+(?:\s+\w+){0,3}\s+(street|st|avenue|ave|road|rd|boulevard|blvd|lane|ln|drive|dr|court|ct)\b/i;
+        const school=/\b(school|elementary|middle\s+school|high\s+school|academy|ps\s?\d+)\b/i;
+        const password=/\bpassword\b\s*[:=]\s*\S+/i;
+        const username=/\b(user(name)?|login)\b\s*[:=]\s*\S+/i;
+        return email.test(t)||phone.test(t)||address.test(t)||school.test(t)||password.test(t)||username.test(t);
       }
-      if(spawnStarTimer >= 1800){
-        spawnStarTimer = 0;
-        const y = groundY - (60 + Math.random()*40);
-        stars.push({ x:(cvs.width/dpr)+10, y });
+      function addUser(t){ if(!chatLog) return; const b=document.createElement('div'); b.className='b u'; b.textContent=t; chatLog.appendChild(b); chatLog.scrollTop=chatLog.scrollHeight; }
+      function addSpark(t){ if(!chatLog) return; const b=document.createElement('div'); b.className='b s'; b.textContent=t; chatLog.appendChild(b); chatLog.scrollTop=chatLog.scrollHeight; }
+      function addTyping(){ if(!chatLog) return; const b=document.createElement('div'); b.className='b s'; b.innerHTML='<span class="typing"><span></span><span></span><span></span></span>'; b.dataset.t='1'; chatLog.appendChild(b); chatLog.scrollTop=chatLog.scrollHeight; }
+      function removeTyping(){ if(!chatLog) return; const last=[...chatLog.querySelectorAll('.b.s')].reverse().find(x=>x.dataset.t==='1'); if(last) last.remove(); }
+      chatForm?.addEventListener('submit', async e=>{
+        e.preventDefault();
+        const text=chatInput.value.trim(); if(!text) return;
+        if(containsPII(text)){ addSpark("Let’s keep personal info private 👍 Please don’t share your real name, address, phone number, school, email, or passwords. You can ask me about staying safe online, like passwords, privacy, bullying, or games! 🌟"); chatInput.value=''; return; }
+        addUser(text); chatInput.value=''; addTyping();
+        try{
+          const res=await fetch(BACKEND_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,ageGroup})});
+          const data=await res.json(); removeTyping();
+          if(data.ok) addSpark(data.reply||'Thanks for your message! 😊'); else addSpark(data.error||'Oops, I had trouble replying. Please try again.');
+        }catch{ removeTyping(); addSpark('Network error. Please try again in a moment.'); }
+      });
+
+      // ===== Game: Arrow Up only =====
+      const cvs=$('#runner'), ctx=cvs?.getContext('2d');
+      const startBtn=$('#startBtn'), pauseBtn=$('#pauseBtn'), resetBtn=$('#resetBtn');
+
+      let dpr = Math.max(1, Math.floor(window.devicePixelRatio || 1));
+      function fitCanvas(){
+        if(!cvs || !ctx) return;
+        const cssW = cvs.clientWidth || 800;
+        const cssH = 280;
+        dpr = Math.max(1, Math.floor(window.devicePixelRatio || 1));
+        cvs.width = Math.floor(cssW * dpr);
+        cvs.height = Math.floor(cssH * dpr);
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+        groundY = (cvs.height/dpr) - 50;
+        draw();
       }
-    }
+      addEventListener('resize', fitCanvas);
+      fitCanvas();
 
-    function update(dt){
-      if(!running || paused || ended) return;
-      if(!player.onGround){ player.vy += 1400*dt; player.y += player.vy*dt; if(player.y>=groundY){player.y=groundY; player.vy=0; player.onGround=true;} }
-      if(player.blink>0){ player.blink = Math.max(0, player.blink - dt); }
+      let running=false, paused=false, ended=false;
+      let score=0, hi=Number(localStorage.getItem('ss-hi')||0), lives=3;
+      let groundY = (cvs ? (cvs.height/dpr) - 50 : 230);
+      let lastTime=0, speed=220;
+      let spawnObstacleTimer=0, spawnStarTimer=0;
+      let player = { x:80, y:groundY, w:28, h:34, vy:0, onGround:true, blink:0 };
+      const obstacles=[], stars=[];
+      const types = [
+        {label:'Phish', emoji:'🎣', color:'#2563EB', w:28, h:28},
+        {label:'Bullying', emoji:'😡', color:'#1E40AF', w:30, h:30},
+        {label:'Weird', emoji:'🔗', color:'#0B255F', w:26, h:26},
+        {label:'Share', emoji:'📸', color:'#0284C7', w:28, h:28}
+      ];
 
-      spawn(dt);
-
-      const dx = speed*dt;
-      for(let i=obstacles.length-1;i>=0;i--){
-        const o=obstacles[i]; o.x -= dx; if(o.x+o.w < -20) obstacles.splice(i,1);
+      function updateHUD(){ $('#score') && ($('#score').textContent=score); $('#hi') && ($('#hi').textContent=hi); $('#lives') && ($('#lives').textContent=lives); }
+      function resetGame(){
+        running=false; paused=false; ended=false;
+        score=0; lives=3; speed=220; lastTime=0;
+        obstacles.length=0; stars.length=0;
+        player.y=groundY; player.vy=0; player.onGround=true; player.blink=0;
+        updateHUD(); draw();
       }
-      for(let i=stars.length-1;i>=0;i--){
-        const s=stars[i]; s.x -= dx*0.9; if(s.x < -20) stars.splice(i,1);
-      }
 
-      const px = player.x - player.w/2, py = player.y - player.h, pw = player.w, ph = player.h;
-      for(let i=obstacles.length-1;i>=0;i--){
-        const o=obstacles[i];
-        if(AABB(px,py,pw,ph, o.x, o.y-o.h, o.w, o.h)){
-          obstacles.splice(i,1);
-          if(player.blink<=0){
-            lives--; player.blink=1.2; updateHUD();
-            if(lives<=0){ endGame(); return; }
-          }
+      function drawGround(){
+        if(!ctx||!cvs) return;
+        const W = cvs.width/dpr;
+        ctx.fillStyle='#DBEAFE'; ctx.fillRect(0, groundY+20, W, 6);
+        ctx.fillStyle='#EFF6FF'; ctx.fillRect(0, groundY+26, W, 999);
+      }
+      function drawPlayer(){
+        if(!ctx) return;
+        const {x,y,w,h}=player;
+        ctx.fillStyle=player.blink>0 && Math.floor(player.blink*10)%2===0 ? '#C7D2FE' : '#2563EB';
+        ctx.fillRect(x-w/2, y-h, w, h);
+        ctx.fillStyle='#fff'; ctx.fillRect(x-w/2+4, y-h+4, w-8, 10);
+        ctx.fillStyle='#0F172A'; ctx.fillRect(x-w/2+7, y-h+6, 6,6); ctx.fillRect(x+w/2-13, y-h+6, 6,6);
+        ctx.fillStyle='#1E40AF'; ctx.fillRect(x-w/2+2, y-6, 10,6); ctx.fillRect(x+4, y-6, 10,6);
+      }
+      function drawObstacles(){
+        if(!ctx) return;
+        obstacles.forEach(o=>{
+          ctx.fillStyle=o.color; ctx.fillRect(o.x, o.y-o.h, o.w, o.h);
+          ctx.font='14px system-ui'; ctx.fillStyle='#0F172A'; ctx.fillText(o.emoji, o.x+o.w/2-7, o.y-o.h-4);
+        });
+      }
+      function drawStars(){
+        if(!ctx) return;
+        ctx.fillStyle='#38BDF8';
+        stars.forEach(s=>{ ctx.beginPath(); ctx.arc(s.x, s.y, 7, 0, Math.PI*2); ctx.fill(); });
+      }
+      function draw(){ if(!ctx) return; ctx.clearRect(0,0,cvs.width,cvs.height); drawGround(); drawStars(); drawObstacles(); drawPlayer(); }
+      function AABB(ax,ay,aw,ah, bx,by,bw,bh){ return ax < bx+bw && ax+aw > bx && ay < by+bh && ay+ah > by; }
+
+      function spawn(dt){
+        spawnObstacleTimer += dt*1000;
+        spawnStarTimer += dt*1000;
+        const obstacleEvery = Math.max(500, 1300 - (score/5));
+        if(spawnObstacleTimer >= obstacleEvery){
+          spawnObstacleTimer = 0;
+          const t = types[Math.floor(Math.random()*types.length)];
+          obstacles.push({ x:(cvs.width/dpr)+10, y:groundY, w:t.w, h:t.h, color:t.color, emoji:t.emoji, label:t.label });
+        }
+        if(spawnStarTimer >= 1800){
+          spawnStarTimer = 0;
+          const y = groundY - (60 + Math.random()*40);
+          stars.push({ x:(cvs.width/dpr)+10, y });
         }
       }
-      for(let i=stars.length-1;i>=0;i--){
-        const s=stars[i];
-        if(AABB(px,py,pw,ph, s.x-7, s.y-7, 14,14)){ score+=50; stars.splice(i,1); }
+
+      function update(dt){
+        if(!running || paused || ended) return;
+        if(!player.onGround){ player.vy += 1400*dt; player.y += player.vy*dt; if(player.y>=groundY){player.y=groundY; player.vy=0; player.onGround=true;} }
+        if(player.blink>0){ player.blink = Math.max(0, player.blink - dt); }
+
+        spawn(dt);
+
+        const dx = speed*dt;
+        for(let i=obstacles.length-1;i>=0;i--){
+          const o=obstacles[i]; o.x -= dx; if(o.x+o.w < -20) obstacles.splice(i,1);
+        }
+        for(let i=stars.length-1;i>=0;i--){
+          const s=stars[i]; s.x -= dx*0.9; if(s.x < -20) stars.splice(i,1);
+        }
+
+        const px = player.x - player.w/2, py = player.y - player.h, pw = player.w, ph = player.h;
+        for(let i=obstacles.length-1;i>=0;i--){
+          const o=obstacles[i];
+          if(AABB(px,py,pw,ph, o.x, o.y-o.h, o.w, o.h)){
+            obstacles.splice(i,1);
+            if(player.blink<=0){
+              lives--; player.blink=1.2; updateHUD();
+              if(lives<=0){ endGame(); return; }
+            }
+          }
+        }
+        for(let i=stars.length-1;i>=0;i--){
+          const s=stars[i];
+          if(AABB(px,py,pw,ph, s.x-7, s.y-7, 14,14)){ score+=50; stars.splice(i,1); }
+        }
+
+        score += Math.floor(120*dt);
+        if(score%600===0) speed = Math.min(speed+10, 420);
+        updateHUD(); draw();
+        requestAnimationFrame(loop);
       }
 
-      score += Math.floor(120*dt);
-      if(score%600===0) speed = Math.min(speed+10, 420);
-      updateHUD(); draw();
-      requestAnimationFrame(loop);
-    }
+      function loop(ts){
+        if(!running || paused || ended) return;
+        if(!lastTime) lastTime = ts;
+        const dt = Math.min(0.033, (ts - lastTime)/1000);
+        lastTime = ts;
+        update(dt);
+      }
 
-    function loop(ts){
-      if(!running || paused || ended) return;
-      if(!lastTime) lastTime = ts;
-      const dt = Math.min(0.033, (ts - lastTime)/1000);
-      lastTime = ts;
-      update(dt);
-    }
+      function jump(){
+        if(!running || paused || ended) return;
+        if(player.onGround){ player.vy = -520; player.onGround=false; }
+      }
+      function endGame(){
+        ended=true; running=false; paused=false;
+        hi = Math.max(hi, score); localStorage.setItem('ss-hi', String(hi)); updateHUD();
+        confetti();
+        if(!ctx) return;
+        ctx.save();
+        ctx.fillStyle='rgba(255,255,255,.85)'; ctx.fillRect(0,0,cvs.width/dpr,cvs.height/dpr);
+        ctx.fillStyle= '#1E40AF'; ctx.font='bold 28px Nunito'; ctx.fillText('Great run! Final score: '+score, 220, 120);
+        ctx.fillStyle= '#0B255F'; ctx.font='bold 18px Nunito'; ctx.fillText('Press Start to try again.', 300, 160);
+        ctx.restore();
+      }
 
-    function jump(){
-      if(!running || paused || ended) return;
-      if(player.onGround){ player.vy = -520; player.onGround=false; }
-    }
-    function endGame(){
-      ended=true; running=false; paused=false;
-      hi = Math.max(hi, score); localStorage.setItem('ss-hi', String(hi)); updateHUD();
-      confetti();
-      ctx.save();
-      ctx.fillStyle='rgba(255,255,255,.85)'; ctx.fillRect(0,0,cvs.width/dpr,cvs.height/dpr);
-      ctx.fillStyle= '#1E40AF'; ctx.font='bold 28px Nunito'; ctx.fillText('Great run! Final score: '+score, 220, 120);
-      ctx.fillStyle= '#0B255F'; ctx.font='bold 18px Nunito'; ctx.fillText('Press Start to try again.', 300, 160);
-      ctx.restore();
-    }
+      // Controls (ONLY Arrow Up)
+      $('#startBtn')?.addEventListener('click', ()=>{
+        $('#canvasWrap')?.focus({preventScroll:true});
+        if(running && !paused) return;
+        if(!running || ended){ resetGame(); running=true; lastTime=0; requestAnimationFrame(loop); }
+        else { paused=false; requestAnimationFrame(loop); }
+      });
+      $('#pauseBtn')?.addEventListener('click', ()=>{ if(running && !ended){ paused=!paused; if(!paused) requestAnimationFrame(loop); } });
+      $('#resetBtn')?.addEventListener('click', ()=>{ resetGame(); $('#canvasWrap')?.focus({preventScroll:true}); });
 
-    // Controls (ONLY Arrow Up)
-    $('#startBtn').addEventListener('click', ()=>{
-      $('#canvasWrap').focus({preventScroll:true});
-      if(running && !paused) return;
-      if(!running || ended){ resetGame(); running=true; lastTime=0; requestAnimationFrame(loop); }
-      else { paused=false; requestAnimationFrame(loop); }
+      // Arrow Up only; ignore typing in inputs; prevent page scroll
+      window.addEventListener('keydown', (e)=>{
+        const tag = (document.activeElement && document.activeElement.tagName || '').toLowerCase();
+        if(tag==='input' || tag==='textarea' || tag==='select') return;
+        const isUp = e.code === 'ArrowUp' || e.key === 'ArrowUp' || e.key === 'Up';
+        if(isUp){ e.preventDefault(); jump(); }
+      }, {capture:true});
+
+      // Confetti
+      function confetti(){
+        const wrap=document.getElementById('confetti');
+        for(let i=0;i<26;i++){
+          const c=document.createElement('div'); c.className='confetti'; c.textContent=['⭐','✨','🌟'][Math.floor(Math.random()*3)];
+          c.style.left=Math.random()*100+'vw'; c.style.top='-10px'; c.style.animationDelay=(Math.random()*0.5)+'s';
+          c.style.transform=`scale(${0.7+Math.random()*0.8})`; wrap.appendChild(c); setTimeout(()=>c.remove(),2000);
+        }
+      }
+
+      // Init
+      function init(){ const hiEl=$('#hi'); if (hiEl) hiEl.textContent = String(hi); renderModules(); updateStars(); updateProgress(); draw(); }
+      init();
     });
-    $('#pauseBtn').addEventListener('click', ()=>{ if(running && !ended){ paused=!paused; if(!paused) requestAnimationFrame(loop); } });
-    $('#resetBtn').addEventListener('click', ()=>{ resetGame(); $('#canvasWrap').focus({preventScroll:true}); });
-
-    // Arrow Up only; ignore typing in inputs; prevent page scroll
-    window.addEventListener('keydown', (e)=>{
-      const tag = (document.activeElement && document.activeElement.tagName || '').toLowerCase();
-      if(tag==='input' || tag==='textarea' || tag==='select') return;
-      const isUp = e.code === 'ArrowUp' || e.key === 'ArrowUp' || e.key === 'Up';
-      if(isUp){ e.preventDefault(); jump(); }
-    }, {capture:true});
-
-    // Confetti
-    function confetti(){
-      const wrap=document.getElementById('confetti');
-      for(let i=0;i<26;i++){
-        const c=document.createElement('div'); c.className='confetti'; c.textContent=['⭐','✨','🌟'][Math.floor(Math.random()*3)];
-        c.style.left=Math.random()*100+'vw'; c.style.top='-10px'; c.style.animationDelay=(Math.random()*0.5)+'s';
-        c.style.transform=`scale(${0.7+Math.random()*0.8})`; wrap.appendChild(c); setTimeout(()=>c.remove(),2000);
-      }
-    }
-
-    // Progress + modules
-    const LESSONS = window.LESSONS || LESSONS; // keep ESLint calm if any tool parses
-    function init(){ $('#hi').textContent = hi; renderModules(); updateStars(); updateProgress(); draw(); }
-    init();
   </script>
 </body>
 </html>
