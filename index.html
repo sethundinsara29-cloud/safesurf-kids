@@ -91,7 +91,7 @@
     main{max-width:1140px;margin:0 auto;padding:20px 14px 100px}
     .view{display:none}.view.active{display:block}
 
-    /* Hero + cards (center icons and headings) */
+    /* Hero + cards (center headings) */
     .hero{
       position:relative;overflow:hidden;isolation:isolate;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:26px;text-align:center
     }
@@ -313,13 +313,13 @@
             <button class="btn" id="startBtn">Start</button>
             <button class="btn secondary" id="pauseBtn">Pause</button>
             <button class="btn secondary" id="resetBtn">Reset</button>
-            <div class="pill">Jump: ↑ (Arrow Up)</div>
+            <div class="pill">Jump: → (Right Arrow)</div>
           </div>
         </div>
         <div class="panel reveal">
           <h3>How to play</h3>
           <ul>
-            <li>Press Arrow Up to jump over bad ICT obstacles: 🎣 phishing, 😡 bullying, 🔗 weird links, 📸 oversharing.</li>
+            <li>Press Right Arrow to jump over bad ICT obstacles: 🎣 phishing, 😡 bullying, 🔗 weird links, 📸 oversharing.</li>
             <li>Collect ⭐ stars for points.</li>
             <li>3 lives. The longer you run, the faster it gets.</li>
           </ul>
@@ -392,7 +392,6 @@
   <footer>© <span id="year"></span> SafeSurf Kids · <span class="tiny">We don’t collect personal data.</span></footer>
 
   <script>
-    // Wait for DOM to avoid nulls
     window.addEventListener('DOMContentLoaded', () => {
       // ===== Config (unchanged; uses your Worker) =====
       const USE_BACKEND = true;
@@ -417,8 +416,7 @@
       $$('[data-go]').forEach(a=>a.addEventListener('click',e=>{
         e.preventDefault();
         const id=a.getAttribute('data-go');
-        const targetBtn = document.querySelector(`.tab[data-target="${id}"]`);
-        if (targetBtn) targetBtn.click();
+        document.querySelector(`.tab[data-target="${id}"]`)?.click();
       }));
 
       // Reveal on scroll
@@ -427,18 +425,7 @@
       },{threshold:.12});
       $$('.reveal').forEach(el=>io.observe(el));
 
-      // Progress
-      function updateStars(){ const s=$('#stars'); if (s) s.textContent = String(completed.size); }
-      function updateProgress(){
-        const total = LESSONS.length, done = completed.size;
-        const pct = Math.round((done/total)*100);
-        const pctEl = $('#pct'); const ring = $('#ring');
-        if (pctEl) pctEl.textContent = pct + '%';
-        if (ring) ring.style.setProperty('--angle', pct + '%');
-      }
-      $('#langSel')?.addEventListener('change', e=>{ document.documentElement.lang = e.target.value; });
-
-      // ===== Lessons =====
+      // ===== 10 Learning Modules =====
       const LESSONS = [
         { id:'passwords',emoji:'🔐',title:'Strong Passwords & 2FA',subtitle:'Make your accounts tough to crack!',
           tips:['Use long passwords (12+). Try three random words.','Never share passwords with friends.','Use a different password for each account.','Turn on 2FA — a code from an app or text.','Keep devices locked with a PIN or passcode.'],
@@ -461,21 +448,64 @@
           },
           quiz:[{q:'Keep as evidence?',options:['Screenshots','Nothing'],answerIndex:0},{q:'Who can you talk to?',options:['A trusted adult','No one'],answerIndex:0},{q:'Apps can help you…',options:['Block/report','Be mean back'],answerIndex:0}]
         },
-        { id:'scams',emoji:'🕵️',title:'Scams & Phishing',subtitle:'Spot tricks before they get you.',
+        { id:'scams',emoji:'🎣',title:'Scams & Phishing',subtitle:'Spot tricks before they get you.',
           tips:['Don’t click strange links or attachments.','Check the sender — fakes look similar.','Look for urgent threats & spelling mistakes.','Use the official app/website to check accounts.','Ask an adult if anything feels off.'],
           scenario:{ prompt:'You win a “free phone” if you click a link. It asks for your login. What now?',
             choices:[{text:'Enter my login to get the prize',feedback:'This is a phishing trick. Don’t share logins.'},{text:'Close it and tell a trusted adult',feedback:'Good move! Stay safe and double-check with an adult.'},{text:'Click the link but don’t type anything',feedback:'Even clicking can be risky. Better to close it.'}]
           },
           quiz:[{q:'Which looks suspicious?',options:['Weird links & urgent prizes','A message from your parent'],answerIndex:0},{q:'Where to check your account?',options:['Official app/website','Random link'],answerIndex:0},{q:'Who can help if unsure?',options:['Trusted adult','A stranger online'],answerIndex:0}]
         },
-        { id:'gaming',emoji:'🎮',title:'Gaming Safety & Screen Time',subtitle:'Play fun, play fair, take breaks.',
+        { id:'gaming',emoji:'🎮',title:'Gaming Safety',subtitle:'Play fun, play fair, take breaks.',
           tips:['Use family-friendly chats and block rude players.','Ask before buying in-game items.','Take eye-and-body breaks every 30–60 mins.','Don’t share private info in voice chat.','Balance games with sleep, school, and friends.'],
           scenario:{ prompt:'A player asks for your login to “boost” your account. What do you do?',
             choices:[{text:'Share it — I want better items',feedback:'Nope! Never share logins. They could steal your account.'},{text:'Say no, block, and report',feedback:'Perfect. Protect your account and move on.'},{text:'Share only the password',feedback:'That’s the most secret part. Keep it private!'}]
           },
           quiz:[{q:'Breaks?',options:['Every 30–60 mins','Never'],answerIndex:0},{q:'In‑app purchases?',options:['Ask a parent first','Buy anything'],answerIndex:0},{q:'Keep private in voice chat?',options:['Address & school','Game tips'],answerIndex:0}]
+        },
+        { id:'footprints',emoji:'👣',title:'Digital Footprints',subtitle:'What you post can last.',
+          tips:['Posts can travel fast and be saved.','Be proud of what future‑you will see.','Think: Kind? True? Needed?','Ask before posting others.','Review old posts and clean up.'],
+          scenario:{ prompt:'You find a silly video of your friend and want to post it. What now?',
+            choices:[{text:'Post it — it’s funny!',feedback:'It could hurt feelings. Always ask first.'},{text:'Ask your friend if it’s okay',feedback:'Yes! Get permission before posting.'},{text:'Post now, remove later',feedback:'It might be copied. Better to ask first.'}]
+          },
+          quiz:[{q:'Digital footprint is…',options:['Your shoe size','Your online posts/actions'],answerIndex:1},{q:'Share group pics?',options:['No ask','Ask people in photo'],answerIndex:1},{q:'Do deleted posts vanish?',options:['Always','Not always — others may save'],answerIndex:1}]
+        },
+        { id:'ai',emoji:'🧠',title:'AI, Photos & Deepfakes',subtitle:'Not everything is real.',
+          tips:['Weird videos may be AI‑made.','Check trusted news or official pages.','Look for odd eyes, lighting, or lips.','Don’t share shocking clips before checking.','Ask an adult if unsure.'],
+          scenario:{ prompt:'A video shows your favorite creator saying something rude. It looks off. What do you do?',
+            choices:[{text:'Share it fast!',feedback:'Wait! It could be fake. Don’t spread it.'},{text:'Check their official page',feedback:'Smart! Verify first.'},{text:'Post a rude comment',feedback:'Be kind — verify first.'}]
+          },
+          quiz:[{q:'Deepfake is…',options:['A cookie','A realistic fake made with AI'],answerIndex:1},{q:'Share shocking clips quickly?',options:['Yes','No — check first'],answerIndex:1},{q:'If unsure…',options:['Ask an adult','Guess'],answerIndex:0}]
+        },
+        { id:'social',emoji:'📱',title:'Smart Social Sharing',subtitle:'Share happy, share wisely.',
+          tips:['Use private accounts if possible.','Hide personal info from profiles.','Turn off location on posts.','Be kind in comments and messages.','Report fake or rude accounts.'],
+          scenario:{ prompt:'An app asks to access your contacts and location. What now?',
+            choices:[{text:'Allow everything',feedback:'Only allow what you need.'},{text:'Allow only needed or say no',feedback:'Nice! Keep info safe.'},{text:'Share your password too',feedback:'Never share passwords.'}]
+          },
+          quiz:[{q:'Safer for kids?',options:['Public','Private'],answerIndex:1},{q:'Share location?',options:['Always','Only if needed'],answerIndex:1},{q:'Rude person?',options:['Be rude back','Block/report & tell adult'],answerIndex:1}]
+        },
+        { id:'devices',emoji:'🔧',title:'Device & Wi‑Fi Safety',subtitle:'Keep tech healthy.',
+          tips:['Update apps and system often.','Use secure Wi‑Fi; avoid unknown public Wi‑Fi for logins.','Don’t install random files.','Use PIN/biometrics to lock your device.','Ask an adult before changing settings.'],
+          scenario:{ prompt:'You’re on free public Wi‑Fi. A site asks for your login. What do you do?',
+            choices:[{text:'Log in now',feedback:'Public Wi‑Fi can be risky. Avoid logins there.'},{text:'Wait and log in at home/data',feedback:'Great choice — stay safe!'},{text:'Download a random “security” app',feedback:'Only install trusted apps.'}]
+          },
+          quiz:[{q:'Updates?',options:['Ignore','Install'],answerIndex:1},{q:'Public Wi‑Fi is…',options:['Always safe','Risky for logins'],answerIndex:1},{q:'Best phone lock?',options:['No lock','PIN/biometrics'],answerIndex:1}]
+        },
+        { id:'wellbeing',emoji:'🧘',title:'Screen Time & Well‑being',subtitle:'Balance screens and life.',
+          tips:['Take breaks for eyes and body.','Sleep phones outside bedrooms.','Spend time offline with friends and hobbies.','Notice how apps make you feel.','Ask for help if you feel stressed.'],
+          scenario:{ prompt:'You feel grumpy after lots of scrolling. What can help?',
+            choices:[{text:'Scroll more to feel better',feedback:'More scrolling can make it worse.'},{text:'Take a break and do something offline',feedback:'Great idea — move, stretch, or chat with family.'},{text:'Send rude comments',feedback:'Kindness first — take a break instead.'}]
+          },
+          quiz:[{q:'Good break time?',options:['Every 30–60 mins','Never'],answerIndex:0},{q:'Phones at bedtime?',options:['Outside bedrooms','Under the pillow'],answerIndex:0},{q:'Feeling bad online?',options:['Keep scrolling','Talk to a trusted adult'],answerIndex:1}]
         }
       ];
+
+      function updateStars(){ const s=$('#stars'); if (s) s.textContent = String(completed.size); }
+      function updateProgress(){
+        const total = LESSONS.length, done = completed.size;
+        const pct = Math.round((done/total)*100);
+        $('#pct')?.textContent = pct + '%';
+        $('#ring')?.style.setProperty('--angle', pct + '%');
+      }
 
       function renderModules(){
         const wrap = $('#modules'); if (!wrap) return;
@@ -530,22 +560,21 @@
       $$('#tools .toggle input').forEach(inp=>{
         inp.addEventListener('change',()=>{
           const n=$$('#tools .toggle input').filter(i=>i.checked).length;
-          const msg = n>=5 ? 'Awesome! You checked all safety steps. ⭐' : `${n}/5 done — keep going!`;
-          const p = $('#checkDone'); if (p) p.textContent = msg;
+          $('#checkDone')?.textContent = n>=5 ? 'Awesome! You checked all safety steps. ⭐' : `${n}/5 done — keep going!`;
         });
       });
       $$('.flip').forEach(f=>f.addEventListener('click',()=>f.classList.toggle('active')));
       $('#pw')?.addEventListener('input',e=>{
-        const v=e.target.value; const s=pwScore(v); const w=['Very Weak','Weak','Okay','Good','Strong','Very Strong']; const out=$('#pwOut'); if(out) out.textContent=w[Math.min(w.length-1,s)];
+        const v=e.target.value; const s=pwScore(v); const w=['Very Weak','Weak','Okay','Good','Strong','Very Strong']; $('#pwOut')?.textContent=w[Math.min(w.length-1,s)];
       });
       function pwScore(p){ let s=0; if(p.length>=8)s++; if(p.length>=12)s++; if(/[A-Z]/.test(p))s++; if(/[0-9]/.test(p))s++; if(/[^A-Za-z0-9]/.test(p))s++; if(/\b(password|1234|qwerty|admin)\b/i.test(p)) s=Math.max(0,s-2); return s; }
       $('#pwIdea')?.addEventListener('click',()=>{
         const words=['Sunny','Rocket','Panda','Jazz','Mango','River','Puzzle','Galaxy','Ninja','Koala','Lemon','Zebra','Maple','Toast','Pixel'];
         const pick=()=>words[Math.floor(Math.random()*words.length)];
         const idea = `${pick()}-${pick()}-${pick()}-${Math.floor(10+Math.random()*89)}!`;
-        const p = $('#pwIdeas'); if (p) p.textContent = `Try: ${idea} (don’t use real info)`;
+        $('#pwIdeas')?.textContent = `Try: ${idea} (don’t use real info)`;
       });
-      $('#phishBtn')?.addEventListener('click',()=>{ const o=$('#phishOut'); if(o) o.textContent='Looks phishing! 🚫 Don’t click. Use the official app/site and ask a trusted adult.'; });
+      $('#phishBtn')?.addEventListener('click',()=>{$('#phishOut')?.textContent='Looks phishing! 🚫 Don’t click. Use the official app/site and ask a trusted adult.';});
 
       // ===== Chat (unchanged backend call) =====
       const chatLog=$('#chatLog'), chatForm=$('#chatForm'), chatInput=$('#chatInput');
@@ -575,10 +604,11 @@
         }catch{ removeTyping(); addSpark('Network error. Please try again in a moment.'); }
       });
 
-      // ===== Game: Arrow Up only =====
+      // ===== Game: RIGHT ARROW ONLY =====
       const cvs=$('#runner'), ctx=cvs?.getContext('2d');
       const startBtn=$('#startBtn'), pauseBtn=$('#pauseBtn'), resetBtn=$('#resetBtn');
 
+      // Hi‑DPI scaling
       let dpr = Math.max(1, Math.floor(window.devicePixelRatio || 1));
       function fitCanvas(){
         if(!cvs || !ctx) return;
@@ -594,10 +624,11 @@
       addEventListener('resize', fitCanvas);
       fitCanvas();
 
+      // World
       let running=false, paused=false, ended=false;
       let score=0, hi=Number(localStorage.getItem('ss-hi')||0), lives=3;
       let groundY = (cvs ? (cvs.height/dpr) - 50 : 230);
-      let lastTime=0, speed=220;
+      let lastTime=0, speed=220; // px/s
       let spawnObstacleTimer=0, spawnStarTimer=0;
       let player = { x:80, y:groundY, w:28, h:34, vy:0, onGround:true, blink:0 };
       const obstacles=[], stars=[];
@@ -724,7 +755,7 @@
         ctx.restore();
       }
 
-      // Controls (ONLY Arrow Up)
+      // Controls: RIGHT ARROW only; ignore typing; prevent page horizontal scroll
       $('#startBtn')?.addEventListener('click', ()=>{
         $('#canvasWrap')?.focus({preventScroll:true});
         if(running && !paused) return;
@@ -734,12 +765,11 @@
       $('#pauseBtn')?.addEventListener('click', ()=>{ if(running && !ended){ paused=!paused; if(!paused) requestAnimationFrame(loop); } });
       $('#resetBtn')?.addEventListener('click', ()=>{ resetGame(); $('#canvasWrap')?.focus({preventScroll:true}); });
 
-      // Arrow Up only; ignore typing in inputs; prevent page scroll
       window.addEventListener('keydown', (e)=>{
         const tag = (document.activeElement && document.activeElement.tagName || '').toLowerCase();
         if(tag==='input' || tag==='textarea' || tag==='select') return;
-        const isUp = e.code === 'ArrowUp' || e.key === 'ArrowUp' || e.key === 'Up';
-        if(isUp){ e.preventDefault(); jump(); }
+        const isRight = e.code === 'ArrowRight' || e.key === 'ArrowRight' || e.key === 'Right';
+        if(isRight){ e.preventDefault(); jump(); }
       }, {capture:true});
 
       // Confetti
@@ -753,8 +783,10 @@
       }
 
       // Init
-      function init(){ const hiEl=$('#hi'); if (hiEl) hiEl.textContent = String(hi); renderModules(); updateStars(); updateProgress(); draw(); }
-      init();
+      function updateHUD(){ $('#score') && ($('#score').textContent=score); $('#hi') && ($('#hi').textContent=hi); $('#lives') && ($('#lives').textContent=lives); }
+      const score=0, hi=Number(localStorage.getItem('ss-hi')||0), lives=3; // just for initial HUD read
+      $('#hi') && ($('#hi').textContent = String(hi));
+      renderModules(); updateStars(); updateProgress(); // draw() will be called by fitCanvas
     });
   </script>
 </body>
