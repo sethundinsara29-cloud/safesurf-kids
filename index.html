@@ -356,8 +356,8 @@
     // By default this single-file uses local friendly replies for Spark.
     // To connect a real backend later (Express /api/ask), set USE_BACKEND = true
     // and host this file from the same origin as your server.
-    const USE_BACKEND = false;
-    const BACKEND_URL = '/api/ask'; // only works when hosted with the Node server
+    const USE_BACKEND = true;
+    const BACKEND_URL = 'https://spark-ai-sethu.sethu-spark.workers.dev'; // only works when hosted with the Node server
 
     // ===== Utilities & State =====
     const $ = (sel, ctx = document) => ctx.querySelector(sel);
