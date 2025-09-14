@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SafeSurf Kids • Spark Edition</title>
-  <meta name="description" content="SafeSurf Kids: lessons, tools, Spark AI chat, and a runner game to learn safe ICT." />
+  <meta name="description" content="SafeSurf Kids: lessons, tools, Spark AI chat, and quizzes to learn safe ICT." />
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet" />
@@ -37,7 +37,7 @@
 
     .visually-hidden{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap;border:0;padding:0;margin:-1px}
 
-    /* Header (centered brand + icon) */
+    /* Header (centered) */
     header.site-header{
       position:sticky; top:0; z-index:1000; background:var(--white);
       border-bottom:4px solid var(--sky);
@@ -57,9 +57,7 @@
     .title{margin:0;font-weight:900;letter-spacing:.3px}
     .tagline{margin:2px 0 0;color:var(--muted);font-weight:800}
 
-    .actions{
-      display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:center
-    }
+    .actions{display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:center}
     .progress{
       display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:999px;
       background:#E0EAFF;border:2px solid #C7D2FE;font-weight:900;color:#0B255F
@@ -74,14 +72,10 @@
     .lang select{border:2px solid #C7D2FE;background:#fff;border-radius:999px;padding:6px 10px;font-weight:900}
 
     /* Nav (centered) */
-    nav.main{
-      display:flex;gap:10px;flex-wrap:wrap;justify-content:center;
-      padding:10px 16px;background:#fff;border-top:1px dashed #C7D2FE
-    }
+    nav.main{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding:10px 16px;background:#fff;border-top:1px dashed #C7D2FE}
     .tab{
       appearance:none;border:0;border-radius:999px;padding:10px 16px;font-weight:900;cursor:pointer;
-      color:#0B255F;background:#DBEAFE;
-      box-shadow:0 6px 14px rgba(37,99,235,.15);
+      color:#0B255F;background:#DBEAFE; box-shadow:0 6px 14px rgba(37,99,235,.15);
       transition:transform .08s ease, box-shadow .2s ease, background .2s ease
     }
     .tab:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(37,99,235,.25)}
@@ -91,18 +85,11 @@
     main{max-width:1140px;margin:0 auto;padding:20px 14px 100px}
     .view{display:none}.view.active{display:block}
 
-    /* Hero + cards (center headings) */
-    .hero{
-      position:relative;overflow:hidden;isolation:isolate;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:26px;text-align:center
-    }
-    .hero::after{
-      content:"";position:absolute;right:-120px;top:-120px;width:300px;height:300px;border-radius:50%;
-      background:radial-gradient(closest-side, rgba(56,189,248,.35), transparent 70%);filter:blur(18px);animation:pulse 6s ease-in-out infinite
-    }
+    /* Hero + cards */
+    .hero{position:relative;overflow:hidden;isolation:isolate;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:26px;text-align:center}
+    .hero::after{content:"";position:absolute;right:-120px;top:-120px;width:300px;height:300px;border-radius:50%;background:radial-gradient(closest-side, rgba(56,189,248,.35), transparent 70%);filter:blur(18px);animation:pulse 6s ease-in-out infinite}
     @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
-    .cta{
-      display:inline-block;margin-top:12px;margin-right:10px;text-decoration:none;font-weight:900;padding:12px 16px;border-radius:12px;color:#082B7F;background:#DBEAFE;box-shadow:0 10px 20px rgba(37,99,235,.18);transition:transform .1s ease, box-shadow .2s ease
-    }
+    .cta{display:inline-block;margin-top:12px;margin-right:10px;text-decoration:none;font-weight:900;padding:12px 16px;border-radius:12px;color:#082B7F;background:#DBEAFE;box-shadow:0 10px 20px rgba(37,99,235,.18);transition:transform .1s ease, box-shadow .2s ease}
     .cta:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(37,99,235,.28)}
     .cta.secondary{background:var(--blue);color:#fff;box-shadow:0 10px 22px rgba(37,99,235,.30)}
 
@@ -139,15 +126,6 @@
     .chat-form input:focus-visible{outline:none;border-color:var(--blue)}
     .send{background:#DBEAFE;color:#082B7F;border:0;border-radius:12px;font-weight:900;padding:12px 16px;cursor:pointer;box-shadow:0 8px 16px rgba(37,99,235,.20)}
 
-    /* Game */
-    .game-wrap{display:grid;grid-template-columns:1.4fr .9fr;gap:16px}
-    .hud{display:flex;justify-content:space-between;gap:10px;margin:8px 0;font-weight:900}
-    .btn{background:var(--blue);color:#fff;border:0;border-radius:10px;padding:10px 12px;font-weight:900;cursor:pointer;box-shadow:0 8px 18px rgba(37,99,235,.30)}
-    .btn.secondary{background:#DBEAFE;color:#082B7F;box-shadow:0 8px 18px rgba(37,99,235,.18)}
-    .pill{display:inline-block;background:#F0F7FF;border:2px solid #D8E6FF;color:#0B255F;border-radius:999px;padding:4px 8px;font-weight:900}
-    .canvas-wrap{background:#fff;border-radius:12px;border:2px solid #CDEBFF;padding:10px}
-    .canvas-wrap:focus{outline:3px solid var(--blue)}
-
     /* Reveal */
     .reveal{opacity:0;transform:translateY(10px);transition:all .5s ease}
     .reveal.show{opacity:1;transform:translateY(0)}
@@ -156,7 +134,6 @@
     #confetti{pointer-events:none;position:fixed;inset:0}
     .confetti{position:absolute;font-size:18px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.12));animation:fall 1.8s ease-out forwards}
     @keyframes fall{0%{transform:translateY(-20px) rotate(0);opacity:0}15%{opacity:1}100%{transform:translateY(92vh) rotate(260deg);opacity:0}}
-    @media (max-width:900px){.game-wrap{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -198,7 +175,6 @@
       <button class="tab" data-target="learn">Learn</button>
       <button class="tab" data-target="tools">Tools</button>
       <button class="tab" data-target="ask">Ask Spark</button>
-      <button class="tab" data-target="game">Game</button>
       <button class="tab" data-target="parents">Parents</button>
       <button class="tab" data-target="resources">Resources</button>
     </nav>
@@ -209,23 +185,15 @@
     <section id="home" class="view active" aria-labelledby="home-h">
       <div class="hero reveal">
         <h2 id="home-h">Welcome! 🌈</h2>
-        <p class="muted">Quick lessons, playful tools, a friendly AI helper, and a fun game — all about staying safe with ICT.</p>
+        <p class="muted">Quick lessons, playful tools, a friendly AI helper — all about staying safe with ICT.</p>
         <a href="#learn" class="cta" data-go="learn">Start Learning</a>
         <a href="#ask" class="cta secondary" data-go="ask">Ask the AI</a>
       </div>
       <div class="grid" role="list">
-        <article class="card reveal" role="listitem" tabindex="0">
-          <h3>🔐 Strong Passwords</h3><p>Use long, secret passwords. Turn on 2FA!</p>
-        </article>
-        <article class="card reveal" role="listitem" tabindex="0">
-          <h3>🎣 Spot Scams</h3><p>Check links. Don’t share logins. Ask an adult.</p>
-        </article>
-        <article class="card reveal" role="listitem" tabindex="0">
-          <h3>💬 Be Kind Online</h3><p>Block/report meanness. Save evidence. Talk to an adult.</p>
-        </article>
-        <article class="card reveal" role="listitem" tabindex="0">
-          <h3>👣 Digital Footprints</h3><p>Think before you post; the internet remembers.</p>
-        </article>
+        <article class="card reveal" role="listitem" tabindex="0"><h3>🔐 Strong Passwords</h3><p>Use long, secret passwords. Turn on 2FA!</p></article>
+        <article class="card reveal" role="listitem" tabindex="0"><h3>🎣 Spot Scams</h3><p>Check links. Don’t share logins. Ask an adult.</p></article>
+        <article class="card reveal" role="listitem" tabindex="0"><h3>💬 Be Kind Online</h3><p>Block/report meanness. Save evidence. Tell an adult.</p></article>
+        <article class="card reveal" role="listitem" tabindex="0"><h3>👣 Digital Footprints</h3><p>Think before you post; the internet remembers.</p></article>
       </div>
     </section>
 
@@ -293,44 +261,6 @@
           <button class="send" type="submit">Send</button>
         </form>
         <p class="tiny muted">We don’t store chats. Keep info private.</p>
-      </div>
-    </section>
-
-    <!-- Game -->
-    <section id="game" class="view" aria-labelledby="game-h">
-      <h2 id="game-h" class="reveal">Runner Game: Dodge the Bad Stuff!</h2>
-      <div class="game-wrap">
-        <div class="panel reveal">
-          <div class="hud">
-            <div>Score: <span id="score">0</span></div>
-            <div>High: <span id="hi">0</span></div>
-            <div>Lives: <span id="lives">3</span></div>
-          </div>
-          <div id="canvasWrap" class="canvas-wrap" tabindex="0">
-            <canvas id="runner" width="800" height="280" aria-label="Runner game"></canvas>
-          </div>
-          <div class="hud">
-            <button class="btn" id="startBtn">Start</button>
-            <button class="btn secondary" id="pauseBtn">Pause</button>
-            <button class="btn secondary" id="resetBtn">Reset</button>
-            <div class="pill">Jump: → (Right Arrow)</div>
-          </div>
-        </div>
-        <div class="panel reveal">
-          <h3>How to play</h3>
-          <ul>
-            <li>Press Right Arrow to jump over bad ICT obstacles: 🎣 phishing, 😡 bullying, 🔗 weird links, 📸 oversharing.</li>
-            <li>Collect ⭐ stars for points.</li>
-            <li>3 lives. The longer you run, the faster it gets.</li>
-          </ul>
-          <h4>Safety tips you’ll see</h4>
-          <ul class="tiny">
-            <li>Never share passwords, address, phone, or school.</li>
-            <li>Don’t click strange links or prizes.</li>
-            <li>Be kind online. Block and report meanness.</li>
-            <li>Ask a trusted adult if unsure.</li>
-          </ul>
-        </div>
       </div>
     </section>
 
@@ -402,7 +332,7 @@
       const $$ = (s, c=document) => Array.from(c.querySelectorAll(s));
       let completed = new Set(JSON.parse(localStorage.getItem('ss-completed')||'[]'));
       let ageGroup = '8-10';
-      $('#year') && ($('#year').textContent = new Date().getFullYear());
+      const yearEl = $('#year'); if (yearEl) yearEl.textContent = new Date().getFullYear();
 
       // Tabs
       $$('.tab').forEach(btn=>{
@@ -604,174 +534,6 @@
         }catch{ removeTyping(); addSpark('Network error. Please try again in a moment.'); }
       });
 
-      // ===== Game: RIGHT ARROW ONLY =====
-      const cvs=$('#runner'), ctx=cvs?.getContext('2d');
-      const startBtn=$('#startBtn'), pauseBtn=$('#pauseBtn'), resetBtn=$('#resetBtn');
-
-      // Hi‑DPI scaling
-      let dpr = Math.max(1, Math.floor(window.devicePixelRatio || 1));
-      function fitCanvas(){
-        if(!cvs || !ctx) return;
-        const cssW = cvs.clientWidth || 800;
-        const cssH = 280;
-        dpr = Math.max(1, Math.floor(window.devicePixelRatio || 1));
-        cvs.width = Math.floor(cssW * dpr);
-        cvs.height = Math.floor(cssH * dpr);
-        ctx.setTransform(dpr,0,0,dpr,0,0);
-        groundY = (cvs.height/dpr) - 50;
-        draw();
-      }
-      addEventListener('resize', fitCanvas);
-      fitCanvas();
-
-      // World
-      let running=false, paused=false, ended=false;
-      let score=0, hi=Number(localStorage.getItem('ss-hi')||0), lives=3;
-      let groundY = (cvs ? (cvs.height/dpr) - 50 : 230);
-      let lastTime=0, speed=220; // px/s
-      let spawnObstacleTimer=0, spawnStarTimer=0;
-      let player = { x:80, y:groundY, w:28, h:34, vy:0, onGround:true, blink:0 };
-      const obstacles=[], stars=[];
-      const types = [
-        {label:'Phish', emoji:'🎣', color:'#2563EB', w:28, h:28},
-        {label:'Bullying', emoji:'😡', color:'#1E40AF', w:30, h:30},
-        {label:'Weird', emoji:'🔗', color:'#0B255F', w:26, h:26},
-        {label:'Share', emoji:'📸', color:'#0284C7', w:28, h:28}
-      ];
-
-      function updateHUD(){ $('#score') && ($('#score').textContent=score); $('#hi') && ($('#hi').textContent=hi); $('#lives') && ($('#lives').textContent=lives); }
-      function resetGame(){
-        running=false; paused=false; ended=false;
-        score=0; lives=3; speed=220; lastTime=0;
-        obstacles.length=0; stars.length=0;
-        player.y=groundY; player.vy=0; player.onGround=true; player.blink=0;
-        updateHUD(); draw();
-      }
-
-      function drawGround(){
-        if(!ctx||!cvs) return;
-        const W = cvs.width/dpr;
-        ctx.fillStyle='#DBEAFE'; ctx.fillRect(0, groundY+20, W, 6);
-        ctx.fillStyle='#EFF6FF'; ctx.fillRect(0, groundY+26, W, 999);
-      }
-      function drawPlayer(){
-        if(!ctx) return;
-        const {x,y,w,h}=player;
-        ctx.fillStyle=player.blink>0 && Math.floor(player.blink*10)%2===0 ? '#C7D2FE' : '#2563EB';
-        ctx.fillRect(x-w/2, y-h, w, h);
-        ctx.fillStyle='#fff'; ctx.fillRect(x-w/2+4, y-h+4, w-8, 10);
-        ctx.fillStyle='#0F172A'; ctx.fillRect(x-w/2+7, y-h+6, 6,6); ctx.fillRect(x+w/2-13, y-h+6, 6,6);
-        ctx.fillStyle='#1E40AF'; ctx.fillRect(x-w/2+2, y-6, 10,6); ctx.fillRect(x+4, y-6, 10,6);
-      }
-      function drawObstacles(){
-        if(!ctx) return;
-        obstacles.forEach(o=>{
-          ctx.fillStyle=o.color; ctx.fillRect(o.x, o.y-o.h, o.w, o.h);
-          ctx.font='14px system-ui'; ctx.fillStyle='#0F172A'; ctx.fillText(o.emoji, o.x+o.w/2-7, o.y-o.h-4);
-        });
-      }
-      function drawStars(){
-        if(!ctx) return;
-        ctx.fillStyle='#38BDF8';
-        stars.forEach(s=>{ ctx.beginPath(); ctx.arc(s.x, s.y, 7, 0, Math.PI*2); ctx.fill(); });
-      }
-      function draw(){ if(!ctx) return; ctx.clearRect(0,0,cvs.width,cvs.height); drawGround(); drawStars(); drawObstacles(); drawPlayer(); }
-      function AABB(ax,ay,aw,ah, bx,by,bw,bh){ return ax < bx+bw && ax+aw > bx && ay < by+bh && ay+ah > by; }
-
-      function spawn(dt){
-        spawnObstacleTimer += dt*1000;
-        spawnStarTimer += dt*1000;
-        const obstacleEvery = Math.max(500, 1300 - (score/5));
-        if(spawnObstacleTimer >= obstacleEvery){
-          spawnObstacleTimer = 0;
-          const t = types[Math.floor(Math.random()*types.length)];
-          obstacles.push({ x:(cvs.width/dpr)+10, y:groundY, w:t.w, h:t.h, color:t.color, emoji:t.emoji, label:t.label });
-        }
-        if(spawnStarTimer >= 1800){
-          spawnStarTimer = 0;
-          const y = groundY - (60 + Math.random()*40);
-          stars.push({ x:(cvs.width/dpr)+10, y });
-        }
-      }
-
-      function update(dt){
-        if(!running || paused || ended) return;
-        if(!player.onGround){ player.vy += 1400*dt; player.y += player.vy*dt; if(player.y>=groundY){player.y=groundY; player.vy=0; player.onGround=true;} }
-        if(player.blink>0){ player.blink = Math.max(0, player.blink - dt); }
-
-        spawn(dt);
-
-        const dx = speed*dt;
-        for(let i=obstacles.length-1;i>=0;i--){
-          const o=obstacles[i]; o.x -= dx; if(o.x+o.w < -20) obstacles.splice(i,1);
-        }
-        for(let i=stars.length-1;i>=0;i--){
-          const s=stars[i]; s.x -= dx*0.9; if(s.x < -20) stars.splice(i,1);
-        }
-
-        const px = player.x - player.w/2, py = player.y - player.h, pw = player.w, ph = player.h;
-        for(let i=obstacles.length-1;i>=0;i--){
-          const o=obstacles[i];
-          if(AABB(px,py,pw,ph, o.x, o.y-o.h, o.w, o.h)){
-            obstacles.splice(i,1);
-            if(player.blink<=0){
-              lives--; player.blink=1.2; updateHUD();
-              if(lives<=0){ endGame(); return; }
-            }
-          }
-        }
-        for(let i=stars.length-1;i>=0;i--){
-          const s=stars[i];
-          if(AABB(px,py,pw,ph, s.x-7, s.y-7, 14,14)){ score+=50; stars.splice(i,1); }
-        }
-
-        score += Math.floor(120*dt);
-        if(score%600===0) speed = Math.min(speed+10, 420);
-        updateHUD(); draw();
-        requestAnimationFrame(loop);
-      }
-
-      function loop(ts){
-        if(!running || paused || ended) return;
-        if(!lastTime) lastTime = ts;
-        const dt = Math.min(0.033, (ts - lastTime)/1000);
-        lastTime = ts;
-        update(dt);
-      }
-
-      function jump(){
-        if(!running || paused || ended) return;
-        if(player.onGround){ player.vy = -520; player.onGround=false; }
-      }
-      function endGame(){
-        ended=true; running=false; paused=false;
-        hi = Math.max(hi, score); localStorage.setItem('ss-hi', String(hi)); updateHUD();
-        confetti();
-        if(!ctx) return;
-        ctx.save();
-        ctx.fillStyle='rgba(255,255,255,.85)'; ctx.fillRect(0,0,cvs.width/dpr,cvs.height/dpr);
-        ctx.fillStyle= '#1E40AF'; ctx.font='bold 28px Nunito'; ctx.fillText('Great run! Final score: '+score, 220, 120);
-        ctx.fillStyle= '#0B255F'; ctx.font='bold 18px Nunito'; ctx.fillText('Press Start to try again.', 300, 160);
-        ctx.restore();
-      }
-
-      // Controls: RIGHT ARROW only; ignore typing; prevent page horizontal scroll
-      $('#startBtn')?.addEventListener('click', ()=>{
-        $('#canvasWrap')?.focus({preventScroll:true});
-        if(running && !paused) return;
-        if(!running || ended){ resetGame(); running=true; lastTime=0; requestAnimationFrame(loop); }
-        else { paused=false; requestAnimationFrame(loop); }
-      });
-      $('#pauseBtn')?.addEventListener('click', ()=>{ if(running && !ended){ paused=!paused; if(!paused) requestAnimationFrame(loop); } });
-      $('#resetBtn')?.addEventListener('click', ()=>{ resetGame(); $('#canvasWrap')?.focus({preventScroll:true}); });
-
-      window.addEventListener('keydown', (e)=>{
-        const tag = (document.activeElement && document.activeElement.tagName || '').toLowerCase();
-        if(tag==='input' || tag==='textarea' || tag==='select') return;
-        const isRight = e.code === 'ArrowRight' || e.key === 'ArrowRight' || e.key === 'Right';
-        if(isRight){ e.preventDefault(); jump(); }
-      }, {capture:true});
-
       // Confetti
       function confetti(){
         const wrap=document.getElementById('confetti');
@@ -783,10 +545,11 @@
       }
 
       // Init
-      function updateHUD(){ $('#score') && ($('#score').textContent=score); $('#hi') && ($('#hi').textContent=hi); $('#lives') && ($('#lives').textContent=lives); }
-      const score=0, hi=Number(localStorage.getItem('ss-hi')||0), lives=3; // just for initial HUD read
-      $('#hi') && ($('#hi').textContent = String(hi));
-      renderModules(); updateStars(); updateProgress(); // draw() will be called by fitCanvas
+      function init(){
+        const hiEl=$('#hi'); if (hiEl) hiEl.textContent = '0';
+        renderModules(); updateStars(); updateProgress();
+      }
+      init();
     });
   </script>
 </body>
