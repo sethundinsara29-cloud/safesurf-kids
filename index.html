@@ -1,989 +1,1751 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SafeSurf Kids • Spark Edition</title>
-  <meta name="description" content="SafeSurf Kids helps children learn how to stay safe with ICT — colorful lessons, quick quizzes, and Spark the AI helper." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --mint: #06D6A0;
-      --blue: #118AB2;
-      --yellow: #FFD166;
-      --pink: #EF476F;
-      --purple: #8E63D1;
-      --ink: #173043;
-      --bg: #f7fbff;
-      --card: #ffffff;
-      --muted: #527288;
-      --radius: 16px;
-      --shadow: 0 12px 30px rgba(17, 138, 178, 0.18);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeSurf Kids 2.0 - Learn & Play Safely Online! 🚀</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    * { box-sizing: border-box; }
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: radial-gradient(1200px 800px at 10% -10%, #e7fff5 0%, #f7fbff 48%, #ffffff 100%);
-      color: var(--ink);
-      font-family: 'Nunito', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      line-height: 1.45;
-      scroll-behavior: smooth;
-    }
+        :root {
+            --primary: #6B5B95;
+            --secondary: #88B0D3;
+            --accent: #FFB6C1;
+            --success: #90EE90;
+            --warning: #FFD700;
+            --text: #2C3E50;
+            --bg-light: #F0F8FF;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
 
-    .visually-hidden {
-      position: absolute !important; height: 1px; width: 1px; overflow: hidden;
-      clip: rect(1px, 1px, 1px, 1px); white-space: nowrap; border: 0; padding: 0; margin: -1px;
-    }
+        body {
+            font-family: 'Comic Sans MS', 'Segoe UI', cursive, sans-serif;
+            background: linear-gradient(135deg, #E3F2FD 0%, #FFE0F7 100%);
+            min-height: 100vh;
+            color: var(--text);
+            overflow-x: hidden;
+        }
 
-    /* Animated header */
-    .site-header {
-      position: relative;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 18px 20px;
-      color: white;
-      overflow: hidden;
-      border-bottom-left-radius: 18px;
-      border-bottom-right-radius: 18px;
-      box-shadow: 0 10px 40px rgba(17,138,178,.25);
-      background: linear-gradient(135deg, var(--mint), var(--blue), var(--purple));
-      background-size: 300% 300%;
-      animation: moveGrad 12s ease infinite;
-    }
-    @keyframes moveGrad {
-      0% { background-position: 0% 50% }
-      50% { background-position: 100% 50% }
-      100% { background-position: 0% 50% }
-    }
+        /* Header */
+        .header {
+            background: var(--bg-gradient);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
 
-    .brand { display: flex; align-items: center; gap: 14px; }
-    .logo {
-      width: 54px; height: 54px;
-      filter: drop-shadow(0 6px 16px rgba(0,0,0,.25));
-      transform-origin: 50% 50%;
-      animation: float 4.6s ease-in-out infinite;
-    }
-    @keyframes float { 0%,100% { transform: translateY(0) } 50% { transform: translateY(4px) } }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
 
-    .title { margin: 0; font-weight: 800; letter-spacing: 0.2px; }
-    .tagline { margin: 2px 0 0; opacity: 0.98; font-weight: 700; }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            animation: sparkle 2s infinite;
+        }
 
-    .header-actions { display: flex; gap: 16px; align-items: center; }
+        @keyframes sparkle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
 
-    .achievements {
-      background: rgba(255, 255, 255, 0.16);
-      padding: 8px 12px; border-radius: 999px;
-      display: flex; gap: 10px; align-items: center;
-      backdrop-filter: blur(2px);
-    }
-    .star { font-size: 18px; }
+        .nav-menu {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
 
-    .progress-ring {
-      --size: 42px;
-      width: var(--size); height: var(--size);
-      border-radius: 50%;
-      background:
-        conic-gradient(var(--yellow) var(--angle, 0%), rgba(255,255,255,.25) 0),
-        radial-gradient(circle at 50% 50%, #fff 60%, transparent 61%);
-      display: grid; place-items: center; color: #073b32; font-weight: 900; font-size: 12px;
-      box-shadow: inset 0 0 0 3px rgba(255,255,255,.6);
-    }
+        .nav-btn {
+            background: rgba(255,255,255,0.9);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--primary);
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
 
-    .lang-toggle select {
-      border: none; border-radius: 999px; padding: 8px 12px;
-      background: #fff; color: var(--ink); font-weight: 800;
-    }
+        .nav-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            background: var(--warning);
+        }
 
-    .main-nav {
-      display: flex; flex-wrap: wrap; gap: 10px; padding: 10px 16px;
-      background: #fff; box-shadow: var(--shadow); margin: 10px 12px 0; border-radius: 14px;
-    }
-    .nav-btn {
-      background: var(--yellow); border: 0; border-radius: 999px; padding: 10px 16px;
-      font-weight: 900; color: var(--ink); cursor: pointer;
-      transition: transform 0.06s ease, background 0.2s ease, box-shadow .2s ease;
-      box-shadow: 0 4px 10px rgba(0,0,0,.06);
-    }
-    .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(0,0,0,.10) }
-    .nav-btn:focus-visible { outline: 3px solid var(--purple); }
-    .nav-btn.active { background: var(--mint); color: #083d2f; }
+        .nav-btn.active {
+            background: var(--accent);
+            color: white;
+        }
 
-    main { padding: 22px 16px 90px; max-width: 1120px; margin: 0 auto; }
+        .sound-toggle {
+            background: rgba(255,255,255,0.9);
+            border: none;
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+        }
 
-    .view { display: none }
-    .view.active { display: block }
+        .sound-toggle:hover {
+            transform: rotate(20deg) scale(1.1);
+        }
 
-    /* Hero */
-    .hero {
-      position: relative;
-      background: linear-gradient(135deg, #ffffff, #f5fff9);
-      border-radius: var(--radius); box-shadow: var(--shadow); padding: 26px; overflow: hidden;
-      isolation: isolate;
-    }
-    .hero::after {
-      content: "";
-      position: absolute; right: -120px; top: -120px; width: 320px; height: 320px;
-      background: radial-gradient(closest-side, rgba(6,214,160,.45), transparent 70%);
-      filter: blur(20px); z-index: -1; border-radius: 50%;
-      animation: pulse 6s ease-in-out infinite;
-    }
-    @keyframes pulse { 0%,100% { transform: scale(1) } 50% { transform: scale(1.05) } }
+        .stars-display {
+            background: rgba(255,255,255,0.9);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--warning);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
 
-    .hero-actions { display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
-    .cta {
-      display: inline-block; background: var(--pink); color: #fff;
-      padding: 12px 18px; border-radius: 14px; text-decoration: none; font-weight: 900;
-      transition: transform 0.06s ease, opacity 0.2s ease, box-shadow .2s ease;
-      box-shadow: 0 8px 16px rgba(239,71,111,.25);
-    }
-    .cta:hover { transform: translateY(-2px); opacity: .96; box-shadow: 0 12px 22px rgba(239,71,111,.32) }
-    .cta.secondary { background: var(--blue); box-shadow: 0 8px 16px rgba(17,138,178,.25); }
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
 
-    /* Cards */
-    .quick-cards, .modules {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 16px; margin-top: 16px;
-    }
+        .section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
 
-    .card {
-      background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
-      padding: 16px; transition: transform 0.06s ease, box-shadow 0.2s ease, background .2s ease;
-      text-align: left; position: relative; overflow: hidden;
-    }
-    .card::before {
-      content: ""; position: absolute; right: -50px; top: -50px; width: 140px; height: 140px;
-      background: radial-gradient(closest-side, rgba(17,138,178,.12), transparent 70%); transform: rotate(12deg);
-    }
-    .card:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(17, 138, 178, 0.28); }
+        .section.active {
+            display: block;
+        }
 
-    .module-detail {
-      background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
-      padding: 18px; margin-top: 18px;
-    }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-    .muted { color: var(--muted); }
-    .tiny { font-size: .92rem; }
+        /* Home Section */
+        .welcome-box {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
 
-    /* Chat */
-    .safety-banner {
-      background: #fff3c9; border: 2px dashed var(--yellow); padding: 12px; border-radius: 12px; margin-bottom: 12px; font-weight: 900;
-    }
-    .age-toggle { display: flex; gap: 16px; margin-bottom: 10px; align-items: center; font-weight: 800; }
-    .chat { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
-    .chat-log {
-      max-height: 400px; min-height: 240px; overflow: auto; padding: 16px;
-      background: linear-gradient(180deg, #fdfdff, #f5fbff);
-    }
-    .chat-bubble {
-      display: inline-block; padding: 10px 12px; border-radius: 14px; margin: 8px 0; max-width: 80%;
-      line-height: 1.45; animation: slideIn .18s ease;
-    }
-    .chat-bubble.user { background: var(--blue); color: #fff; border-bottom-right-radius: 4px; }
-    .chat-bubble.spark { background: #eefcf6; border: 2px solid var(--mint); color: #0b5a49; border-bottom-left-radius: 4px; }
-    @keyframes slideIn { from { transform: translateY(4px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
+        .welcome-box::before {
+            content: "✨";
+            position: absolute;
+            font-size: 100px;
+            opacity: 0.1;
+            animation: float 3s infinite;
+        }
 
-    .typing-dots { display: inline-flex; gap: 3px; }
-    .typing-dots span { width: 6px; height: 6px; border-radius: 999px; background: #0b5a49; opacity: .4; animation: blink 1s infinite; }
-    .typing-dots span:nth-child(2){ animation-delay: .15s } .typing-dots span:nth-child(3){ animation-delay: .3s }
-    @keyframes blink { 50% { opacity: 1 } }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
 
-    .chat-form { display: flex; gap: 10px; border-top: 1px solid #e7eef5; padding: 12px; }
-    .chat-form input[type="text"] { flex: 1; padding: 12px 14px; border-radius: 12px; border: 2px solid #d6e5f2; font-size: 1rem; }
-    .chat-form input:focus-visible { outline: none; border-color: var(--purple); }
-    .send-btn { background: var(--mint); color: #083d2f; border: 0; border-radius: 12px; font-weight: 900; padding: 12px 16px; cursor: pointer; box-shadow: 0 8px 16px rgba(6,214,160,.22); }
-    .send-btn:hover { filter: brightness(0.95); }
+        .welcome-title {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
 
-    .parent-grid, .resources-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px;
-    }
+        .spark-mascot {
+            font-size: 5rem;
+            animation: bounce 2s infinite;
+            margin: 2rem 0;
+        }
 
-    .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
-    .badge {
-      background: #f1f6ff; color: #0a3e8c; border-radius: 999px; padding: 6px 10px; font-weight: 800; font-size: .9rem;
-      border: 2px solid #cde2ff;
-    }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
 
-    .site-footer { text-align: center; color: var(--muted); padding: 28px 16px; }
-    button, a, input, select { transition: transform .05s ease, box-shadow .2s ease, background .2s ease }
-    button:active, a:active { transform: translateY(1px) }
+        /* Module Map */
+        .space-map {
+            position: relative;
+            min-height: 600px;
+            background: radial-gradient(ellipse at center, #1e3c72 0%, #2a5298 50%, #0a0e27 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            overflow: hidden;
+        }
 
-    /* Confetti */
-    #confetti { pointer-events: none; position: fixed; inset: 0; }
-    .confetti-star {
-      position: absolute; font-size: 18px; line-height: 1; animation: floatDown 1.8s ease-out forwards; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.12));
-    }
-    @keyframes floatDown { 0% { transform: translateY(-20px) rotate(0); opacity: 0 } 15% { opacity: 1 } 100% { transform: translateY(90vh) rotate(260deg); opacity: 0 } }
+        .stars-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
 
-    /* Reveal animations */
-    .reveal { opacity: 0; transform: translateY(10px); transition: all .5s ease; }
-    .reveal.show { opacity: 1; transform: translateY(0) }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
 
-    @media (max-width: 720px) {
-      .title { font-size: 1.2rem; }
-      .tagline { font-size: 0.95rem; }
-    }
-  </style>
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .planet {
+            position: absolute;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .planet:hover {
+            transform: scale(1.1);
+            filter: brightness(1.2);
+        }
+
+        .planet-body {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .planet-ring {
+            position: absolute;
+            width: 140px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            top: 30px;
+            left: -20px;
+        }
+
+        .planet-label {
+            color: white;
+            margin-top: 0.5rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .rocket {
+            position: absolute;
+            font-size: 2rem;
+            transition: all 1s ease-in-out;
+            z-index: 20;
+        }
+
+        /* Chat Section */
+        .chat-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .chat-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .chat-box {
+            height: 400px;
+            overflow-y: auto;
+            border: 3px solid var(--accent);
+            border-radius: 15px;
+            padding: 1rem;
+            background: var(--bg-light);
+            margin-bottom: 1rem;
+        }
+
+        .message {
+            margin: 1rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            animation: slideIn 0.3s;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-bubble {
+            background: white;
+            padding: 0.8rem 1.2rem;
+            border-radius: 20px;
+            max-width: 70%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .message.user .message-bubble {
+            background: var(--accent);
+            color: white;
+        }
+
+        .message.ai .message-bubble {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .chat-input-container {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 3px solid var(--accent);
+            border-radius: 25px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .chat-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .chat-btn:hover {
+            background: var(--accent);
+            transform: scale(1.05);
+        }
+
+        .voice-btn {
+            background: var(--warning);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .voice-btn:hover {
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        .voice-btn.recording {
+            background: red;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255,0,0,0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(255,0,0,0); }
+        }
+
+        /* Create & Share Zone */
+        .create-zone {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .create-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .create-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .create-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .canvas-container {
+            border: 3px solid var(--accent);
+            border-radius: 15px;
+            margin: 1rem 0;
+            background: white;
+        }
+
+        #drawingCanvas {
+            cursor: crosshair;
+            display: block;
+            border-radius: 12px;
+        }
+
+        .canvas-controls {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .color-picker {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .color-picker:hover {
+            transform: scale(1.1);
+        }
+
+        /* Mystery of the Day */
+        .mystery-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 3rem;
+            color: white;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mystery-box::before {
+            content: "🔍";
+            position: absolute;
+            font-size: 200px;
+            opacity: 0.1;
+            right: -50px;
+            top: -50px;
+            transform: rotate(-15deg);
+        }
+
+        .mystery-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .mystery-content {
+            background: rgba(255,255,255,0.9);
+            color: var(--text);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-top: 2rem;
+        }
+
+        /* Quiz Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .quiz-question {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            color: var(--primary);
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .quiz-option {
+            background: var(--bg-light);
+            border: 3px solid transparent;
+            padding: 1rem;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--accent);
+            transform: scale(1.02);
+        }
+
+        .quiz-option.correct {
+            background: var(--success);
+            border-color: green;
+        }
+
+        .quiz-option.incorrect {
+            background: #FFB6B6;
+            border-color: red;
+        }
+
+        /* Fireworks */
+        .fireworks {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 3000;
+        }
+
+        .firework {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            animation: explode 1s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
+        }
+
+        /* Story Templates */
+        .story-template {
+            background: var(--bg-light);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 1rem 0;
+        }
+
+        .story-input {
+            border: 2px solid var(--accent);
+            border-radius: 10px;
+            padding: 0.5rem;
+            margin: 0 0.5rem;
+            width: 150px;
+            font-size: 1rem;
+            color: var(--primary);
+        }
+
+        /* Emoji Collage */
+        .emoji-board {
+            min-height: 400px;
+            background: white;
+            border: 3px solid var(--accent);
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .emoji-palette {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: var(--bg-light);
+            border-radius: 15px;
+            margin-top: 1rem;
+        }
+
+        .emoji-item {
+            font-size: 2rem;
+            cursor: grab;
+            transition: all 0.3s;
+            user-select: none;
+        }
+
+        .emoji-item:hover {
+            transform: scale(1.2);
+        }
+
+        .placed-emoji {
+            position: absolute;
+            font-size: 2rem;
+            cursor: move;
+            user-select: none;
+        }
+
+        /* Parents Corner */
+        .info-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 1rem 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .info-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        /* Resources */
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .resource-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .resource-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Achievement Badge */
+        .achievement-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            z-index: 3000;
+            text-align: center;
+            animation: achievementPop 0.5s forwards;
+        }
+
+        @keyframes achievementPop {
+            to { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .achievement-icon {
+            font-size: 5rem;
+            animation: rotate 1s ease-in-out;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .nav-menu {
+                justify-content: center;
+            }
+
+            .welcome-title {
+                font-size: 2rem;
+            }
+
+            .planet-body {
+                width: 80px;
+                height: 80px;
+                font-size: 2.5rem;
+            }
+
+            .create-zone {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header class="site-header" role="banner">
-    <div class="brand">
-      <!-- Animated gradient logo -->
-      <svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
-        <defs>
-          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#06D6A0"/>
-            <stop offset="100%" stop-color="#118AB2"/>
-          </linearGradient>
-        </defs>
-        <circle cx="48" cy="48" r="44" fill="url(#g)"></circle>
-        <path d="M48 18c14 8 22 10 32 12-1 20-7 34-32 48-25-14-31-28-32-48 10-2 18-4 32-12z" fill="#fff" opacity="0.9"/>
-        <path d="M35 49l8 8 18-18" stroke="#06D6A0" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <div>
-        <h1 id="app-title" class="title" data-i18n="app.title">SafeSurf Kids</h1>
-        <p class="tagline" data-i18n="app.tagline">Learn to stay safe online with Spark! ✨</p>
-        <div class="badges">
-          <span class="badge">Child-friendly</span>
-          <span class="badge">No personal data</span>
-          <span class="badge">Mobile ready</span>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                🚀 SafeSurf Kids 2.0 ✨
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-btn active" data-section="home" onclick="navigateToSection('home')">
+                    🏠 Home
+                </button>
+                <button class="nav-btn" data-section="modules" onclick="navigateToSection('modules')">
+                    🌟 Learn
+                </button>
+                <button class="nav-btn" data-section="chat" onclick="navigateToSection('chat')">
+                    💬 Spark AI
+                </button>
+                <button class="nav-btn" data-section="create" onclick="navigateToSection('create')">
+                    🎨 Create
+                </button>
+                <button class="nav-btn" data-section="mystery" onclick="navigateToSection('mystery')">
+                    🔍 Mystery
+                </button>
+                <button class="nav-btn" data-section="parents" onclick="navigateToSection('parents')">
+                    👨‍👩‍👧 Parents
+                </button>
+                <button class="nav-btn" data-section="resources" onclick="navigateToSection('resources')">
+                    📚 Resources
+                </button>
+                <button class="sound-toggle" id="soundToggle" onclick="toggleSound()">
+                    🔊
+                </button>
+                <div class="stars-display">
+                    ⭐ <span id="starCount">0</span>
+                </div>
+            </nav>
         </div>
-      </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="welcome-box">
+                <h2 class="welcome-title">Welcome to SafeSurf Kids 2.0! 🎉</h2>
+                <div class="spark-mascot">🦉</div>
+                <p style="font-size: 1.2rem; color: var(--primary); margin: 1rem 0;">
+                    Hi there, young explorer! I'm Spark, your friendly learning buddy! 
+                    Let's explore the digital world together and have tons of fun while staying safe! 
+                </p>
+                <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap;">
+                    <button class="nav-btn" onclick="navigateToSection('modules')" style="font-size: 1.2rem; padding: 1rem 2rem;">
+                        🚀 Start Learning!
+                    </button>
+                    <button class="nav-btn" onclick="navigateToSection('mystery')" style="font-size: 1.2rem; padding: 1rem 2rem;">
+                        🔍 Today's Mystery
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Learn Modules Section -->
+        <section id="modules" class="section">
+            <h2 style="text-align: center; color: white; margin-bottom: 2rem; font-size: 2rem;">
+                🌌 Choose Your Learning Planet! 🌌
+            </h2>
+            <div class="space-map">
+                <div class="stars-bg" id="starsBackground"></div>
+                <div class="rocket" id="sparkRocket">🚀</div>
+                <div id="planetsContainer"></div>
+            </div>
+        </section>
+
+        <!-- AI Chat Section -->
+        <section id="chat" class="section">
+            <div class="chat-container">
+                <div class="chat-header">
+                    <h2 style="color: var(--primary); font-size: 2rem;">Chat with Spark! 🦉</h2>
+                    <p>Ask me anything about staying safe online, or just chat for fun!</p>
+                </div>
+                <div class="chat-box" id="chatBox">
+                    <div class="message ai">
+                        <span style="font-size: 2rem;">🦉</span>
+                        <div class="message-bubble">
+                            Hi! I'm Spark! Ask me anything about the internet, or tell me a joke! 😄
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-input-container">
+                    <input 
+                        type="text" 
+                        id="chatInput" 
+                        class="chat-input" 
+                        placeholder="Type your message here..."
+                        onkeypress="if(event.key==='Enter') sendMessage()"
+                    >
+                    <button class="voice-btn" id="voiceBtn" onclick="toggleVoiceRecording()">
+                        🎤
+                    </button>
+                    <button class="chat-btn" onclick="sendMessage()">
+                        Send ➤
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Create & Share Zone -->
+        <section id="create" class="section">
+            <h2 style="text-align: center; color: var(--primary); margin-bottom: 2rem; font-size: 2rem;">
+                ✨ Create & Share Zone ✨
+            </h2>
+            <div class="create-zone">
+                <div class="create-card">
+                    <div class="create-icon">🎨</div>
+                    <h3>Digital Doodle</h3>
+                    <div class="canvas-container">
+                        <canvas id="drawingCanvas" width="300" height="300"></canvas>
+                    </div>
+                    <div class="canvas-controls">
+                        <div class="color-picker" style="background: #FF6B6B;" onclick="changeColor('#FF6B6B')"></div>
+                        <div class="color-picker" style="background: #4ECDC4;" onclick="changeColor('#4ECDC4')"></div>
+                        <div class="color-picker" style="background: #45B7D1;" onclick="changeColor('#45B7D1')"></div>
+                        <div class="color-picker" style="background: #FFA07A;" onclick="changeColor('#FFA07A')"></div>
+                        <div class="color-picker" style="background: #98D8C8;" onclick="changeColor('#98D8C8')"></div>
+                        <button class="nav-btn" onclick="clearCanvas()">🗑️ Clear</button>
+                        <button class="nav-btn" onclick="saveDrawing()">💾 Save</button>
+                    </div>
+                </div>
+
+                <div class="create-card">
+                    <div class="create-icon">📝</div>
+                    <h3>Story Creator</h3>
+                    <div class="story-template">
+                        <p style="font-size: 1.1rem; line-height: 2;">
+                            Once upon a time, there was a 
+                            <input type="text" class="story-input" placeholder="character" id="story1">
+                            who loved to 
+                            <input type="text" class="story-input" placeholder="activity" id="story2">.
+                            One day, they found a magical 
+                            <input type="text" class="story-input" placeholder="object" id="story3">
+                            that could 
+                            <input type="text" class="story-input" placeholder="power" id="story4">!
+                        </p>
+                        <button class="nav-btn" onclick="saveStory()" style="margin-top: 1rem;">
+                            📖 Save Story
+                        </button>
+                    </div>
+                </div>
+
+                <div class="create-card">
+                    <div class="create-icon">😊</div>
+                    <h3>Emoji Collage</h3>
+                    <div class="emoji-board" id="emojiBoard" ondrop="dropEmoji(event)" ondragover="allowDrop(event)"></div>
+                    <div class="emoji-palette">
+                        <span class="emoji-item" draggable="true" ondragstart="dragEmoji(event)">😊</span>
+                        <span class="emoji-item" draggable="true" ondragstart="dragEmoji(event)">🌟</span>
+                        <span class="emoji-item" draggable="true" ondragstart="dragEmoji(event)">🦄</span>
+                        <span class="emoji-item" draggable="true" ondragstart="dragEmoji(event)">🌈</span>
+                        <span class="emoji-item" draggable="true" ondragstart="dragEmoji(event)">🎈</span>
+                        <span class="emoji-item" draggable="true" ondragstart="dragEmoji(event)">🦋</span>
+                        <span class="emoji-item" draggable="true" ondragstart="dragEmoji(event)">🌸</span>
+                        <span class="emoji-item" draggable="true" ondragstart="dragEmoji(event)">🎨</span>
+                        <span class="emoji-item" draggable="true" ondragstart="dragEmoji(event)">🚀</span>
+                        <span class="emoji-item" draggable="true" ondragstart="dragEmoji(event)">💝</span>
+                    </div>
+                    <button class="nav-btn" onclick="clearEmojiBoard()" style="margin-top: 1rem;">
+                        🗑️ Clear Board
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mystery of the Day -->
+        <section id="mystery" class="section">
+            <div class="mystery-box">
+                <h2 class="mystery-title">🔍 Mystery of the Day 🔍</h2>
+                <p style="font-size: 1.2rem;">Can you solve today's puzzle?</p>
+                <div class="mystery-content" id="mysteryContent">
+                    <!-- Mystery content loaded by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Parents Corner -->
+        <section id="parents" class="section">
+            <h2 style="text-align: center; color: var(--primary); margin-bottom: 2rem; font-size: 2rem;">
+                👨‍👩‍👧 Parents Corner
+            </h2>
+            <div class="info-card">
+                <h3>📊 Your Child's Progress</h3>
+                <p>Stars earned: <span id="parentStarCount">0</span> ⭐</p>
+                <p>Modules completed: <span id="modulesCompleted">0</span></p>
+                <p>Current streak: <span id="currentStreak">0</span> 🔥</p>
+            </div>
+            <div class="info-card">
+                <h3>🛡️ Safety Features</h3>
+                <ul style="text-align: left; line-height: 2;">
+                    <li>✅ All data stored locally - no external servers</li>
+                    <li>✅ AI chat filtered for child-appropriate content</li>
+                    <li>✅ No external links or advertisements</li>
+                    <li>✅ Educational content reviewed by experts</li>
+                </ul>
+            </div>
+            <div class="info-card">
+                <h3>💡 Tips for Parents</h3>
+                <p>Encourage your child to complete one module per day and discuss what they learned together!</p>
+            </div>
+        </section>
+
+        <!-- Resources Section -->
+        <section id="resources" class="section">
+            <h2 style="text-align: center; color: var(--primary); margin-bottom: 2rem; font-size: 2rem;">
+                📚 Learning Resources
+            </h2>
+            <div class="resource-grid">
+                <div class="resource-card" onclick="showResourceDetail('safety')">
+                    <div class="resource-icon">🛡️</div>
+                    <h3>Internet Safety Guide</h3>
+                    <p>Learn the basics of staying safe online</p>
+                </div>
+                <div class="resource-card" onclick="showResourceDetail('privacy')">
+                    <div class="resource-icon">🔒</div>
+                    <h3>Privacy Tips</h3>
+                    <p>Keep your information private and secure</p>
+                </div>
+                <div class="resource-card" onclick="showResourceDetail('cyberbullying')">
+                    <div class="resource-icon">🤝</div>
+                    <h3>Dealing with Cyberbullying</h3>
+                    <p>What to do if someone is mean online</p>
+                </div>
+                <div class="resource-card" onclick="showResourceDetail('passwords')">
+                    <div class="resource-icon">🔑</div>
+                    <h3>Password Power</h3>
+                    <p>Create super strong passwords</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Quiz Modal -->
+    <div class="modal" id="quizModal" onclick="if(event.target===this) closeQuizModal()">
+        <div class="modal-content">
+            <h2 style="color: var(--primary); text-align: center;">🎯 Quiz Time!</h2>
+            <div id="quizContent">
+                <!-- Quiz content loaded by JavaScript -->
+            </div>
+        </div>
     </div>
 
-    <div class="header-actions">
-      <div class="achievements" aria-live="polite" title="Your progress">
-        <div class="progress-ring" id="progress-ring"><span id="progress-text">0%</span></div>
-        <span class="star">⭐</span>
-        <span data-i18n="app.stars">Stars:</span>
-        <strong id="star-count">0</strong>
-      </div>
+    <!-- Fireworks Container -->
+    <div class="fireworks" id="fireworksContainer"></div>
 
-      <div class="lang-toggle" aria-label="Language">
-        <label for="lang-select" class="visually-hidden">Language</label>
-        <select id="lang-select" aria-label="Language select">
-          <option value="en" selected>English</option>
-          <option value="es">Español</option>
-        </select>
-      </div>
+    <!-- Achievement Popup -->
+    <div class="achievement-popup" id="achievementPopup" style="display: none;">
+        <div class="achievement-icon">🏆</div>
+        <h2 style="color: var(--primary);">Achievement Unlocked!</h2>
+        <p id="achievementText"></p>
     </div>
-  </header>
 
-  <nav class="main-nav" role="navigation" aria-label="Main">
-    <button class="nav-btn active" data-target="home" data-i18n="nav.home">Home</button>
-    <button class="nav-btn" data-target="learn" data-i18n="nav.learn">Learn</button>
-    <button class="nav-btn" data-target="ask" data-i18n="nav.ask">Ask Spark</button>
-    <button class="nav-btn" data-target="parents" data-i18n="nav.parents">Parent & Carer Corner</button>
-    <button class="nav-btn" data-target="resources" data-i18n="nav.resources">Resources</button>
-  </nav>
+    <script>
+        // Global Variables
+        let currentSection = 'home';
+        let stars = parseInt(localStorage.getItem('stars') || '0');
+        let soundEnabled = localStorage.getItem('soundEnabled') !== 'false';
+        let currentStreak = parseInt(localStorage.getItem('streak') || '0');
+        let completedModules = JSON.parse(localStorage.getItem('completedModules') || '[]');
+        let isRecording = false;
+        let recognition = null;
+        let drawingContext = null;
+        let isDrawing = false;
+        let currentColor = '#FF6B6B';
+        let audioContext = null;
 
-  <main>
-    <!-- Home -->
-    <section id="home" class="view active" aria-labelledby="home-heading">
-      <div class="hero reveal">
-        <h2 id="home-heading" data-i18n="home.heading">Welcome! 🌈</h2>
-        <p data-i18n="home.sub">Let’s learn how to be safe and kind with ICT — on the internet, in apps, and games.</p>
-        <div class="hero-actions">
-          <a href="#learn" class="cta" data-nav="learn" data-i18n="home.startLearning">Start Learning</a>
-          <a href="#ask" class="cta secondary" data-nav="ask" data-i18n="home.askSpark">Ask the AI</a>
-        </div>
-      </div>
-
-      <div class="quick-cards" role="list">
-        <div class="card reveal" role="listitem" tabindex="0">
-          <h3>🔐 Strong Passwords</h3>
-          <p>Use long, secret passwords. Turn on 2FA!</p>
-        </div>
-        <div class="card reveal" role="listitem" tabindex="0">
-          <h3>🛡️ Privacy & Sharing</h3>
-          <p>Think before you post. Keep personal info private.</p>
-        </div>
-        <div class="card reveal" role="listitem" tabindex="0">
-          <h3>💬 Be Kind Online</h3>
-          <p>Report bullying. Save messages. Talk to an adult.</p>
-        </div>
-        <div class="card reveal" role="listitem" tabindex="0">
-          <h3>🎮 Gaming Safety</h3>
-          <p>Use safe chats. Watch in‑app purchases. Take breaks!</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Learn -->
-    <section id="learn" class="view" aria-labelledby="learn-heading">
-      <h2 id="learn-heading" class="reveal" data-i18n="learn.heading">Learn: Safety Modules</h2>
-      <p class="muted reveal" data-i18n="learn.desc">Tap a card to read tips, try a scenario, and take a quick quiz.</p>
-      <div id="modules" class="modules" role="list"></div>
-      <div id="module-detail" class="module-detail reveal" hidden aria-live="polite"></div>
-    </section>
-
-    <!-- Ask Spark (AI chat) -->
-    <section id="ask" class="view" aria-labelledby="ask-heading">
-      <h2 id="ask-heading" class="reveal" data-i18n="ask.heading">Ask Spark (AI)</h2>
-      <div class="safety-banner reveal" role="note" data-i18n="ask.banner">
-        Never share your real name, address, phone, school, or passwords.
-      </div>
-
-      <div class="age-toggle reveal" role="group" aria-label="Age group">
-        <label><input type="radio" name="age" value="8-10" checked /> 8–10</label>
-        <label><input type="radio" name="age" value="11-13" /> 11–13</label>
-      </div>
-
-      <div class="chat reveal" aria-label="Chat with Spark">
-        <div id="chat-log" class="chat-log" role="log" aria-live="polite" aria-relevant="additions"></div>
-
-        <form id="chat-form" class="chat-form" autocomplete="off">
-          <label for="chat-input" class="visually-hidden">Your message</label>
-          <input id="chat-input" name="message" type="text" minlength="1" maxlength="600"
-                 placeholder="Ask me about staying safe online!" aria-label="Ask me about staying safe online!" required />
-          <button type="submit" class="send-btn">Send</button>
-        </form>
-        <p class="tiny muted" data-i18n="ask.footer">We don’t store chats. Be kind and keep info private.</p>
-      </div>
-    </section>
-
-    <!-- Parent & Carer Corner -->
-    <section id="parents" class="view" aria-labelledby="parents-heading">
-      <h2 id="parents-heading" class="reveal" data-i18n="parents.heading">Parent & Carer Corner</h2>
-      <div class="parent-grid">
-        <article class="card reveal">
-          <h3 data-i18n="parents.tipsTitle">Quick Tips</h3>
-          <ul>
-            <li data-i18n="parents.tip1">Talk early and often about online kindness and privacy.</li>
-            <li data-i18n="parents.tip2">Set clear rules together (bedtime, screens out of bedrooms).</li>
-            <li data-i18n="parents.tip3">Use family accounts and turn on parental controls where helpful.</li>
-            <li data-i18n="parents.tip4">Learn the games and apps they use; play together sometimes.</li>
-            <li data-i18n="parents.tip5">Keep devices updated; use strong passwords & 2FA.</li>
-          </ul>
-        </article>
-        <article class="card reveal">
-          <h3 data-i18n="parents.startersTitle">Conversation Starters</h3>
-          <ul>
-            <li data-i18n="parents.start1">How do you decide what to share online?</li>
-            <li data-i18n="parents.start2">What would you do if someone was unkind or asked for private info?</li>
-            <li data-i18n="parents.start3">Which games or creators make you feel good? Why?</li>
-          </ul>
-        </article>
-        <article class="card reveal">
-          <h3 data-i18n="parents.signsTitle">Signs to Watch For</h3>
-          <ul>
-            <li data-i18n="parents.sign1">Sudden worry about going online or changes in mood.</li>
-            <li data-i18n="parents.sign2">Secret new accounts or hiding screens.</li>
-            <li data-i18n="parents.sign3">Unexplained charges or new “friends.”</li>
-          </ul>
-        </article>
-        <article class="card reveal">
-          <h3 data-i18n="parents.controlsTitle">Parental Controls Basics</h3>
-          <p data-i18n="parents.controlsDesc">Use built‑in tools on devices, consoles, and routers to filter content, set time limits, and restrict purchases. Review settings together so kids understand why.</p>
-        </article>
-      </div>
-    </section>
-
-    <!-- Resources -->
-    <section id="resources" class="view" aria-labelledby="resources-heading">
-      <h2 id="resources-heading" class="reveal" data-i18n="resources.heading">Resources</h2>
-      <div class="resources-grid">
-        <article class="card reveal">
-          <h3 data-i18n="resources.helpTitle">If you need help</h3>
-          <ul>
-            <li data-i18n="resources.help1">Talk to a trusted adult (parent, carer, teacher, counselor).</li>
-            <li data-i18n="resources.help2">If you are in danger, contact local emergency services right away.</li>
-            <li data-i18n="resources.help3">Use app/game “Report” and “Block” features when needed.</li>
-          </ul>
-        </article>
-        <article class="card reveal">
-          <h3 data-i18n="resources.linksTitle">Helpful links</h3>
-          <ul class="links">
-            <li><a href="https://www.childline.org.uk" target="_blank" rel="noopener">Childline (UK)</a></li>
-            <li><a href="https://www.kidshelpphone.ca" target="_blank" rel="noopener">Kids Help Phone (CA)</a></li>
-            <li><a href="https://www.stopbullying.gov" target="_blank" rel="noopener">StopBullying.gov (US)</a></li>
-            <li><a href="https://www.commonsensemedia.org" target="_blank" rel="noopener">Common Sense Media</a></li>
-          </ul>
-          <p class="tiny muted" data-i18n="resources.note">Links are examples — find local resources for your area.</p>
-        </article>
-      </div>
-    </section>
-  </main>
-
-  <div id="confetti" aria-hidden="true"></div>
-
-  <footer class="site-footer">
-    <p>© <span id="year"></span> SafeSurf Kids · <span class="tiny" data-i18n="footer.privacy">We don’t collect personal data.</span></p>
-  </footer>
-
-  <script>
-    // ===== Config (kept as-is to use your existing Worker) =====
-    const USE_BACKEND = true;
-    const BACKEND_URL = 'https://spark-ai-sethu.sethu-spark.workers.dev';
-
-    // ===== Utilities & State =====
-    const $ = (sel, ctx = document) => ctx.querySelector(sel);
-    const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
-
-    let strings = {};
-    let lang = 'en';
-    let completedModules = new Set(JSON.parse(localStorage.getItem('ss-completed') || '[]'));
-    let ageGroup = '8-10';
-
-    // Year in footer
-    $('#year').textContent = new Date().getFullYear();
-
-    // Nav handling
-    $$('.nav-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const target = btn.dataset.target;
-        $$('.view').forEach(v => v.classList.toggle('active', v.id === target));
-        $$('.nav-btn').forEach(b => b.classList.toggle('active', b === btn));
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-    });
-    $$('[data-nav="learn"]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); $('[data-target="learn"]').click(); }));
-    $$('[data-nav="ask"]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); $('[data-target="ask"]').click(); }));
-
-    // Reveal animations
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(e => e.target.classList.toggle('show', e.isIntersecting));
-    }, { threshold: 0.12 });
-    $$('.reveal').forEach(el => io.observe(el));
-
-    // ===== Localization =====
-    const STRINGS = {
-      en: {
-        app: { title: "SafeSurf Kids", tagline: "Learn to stay safe online with Spark! ✨", stars: "Stars:" },
-        nav: { home: "Home", learn: "Learn", ask: "Ask Spark", parents: "Parent & Carer Corner", resources: "Resources" },
-        home: { heading: "Welcome! 🌈", sub: "Let’s learn how to be safe and kind with ICT — on the internet, in apps, and games.", startLearning: "Start Learning", askSpark: "Ask the AI" },
-        learn: { heading: "Learn: Safety Modules", desc: "Tap a card to read tips, try a scenario, and take a quick quiz." },
-        ask: { heading: "Ask Spark (AI)", banner: "Never share your real name, address, phone, school, or passwords.", footer: "We don’t store chats. Be kind and keep info private." },
-        parents: {
-          heading: "Parent & Carer Corner", tipsTitle: "Quick Tips",
-          tip1: "Talk early and often about online kindness and privacy.",
-          tip2: "Set clear rules together (bedtime, screens out of bedrooms).",
-          tip3: "Use family accounts and turn on parental controls where helpful.",
-          tip4: "Learn the games and apps they use; play together sometimes.",
-          tip5: "Keep devices updated; use strong passwords & 2FA.",
-          startersTitle: "Conversation Starters",
-          start1: "How do you decide what to share online?",
-          start2: "What would you do if someone was unkind or asked for private info?",
-          start3: "Which games or creators make you feel good? Why?",
-          signsTitle: "Signs to Watch For",
-          sign1: "Sudden worry about going online or changes in mood.",
-          sign2: "Secret new accounts or hiding screens.",
-          sign3: "Unexplained charges or new “friends.”",
-          controlsTitle: "Parental Controls Basics",
-          controlsDesc: "Use built‑in tools on devices, consoles, and routers to filter content, set time limits, and restrict purchases. Review settings together so kids understand why."
-        },
-        resources: {
-          heading: "Resources",
-          helpTitle: "If you need help",
-          help1: "Talk to a trusted adult (parent, carer, teacher, counselor).",
-          help2: "If you are in danger, contact local emergency services right away.",
-          help3: "Use app/game “Report” and “Block” features when needed.",
-          linksTitle: "Helpful links",
-          note: "Links are examples — find local resources for your area."
-        },
-        footer: { privacy: "We don’t collect personal data." }
-      },
-      es: {
-        app: { title: "SafeSurf Kids", tagline: "¡Aprende a estar seguro en línea con Spark! ✨", stars: "Estrellas:" },
-        nav: { home: "Inicio", learn: "Aprender", ask: "Preguntar a Spark", parents: "Para familias y cuidadores", resources: "Recursos" },
-        home: { heading: "¡Bienvenid@! 🌈", sub: "Aprendamos a ser seguros y amables con las TIC — en internet, apps y juegos.", startLearning: "Comenzar", askSpark: "Preguntar a la IA" },
-        learn: { heading: "Aprender: Módulos de seguridad", desc: "Toca una tarjeta para leer consejos, probar un escenario y hacer un mini cuestionario." },
-        ask: { heading: "Pregunta a Spark (IA)", banner: "Nunca compartas tu nombre real, dirección, teléfono, escuela ni contraseñas.", footer: "No guardamos los chats. Sé amable y cuida tu privacidad." },
-        parents: {
-          heading: "Para familias y cuidadores", tipsTitle: "Consejos rápidos",
-          tip1: "Hablen temprano y con frecuencia sobre amabilidad y privacidad.",
-          tip2: "Acordar reglas claras (hora de dormir, sin pantallas en el dormitorio).",
-          tip3: "Usar cuentas familiares y controles parentales cuando ayuden.",
-          tip4: "Conozcan los juegos y apps que usan; jueguen juntos a veces.",
-          tip5: "Mantener dispositivos actualizados; contraseñas fuertes y 2FA.",
-          startersTitle: "Para conversar",
-          start1: "¿Cómo decides qué compartir en línea?",
-          start2: "¿Qué harías si alguien es agresivo o pide info privada?",
-          start3: "¿Qué juegos o creadores te hacen sentir bien? ¿Por qué?",
-          signsTitle: "Señales a observar",
-          sign1: "Preocupación por conectarse o cambios de ánimo.",
-          sign2: "Cuentas nuevas secretas u ocultar la pantalla.",
-          sign3: "Cargos extraños o “amigos” nuevos.",
-          controlsTitle: "Controles parentales básicos",
-          controlsDesc: "Usa herramientas en dispositivos, consolas y routers para filtrar contenido, limitar tiempo y restringir compras. Revisen ajustes juntos para entender el porqué."
-        },
-        resources: {
-          heading: "Recursos",
-          helpTitle: "Si necesitas ayuda",
-          help1: "Habla con un adulto de confianza (madre/padre, cuidador, profesor, orientador).",
-          help2: "Si estás en peligro, contacta a los servicios de emergencia locales.",
-          help3: "Usa “Reportar” y “Bloquear” en las apps/juegos cuando haga falta.",
-          linksTitle: "Enlaces útiles",
-          note: "Los enlaces son ejemplos — busca recursos locales de tu zona."
-        },
-        footer: { privacy: "No recopilamos datos personales." }
-      }
-    };
-
-    function applyStrings() {
-      $$('[data-i18n]').forEach(el => {
-        const key = el.dataset.i18n;
-        const val = key.split('.').reduce((acc, k) => acc && acc[k], strings);
-        if (typeof val === 'string') el.textContent = val;
-      });
-    }
-    $('#lang-select').addEventListener('change', (e) => {
-      lang = e.target.value;
-      strings = STRINGS[lang] || STRINGS.en;
-      applyStrings();
-    });
-
-    // ===== Lessons / Modules (expanded to 9) =====
-    const LESSONS = [
-      {
-        id: "passwords",
-        emoji: "🔐",
-        title: "Strong Passwords & 2FA",
-        subtitle: "Make your accounts tough to crack!",
-        tips: [
-          "Use long passwords (12+). Try three random words.",
-          "Never share passwords with friends.",
-          "Use a different password for each account.",
-          "Turn on 2FA — a code from an app or text.",
-          "Keep devices locked with a PIN or passcode."
-        ],
-        scenario: {
-          prompt: "A message says: “Your account is locked! Send your password to fix it.” What do you do?",
-          choices: [
-            { text: "Send my password to unlock it", isCorrect: false, feedback: "Nope! Never share passwords. This is likely a scam." },
-            { text: "Ignore and go to the official app/website", isCorrect: true, feedback: "Yes! Use the real app/website and change your password if worried." },
-            { text: "Ask friends if they got the same message", isCorrect: false, feedback: "Better to check the official site instead of asking friends." }
-          ]
-        },
-        quiz: [
-          { q: "What makes a strong password?", options: ["Your name + birthday", "12+ characters with random words", "12345678"], answerIndex: 1 },
-          { q: "What is 2FA?", options: ["A gaming level", "A code to prove it’s you", "An emoji"], answerIndex: 1 },
-          { q: "Should you share passwords?", options: ["Yes", "No"], answerIndex: 1 }
-        ]
-      },
-      {
-        id: "privacy",
-        emoji: "🛡️",
-        title: "Privacy & Sharing",
-        subtitle: "Think before you post.",
-        tips: [
-          "Keep real name, address, phone, and school private.",
-          "Turn off location sharing in apps you don’t trust.",
-          "Check privacy settings for posts and profiles.",
-          "Ask before sharing photos of friends.",
-          "Post kindly — your future self will thank you!"
-        ],
-        scenario: {
-          prompt: "A new friend asks for your address to send a gift. What do you do?",
-          choices: [
-            { text: "Share it in chat", isCorrect: false, feedback: "Not safe. Never share your home address online." },
-            { text: "Say no and ask a trusted adult", isCorrect: true, feedback: "Great choice! Keep private info safe and talk to an adult." },
-            { text: "Give a nearby place instead", isCorrect: false, feedback: "Still risky. Don’t share locations online." }
-          ]
-        },
-        quiz: [
-          { q: "What info should stay private?", options: ["Real name & address", "Favorite color"], answerIndex: 0 },
-          { q: "Who should you ask before posting a group photo?", options: ["No one", "The people in the photo"], answerIndex: 1 },
-          { q: "What should you do with location sharing?", options: ["Leave it on always", "Turn it off unless needed"], answerIndex: 1 }
-        ]
-      },
-      {
-        id: "cyberbullying",
-        emoji: "💬",
-        title: "Cyberbullying",
-        subtitle: "Be kind, block, and report.",
-        tips: [
-          "If someone is unkind, don’t reply. Save evidence.",
-          "Use block and report. It’s not tattling — it’s safety.",
-          "Talk to a trusted adult right away.",
-          "Be kind when you comment and message.",
-          "Check in on friends who seem down."
-        ],
-        scenario: {
-          prompt: "Someone keeps sending mean messages in a group chat. What now?",
-          choices: [
-            { text: "Send mean messages back", isCorrect: false, feedback: "This can make it worse. Don’t reply." },
-            { text: "Block, report, and tell a trusted adult", isCorrect: true, feedback: "That’s right! Block/report and talk to an adult." },
-            { text: "Leave the group and never tell anyone", isCorrect: false, feedback: "Leaving can help, but also tell a trusted adult." }
-          ]
-        },
-        quiz: [
-          { q: "What should you keep as evidence?", options: ["Screenshots", "Nothing"], answerIndex: 0 },
-          { q: "Who can you talk to?", options: ["A trusted adult", "No one"], answerIndex: 0 },
-          { q: "What can apps help you do?", options: ["Block and report", "Send mean messages"], answerIndex: 0 }
-        ]
-      },
-      {
-        id: "scams",
-        emoji: "🕵️",
-        title: "Scams & Phishing",
-        subtitle: "Spot tricks before they get you.",
-        tips: [
-          "Don’t click strange links or attachments.",
-          "Check the sender’s address — fakes look similar.",
-          "Look for spelling mistakes and urgent threats.",
-          "Use the official website or app to check your account.",
-          "Ask an adult if anything feels off."
-        ],
-        scenario: {
-          prompt: "You win a “free phone” if you click a link. It asks for your login. What now?",
-          choices: [
-            { text: "Enter my login to get the prize", isCorrect: false, feedback: "This is a phishing trick. Don’t share logins." },
-            { text: "Close it and tell a trusted adult", isCorrect: true, feedback: "Good move! Stay safe and double-check with an adult." },
-            { text: "Click the link but don’t type anything", isCorrect: false, feedback: "Even clicking can be risky. Better to close it." }
-          ]
-        },
-        quiz: [
-          { q: "Which looks suspicious?", options: ["Urgent prizes & weird links", "A message from your parent"], answerIndex: 0 },
-          { q: "Where should you check your account?", options: ["Official app/website", "Random link"], answerIndex: 0 },
-          { q: "Who can help if unsure?", options: ["A trusted adult", "A stranger online"], answerIndex: 0 }
-        ]
-      },
-      {
-        id: "gaming",
-        emoji: "🎮",
-        title: "Gaming Safety & Screen Time",
-        subtitle: "Play fun, play fair, take breaks.",
-        tips: [
-          "Use family-friendly chats and block rude players.",
-          "Ask before buying in-game items.",
-          "Take eye-and-body breaks every 30–60 mins.",
-          "Don’t share private info in voice chat.",
-          "Balance games with sleep, school, and friends."
-        ],
-        scenario: {
-          prompt: "A player asks for your login to ‘boost’ your account. What do you do?",
-          choices: [
-            { text: "Share it — I want better items", isCorrect: false, feedback: "Nope! Never share logins. They could steal your account." },
-            { text: "Say no, block the player, and report", isCorrect: true, feedback: "Perfect. Protect your account and move on." },
-            { text: "Share only the password", isCorrect: false, feedback: "That’s the most secret part. Keep it private!" }
-          ]
-        },
-        quiz: [
-          { q: "How often to take breaks?", options: ["Every 30–60 mins", "Never"], answerIndex: 0 },
-          { q: "What about in-app purchases?", options: ["Ask a parent/carer first", "Buy anything"], answerIndex: 0 },
-          { q: "What info should you keep private in voice chat?", options: ["Your address & school", "Game tips"], answerIndex: 0 }
-        ]
-      },
-      {
-        id: "footprints",
-        emoji: "👣",
-        title: "Digital Footprints",
-        subtitle: "What you post can last.",
-        tips: [
-          "Posts can travel fast and be saved.",
-          "Be proud of what future-you will see.",
-          "Think: Is it kind? Is it true? Is it needed?",
-          "Ask before posting photos of others.",
-          "Review old posts and clean up."
-        ],
-        scenario: {
-          prompt: "You find a silly video of your friend and want to post it. What now?",
-          choices: [
-            { text: "Post it — it’s funny!", isCorrect: false, feedback: "It could hurt feelings. Always ask first." },
-            { text: "Ask your friend if it’s okay to share", isCorrect: true, feedback: "Yes! Get permission before posting." },
-            { text: "Post it and remove later", isCorrect: false, feedback: "It might be copied. Better to ask first." }
-          ]
-        },
-        quiz: [
-          { q: "What is a digital footprint?", options: ["Your shoe size", "Your online posts and actions"], answerIndex: 1 },
-          { q: "Who should you ask before sharing group pics?", options: ["No one", "The people in the photo"], answerIndex: 1 },
-          { q: "Can deleted posts always vanish?", options: ["Yes", "Not always — others may save them"], answerIndex: 1 }
-        ]
-      },
-      {
-        id: "deepfakes",
-        emoji: "🧠",
-        title: "AI, Photos & Deepfakes",
-        subtitle: "Not everything online is real.",
-        tips: [
-          "Strange videos may be edited or AI-made.",
-          "Check trusted news or official pages.",
-          "Look for odd eyes, lighting, or lips not matching.",
-          "Don’t share shocking clips before checking.",
-          "Ask an adult if unsure."
-        ],
-        scenario: {
-          prompt: "A video shows your favorite creator saying something rude. It looks a bit off. What do you do?",
-          choices: [
-            { text: "Share it fast!", isCorrect: false, feedback: "Wait! It could be fake. Don’t spread it." },
-            { text: "Check their official page or a trusted source", isCorrect: true, feedback: "Smart! Verify before sharing." },
-            { text: "Comment something mean", isCorrect: false, feedback: "Be kind — ask an adult and verify first." }
-          ]
-        },
-        quiz: [
-          { q: "What is a deepfake?", options: ["A fake cookie", "A realistic but fake photo/video made with AI"], answerIndex: 1 },
-          { q: "Should you share shocking clips quickly?", options: ["Yes", "No — check first"], answerIndex: 1 },
-          { q: "If unsure, you should…", options: ["Ask a trusted adult", "Do nothing"], answerIndex: 0 }
-        ]
-      },
-      {
-        id: "social",
-        emoji: "📱",
-        title: "Smart Social Sharing",
-        subtitle: "Share happy, share wisely.",
-        tips: [
-          "Use private accounts if possible.",
-          "Hide personal info from profiles.",
-          "Turn off location on posts.",
-          "Be kind in comments and messages.",
-          "Report fake or rude accounts."
-        ],
-        scenario: {
-          prompt: "An app asks to access your contacts and location to ‘improve experience’. What now?",
-          choices: [
-            { text: "Allow everything", isCorrect: false, feedback: "Only allow what you need." },
-            { text: "Allow only what’s needed or say no", isCorrect: true, feedback: "Nice! Keep your info safe." },
-            { text: "Share your password too", isCorrect: false, feedback: "Never share passwords." }
-          ]
-        },
-        quiz: [
-          { q: "Which is safer for kids?", options: ["Public account", "Private account"], answerIndex: 1 },
-          { q: "Share location on posts?", options: ["Yes, always", "Only if needed (or keep off)"], answerIndex: 1 },
-          { q: "If someone is rude you should…", options: ["Be rude back", "Block, report, and tell an adult"], answerIndex: 1 }
-        ]
-      },
-      {
-        id: "devices",
-        emoji: "🔧",
-        title: "Device & Wi‑Fi Safety",
-        subtitle: "Keep tech healthy and safe.",
-        tips: [
-          "Update apps and system often.",
-          "Use secure Wi‑Fi (avoid unknown public Wi‑Fi).",
-          "Don’t install random files.",
-          "Use PIN/biometrics to lock your device.",
-          "Ask an adult before changing settings."
-        ],
-        scenario: {
-          prompt: "You’re on free public Wi‑Fi. A site asks for your login. What do you do?",
-          choices: [
-            { text: "Log in now", isCorrect: false, feedback: "Public Wi‑Fi can be risky. Avoid logging in there." },
-            { text: "Wait and log in at home or on mobile data", isCorrect: true, feedback: "Great choice — stay safe!" },
-            { text: "Download a random ‘security’ app", isCorrect: false, feedback: "Only install trusted apps." }
-          ]
-        },
-        quiz: [
-          { q: "What should you do with updates?", options: ["Ignore them", "Install them"], answerIndex: 1 },
-          { q: "Public Wi‑Fi is…", options: ["Always safe", "Risky — avoid logins"], answerIndex: 1 },
-          { q: "Best way to lock a phone:", options: ["No lock", "PIN/biometrics"], answerIndex: 1 }
-        ]
-      }
-    ];
-
-    // Render modules list
-    function renderModules() {
-      const wrap = $('#modules');
-      wrap.innerHTML = '';
-      LESSONS.forEach(m => {
-        const card = document.createElement('button');
-        card.className = 'card reveal';
-        card.setAttribute('role', 'listitem');
-        card.innerHTML = `
-          <h3>${m.emoji} ${m.title}</h3>
-          <p class="muted">${m.subtitle}</p>
-          <div class="tiny" aria-hidden="true">${m.tips.slice(0,3).map(t => '• ' + t).join('<br>')}</div>
-        `;
-        io.observe(card);
-        card.addEventListener('click', () => openModule(m.id));
-        wrap.appendChild(card);
-      });
-      updateProgress();
-    }
-
-    // Open a module
-    function openModule(id) {
-      const m = LESSONS.find(x => x.id === id);
-      const box = $('#module-detail');
-      if (!m) return;
-      box.hidden = false;
-      window.location.hash = `#module-${id}`;
-      const completed = completedModules.has(id);
-      box.innerHTML = `
-        <div>
-          <h3>${m.emoji} ${m.title}</h3>
-          <p class="muted">${m.subtitle}</p>
-        </div>
-        <div class="tips">
-          <h4>Top Tips</h4>
-          <ul>${m.tips.map(t => `<li>${t}</li>`).join('')}</ul>
-        </div>
-        <div class="scenario">
-          <h4>Try a Scenario</h4>
-          <p>${m.scenario.prompt}</p>
-          <div class="scenario-actions">
-            ${m.scenario.choices.map((c, i) =>
-              `<button class="nav-btn" data-choice="${i}">${c.text}</button>`
-            ).join('')}
-          </div>
-          <p id="scenario-feedback" class="muted" aria-live="polite"></p>
-        </div>
-        <div class="quiz">
-          <h4>Quick Quiz</h4>
-          <form id="quiz-${id}">
-            ${m.quiz.map((q, qi) => `
-              <fieldset>
-                <legend>${qi + 1}. ${q.q}</legend>
-                ${q.options.map((opt, oi) => `
-                  <label><input type="radio" name="q${qi}" value="${oi}" required /> ${opt}</label><br>
-                `).join('')}
-              </fieldset>
-            `).join('')}
-            <button type="submit" class="cta">Check Answers</button>
-          </form>
-          <p id="quiz-result" class="muted" aria-live="polite"></p>
-        </div>
-        <div class="tiny">${completed ? '✅ Quiz completed — star awarded!' : ''}</div>
-      `;
-
-      $$('.scenario-actions button', box).forEach(btn => {
-        btn.addEventListener('click', () => {
-          const idx = Number(btn.dataset.choice);
-          const choice = m.scenario.choices[idx];
-          const fb = $('#scenario-feedback', box);
-          fb.textContent = choice.feedback;
+        // Initialize app when DOM loads
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeApp();
+            updateStarsDisplay();
+            loadMysteryOfTheDay();
+            createStarBackground();
+            createPlanets();
+            initializeDrawingCanvas();
+            initializeSpeechRecognition();
         });
-      });
 
-      const form = $(`#quiz-${id}`, box);
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const data = new FormData(form);
-        let correct = 0;
-        m.quiz.forEach((q, qi) => {
-          const v = data.get(`q${qi}`);
-          if (v !== null && Number(v) === q.answerIndex) correct++;
-        });
-        const result = $('#quiz-result', box);
-        if (correct === m.quiz.length) {
-          result.textContent = `Great job! You got ${correct}/${m.quiz.length} 🎉`;
-          if (!completedModules.has(id)) {
-            completedModules.add(id);
-            localStorage.setItem('ss-completed', JSON.stringify([...completedModules]));
-            updateStarCount();
-            fireConfetti();
-            updateProgress();
-          }
-        } else {
-          result.textContent = `You got ${correct}/${m.quiz.length}. Try again — you can do it! 💪`;
+        // Initialize App
+        function initializeApp() {
+            // Initialize Audio Context
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            } catch (e) {
+                console.log('Audio not supported');
+            }
+
+            // Update sound toggle button
+            document.getElementById('soundToggle').textContent = soundEnabled ? '🔊' : '🔇';
         }
-      });
-    }
 
-    // Progress & stars
-    function updateStarCount() {
-      $('#star-count').textContent = String(completedModules.size);
-    }
-    function updateProgress() {
-      const done = completedModules.size;
-      const total = LESSONS.length;
-      const pct = Math.round((done / total) * 100);
-      const ring = $('#progress-ring');
-      const txt = $('#progress-text');
-      ring.style.setProperty('--angle', pct + '%');
-      txt.textContent = pct + '%';
-    }
+        // Navigation Function
+        function navigateToSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
 
-    // Confetti stars
-    function fireConfetti() {
-      const wrap = $('#confetti');
-      for (let i = 0; i < 26; i++) {
-        const star = document.createElement('div');
-        star.className = 'confetti-star';
-        star.textContent = ['⭐','✨','🌟'][Math.floor(Math.random()*3)];
-        star.style.left = Math.random() * 100 + 'vw';
-        star.style.top = '-10px';
-        star.style.animationDelay = (Math.random() * 0.6) + 's';
-        star.style.transform = `scale(${0.7 + Math.random() * 0.8})`;
-        wrap.appendChild(star);
-        setTimeout(() => star.remove(), 2200);
-      }
-    }
+            // Show selected section
+            const targetSection = document.getElementById(sectionName);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                currentSection = sectionName;
 
-    // ===== Chat (Ask Spark) — unchanged backend call =====
-    const chatLog = $('#chat-log');
-    const chatForm = $('#chat-form');
-    const chatInput = $('#chat-input');
-    $$('input[name="age"]').forEach(r => r.addEventListener('change', () => { ageGroup = r.value; }));
+                // Update nav buttons
+                document.querySelectorAll('.nav-btn[data-section]').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.dataset.section === sectionName) {
+                        btn.classList.add('active');
+                    }
+                });
 
-    // PII detection (fixed phone regex)
-    function containsPII(t) {
-      const email = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i;
-      const phone = /(\+?\d{1,2}[\s.-]?)?(KATEX_INLINE_OPEN?\d{3}KATEX_INLINE_CLOSE?[\s.-]?)\d{3}[\s.-]?\d{4}\b/;
-      const address = /\b\d{1,5}\s+\w+(?:\s+\w+){0,3}\s+(street|st|avenue|ave|road|rd|boulevard|blvd|lane|ln|drive|dr|court|ct)\b/i;
-      const school = /\b(school|elementary|middle\s+school|high\s+school|academy|ps\s?\d+)\b/i;
-      const password = /\bpassword\b\s*[:=]\s*\S+/i;
-      const username = /\b(user(name)?|login)\b\s*[:=]\s*\S+/i;
-      return email.test(t) || phone.test(t) || address.test(t) || school.test(t) || password.test(t) || username.test(t);
-    }
+                playSound('navigate');
+            }
+        }
 
-    function addUser(text) {
-      const b = document.createElement('div');
-      b.className = 'chat-bubble user';
-      b.textContent = text;
-      chatLog.appendChild(b);
-      chatLog.scrollTop = chatLog.scrollHeight;
-    }
-    function addSpark(text) {
-      const b = document.createElement('div');
-      b.className = 'chat-bubble spark';
-      b.textContent = text;
-      chatLog.appendChild(b);
-      chatLog.scrollTop = chatLog.scrollHeight;
-    }
-    function addTyping() {
-      const b = document.createElement('div');
-      b.className = 'chat-bubble spark';
-      b.innerHTML = '<span class="typing-dots"><span></span><span></span><span></span></span>';
-      b.dataset.typing = '1';
-      chatLog.appendChild(b);
-      chatLog.scrollTop = chatLog.scrollHeight;
-    }
-    function removeTyping() {
-      const last = Array.from(chatLog.querySelectorAll('.chat-bubble.spark')).reverse().find(x => x.dataset.typing === '1');
-      if (last) last.remove();
-    }
+        // Create star background for space map
+        function createStarBackground() {
+            const starsContainer = document.getElementById('starsBackground');
+            if (!starsContainer) return;
 
-    chatForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const text = chatInput.value.trim();
-      if (!text) return;
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
 
-      if (containsPII(text)) {
-        addSpark("Let’s keep personal info private 👍 Please don’t share your real name, address, phone number, school, email, or passwords. You can ask me about staying safe online, like passwords, privacy, bullying, or games! 🌟");
-        chatInput.value = '';
-        return;
-      }
+        // Create learning planets
+        function createPlanets() {
+            const container = document.getElementById('planetsContainer');
+            if (!container) return;
 
-      addUser(text);
-      chatInput.value = '';
-      addTyping();
+            const modules = [
+                { id: 'passwords', name: 'Password Planet', emoji: '🔐', color: '#FF6B6B', x: 20, y: 20 },
+                { id: 'privacy', name: 'Privacy Moon', emoji: '🛡️', color: '#4ECDC4', x: 70, y: 15, hasRing: true },
+                { id: 'strangers', name: 'Stranger Danger', emoji: '⚠️', color: '#FFD93D', x: 45, y: 40 },
+                { id: 'cyberbullying', name: 'Kindness Cloud', emoji: '💝', color: '#E91E63', x: 25, y: 65 },
+                { id: 'sharing', name: 'Sharing Sphere', emoji: '🤝', color: '#9C27B0', x: 65, y: 60 },
+                { id: 'games', name: 'Gaming Galaxy', emoji: '🎮', color: '#2196F3', x: 85, y: 40 }
+            ];
 
-      try {
-        const res = await fetch(BACKEND_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: text, ageGroup })
-        });
-        const data = await res.json();
-        removeTyping();
-        if (data.ok) addSpark(data.reply || 'Thanks for your message! 😊');
-        else addSpark(data.error || 'Oops, I had trouble replying. Please try again.');
-      } catch {
-        removeTyping();
-        addSpark('Network error. Please try again in a moment.');
-      }
-    });
+            const rocket = document.getElementById('sparkRocket');
+            if (rocket) {
+                rocket.style.left = '50%';
+                rocket.style.top = '50%';
+            }
 
-    // ===== Init =====
-    strings = STRINGS.en;
-    applyStrings();
-    renderModules();
-    updateStarCount();
-  </script>
+            modules.forEach(module => {
+                const planet = document.createElement('div');
+                planet.className = 'planet';
+                planet.style.left = module.x + '%';
+                planet.style.top = module.y + '%';
+                planet.onclick = () => selectModule(module, planet);
+
+                const planetBody = document.createElement('div');
+                planetBody.className = 'planet-body';
+                planetBody.style.background = module.color;
+                planetBody.textContent = module.emoji;
+
+                if (module.hasRing) {
+                    const ring = document.createElement('div');
+                    ring.className = 'planet-ring';
+                    planetBody.appendChild(ring);
+                }
+
+                const label = document.createElement('div');
+                label.className = 'planet-label';
+                label.textContent = module.name;
+
+                planet.appendChild(planetBody);
+                planet.appendChild(label);
+                container.appendChild(planet);
+            });
+        }
+
+        // Select and enter a module
+        function selectModule(module, planetElement) {
+            const rocket = document.getElementById('sparkRocket');
+            if (rocket && planetElement) {
+                const rect = planetElement.getBoundingClientRect();
+                const mapRect = planetElement.parentElement.getBoundingClientRect();
+                rocket.style.left = (rect.left - mapRect.left + rect.width/2 - 16) + 'px';
+                rocket.style.top = (rect.top - mapRect.top + rect.height/2 - 16) + 'px';
+            }
+
+            playSound('select');
+            
+            setTimeout(() => {
+                showModuleQuiz(module);
+            }, 1000);
+        }
+
+        // Show module quiz
+        function showModuleQuiz(module) {
+            const modal = document.getElementById('quizModal');
+            const quizContent = document.getElementById('quizContent');
+            
+            if (!modal || !quizContent) return;
+
+            const quizzes = {
+                passwords: {
+                    question: "Which password is the strongest?",
+                    options: ["123456", "MyDog", "Sunshine2024!", "password"],
+                    correct: 2,
+                    explanation: "Strong passwords have letters, numbers, and symbols!"
+                },
+                privacy: {
+                    question: "What should you NEVER share online with strangers?",
+                    options: ["Your favorite color", "Your home address", "Your favorite game", "Your nickname"],
+                    correct: 1,
+                    explanation: "Never share personal information like your address!"
+                },
+                strangers: {
+                    question: "What should you do if a stranger online asks to meet you?",
+                    options: ["Meet them", "Tell a trusted adult", "Ignore it", "Send them photos"],
+                    correct: 1,
+                    explanation: "Always tell a trusted adult about stranger danger!"
+                },
+                cyberbullying: {
+                    question: "What's the best response to cyberbullying?",
+                    options: ["Be mean back", "Keep it secret", "Tell an adult and block", "Delete your account"],
+                    correct: 2,
+                    explanation: "Tell an adult and block bullies!"
+                },
+                sharing: {
+                    question: "Before sharing a photo online, you should:",
+                    options: ["Share immediately", "Ask parents first", "Add filters", "Share with everyone"],
+                    correct: 1,
+                    explanation: "Always check with parents before sharing!"
+                },
+                games: {
+                    question: "When gaming online, use:",
+                    options: ["Your real name", "Your address", "A fun nickname", "Your school name"],
+                    correct: 2,
+                    explanation: "Use nicknames to protect your identity!"
+                }
+            };
+
+            const quiz = quizzes[module.id];
+            if (!quiz) return;
+
+            let html = `
+                <div class="quiz-question">${quiz.question}</div>
+                <div class="quiz-options">
+            `;
+
+            quiz.options.forEach((option, index) => {
+                html += `
+                    <div class="quiz-option" onclick="checkAnswer(${index}, ${quiz.correct}, '${module.id}')">
+                        ${option}
+                    </div>
+                `;
+            });
+
+            html += `</div>
+                <p style="margin-top: 1rem; color: var(--primary);">${module.name}</p>
+                <button class="nav-btn" onclick="closeQuizModal()" style="margin-top: 1rem;">Close</button>
+            `;
+
+            quizContent.innerHTML = html;
+            modal.classList.add('active');
+            modal.style.display = 'flex';
+        }
+
+        // Check quiz answer
+        function checkAnswer(selected, correct, moduleId) {
+            const options = document.querySelectorAll('.quiz-option');
+            
+            if (selected === correct) {
+                options[selected].classList.add('correct');
+                playSound('correct');
+                
+                stars++;
+                updateStarsDisplay();
+                localStorage.setItem('stars', stars);
+                
+                if (!completedModules.includes(moduleId)) {
+                    completedModules.push(moduleId);
+                    localStorage.setItem('completedModules', JSON.stringify(completedModules));
+                }
+                
+                currentStreak++;
+                localStorage.setItem('streak', currentStreak);
+                
+                if (currentStreak >= 3) {
+                    setTimeout(() => {
+                        triggerFireworks();
+                        showAchievement("🔥 Amazing 3-Module Streak! 🔥");
+                    }, 500);
+                    currentStreak = 0;
+                }
+                
+                setTimeout(() => {
+                    closeQuizModal();
+                }, 2000);
+            } else {
+                options[selected].classList.add('incorrect');
+                playSound('incorrect');
+                currentStreak = 0;
+                localStorage.setItem('streak', currentStreak);
+                
+                setTimeout(() => {
+                    options[selected].classList.remove('incorrect');
+                }, 1000);
+            }
+        }
+
+        // Close quiz modal
+        function closeQuizModal() {
+            const modal = document.getElementById('quizModal');
+            if (modal) {
+                modal.classList.remove('active');
+                modal.style.display = 'none';
+            }
+        }
+
+        // Update stars display
+        function updateStarsDisplay() {
+            document.getElementById('starCount').textContent = stars;
+            document.getElementById('parentStarCount').textContent = stars;
+            document.getElementById('modulesCompleted').textContent = completedModules.length;
+            document.getElementById('currentStreak').textContent = currentStreak;
+        }
+
+        // Sound Functions
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            localStorage.setItem('soundEnabled', soundEnabled);
+            document.getElementById('soundToggle').textContent = soundEnabled ? '🔊' : '🔇';
+            playSound('toggle');
+        }
+
+        function playSound(type) {
+            if (!soundEnabled || !audioContext) return;
+
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            switch(type) {
+                case 'correct':
+                    oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+                    oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1);
+                    oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2);
+                    break;
+                case 'incorrect':
+                    oscillator.frequency.setValueAtTime(293.66, audioContext.currentTime);
+                    oscillator.frequency.setValueAtTime(277.18, audioContext.currentTime + 0.1);
+                    break;
+                default:
+                    oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
+            }
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.3);
+        }
+
+        // Fireworks Effect
+        function triggerFireworks() {
+            const container = document.getElementById('fireworksContainer');
+            if (!container) return;
+            
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    createFirework(container);
+                }, i * 200);
+            }
+            
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 3000);
+        }
+
+        function createFirework(container) {
+            const colors = ['#FF6B6B', '#4ECDC4', '#FFD93D', '#E91E63', '#9C27B0'];
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight / 2;
+            
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'firework';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.setProperty('--x', (Math.random() - 0.5) * 200 + 'px');
+                particle.style.setProperty('--y', (Math.random() - 0.5) * 200 + 'px');
+                container.appendChild(particle);
+            }
+        }
+
+        // Achievement Popup
+        function showAchievement(text) {
+            const popup = document.getElementById('achievementPopup');
+            const achievementText = document.getElementById('achievementText');
+            
+            if (popup && achievementText) {
+                achievementText.textContent = text;
+                popup.style.display = 'block';
+                popup.style.animation = 'achievementPop 0.5s forwards';
+                
+                setTimeout(() => {
+                    popup.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        // Chat Functions
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const chatBox = document.getElementById('chatBox');
+            
+            if (!input || !chatBox || !input.value.trim()) return;
+            
+            const message = input.value.trim();
+            
+            // Add user message
+            const userMsg = document.createElement('div');
+            userMsg.className = 'message user';
+            userMsg.innerHTML = `
+                <span style="font-size: 2rem;">👦</span>
+                <div class="message-bubble">${message}</div>
+            `;
+            chatBox.appendChild(userMsg);
+            
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+            
+            // Show typing indicator
+            const typingMsg = document.createElement('div');
+            typingMsg.className = 'message ai';
+            typingMsg.innerHTML = `
+                <span style="font-size: 2rem;">🦉</span>
+                <div class="message-bubble">...</div>
+            `;
+            chatBox.appendChild(typingMsg);
+            
+            try {
+                const response = await fetch('https://spark-ai-sethu.sethu-spark.workers.dev', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message })
+                });
+                
+                const data = await response.json();
+                
+                // Remove typing indicator
+                typingMsg.remove();
+                
+                // Add AI response
+                const aiMsg = document.createElement('div');
+                aiMsg.className = 'message ai';
+                aiMsg.innerHTML = `
+                    <span style="font-size: 2rem;">🦉</span>
+                    <div class="message-bubble">${data.response || "I'm having trouble thinking right now. Try again!"}</div>
+                `;
+                chatBox.appendChild(aiMsg);
+                
+                // Text-to-speech
+                if (soundEnabled && 'speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(data.response);
+                    utterance.pitch = 1.2;
+                    utterance.rate = 0.9;
+                    speechSynthesis.speak(utterance);
+                }
+            } catch (error) {
+                typingMsg.remove();
+                const aiMsg = document.createElement('div');
+                aiMsg.className = 'message ai';
+                aiMsg.innerHTML = `
+                    <span style="font-size: 2rem;">🦉</span>
+                    <div class="message-bubble">I'm offline right now! But you can still explore the other fun activities! 🎨</div>
+                `;
+                chatBox.appendChild(aiMsg);
+            }
+            
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Speech Recognition
+        function initializeSpeechRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'en-US';
+                
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    document.getElementById('chatInput').value = transcript;
+                    sendMessage();
+                };
+                
+                recognition.onerror = (event) => {
+                    console.error('Speech recognition error:', event.error);
+                    isRecording = false;
+                    updateVoiceButton();
+                };
+                
+                recognition.onend = () => {
+                    isRecording = false;
+                    updateVoiceButton();
+                };
+            }
+        }
+
+        function toggleVoiceRecording() {
+            if (!recognition) {
+                alert('Speech recognition is not supported in your browser!');
+                return;
+            }
+            
+            if (isRecording) {
+                recognition.stop();
+                isRecording = false;
+            } else {
+                recognition.start();
+                isRecording = true;
+            }
+            
+            updateVoiceButton();
+        }
+
+        function updateVoiceButton() {
+            const voiceBtn = document.getElementById('voiceBtn');
+            if (voiceBtn) {
+                voiceBtn.classList.toggle('recording', isRecording);
+            }
+        }
+
+        // Drawing Canvas
+        function initializeDrawingCanvas() {
+            const canvas = document.getElementById('drawingCanvas');
+            if (!canvas) return;
+            
+            drawingContext = canvas.getContext('2d');
+            drawingContext.strokeStyle = currentColor;
+            drawingContext.lineWidth = 3;
+            drawingContext.lineCap = 'round';
+            
+            let lastX = 0;
+            let lastY = 0;
+            
+            canvas.addEventListener('mousedown', (e) => {
+                isDrawing = true;
+                const rect = canvas.getBoundingClientRect();
+                lastX = e.clientX - rect.left;
+                lastY = e.clientY - rect.top;
+            });
+            
+            canvas.addEventListener('mousemove', (e) => {
+                if (!isDrawing) return;
+                
+                const rect = canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                drawingContext.beginPath();
+                drawingContext.moveTo(lastX, lastY);
+                drawingContext.lineTo(x, y);
+                drawingContext.stroke();
+                
+                lastX = x;
+                lastY = y;
+            });
+            
+            canvas.addEventListener('mouseup', () => {
+                isDrawing = false;
+            });
+            
+            canvas.addEventListener('mouseout', () => {
+                isDrawing = false;
+            });
+            
+            // Touch events for mobile
+            canvas.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const rect = canvas.getBoundingClientRect();
+                lastX = touch.clientX - rect.left;
+                lastY = touch.clientY - rect.top;
+                isDrawing = true;
+            });
+            
+            canvas.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                if (!isDrawing) return;
+                
+                const touch = e.touches[0];
+                const rect = canvas.getBoundingClientRect();
+                const x = touch.clientX - rect.left;
+                const y = touch.clientY - rect.top;
+                
+                drawingContext.beginPath();
+                drawingContext.moveTo(lastX, lastY);
+                drawingContext.lineTo(x, y);
+                drawingContext.stroke();
+                
+                lastX = x;
+                lastY = y;
+            });
+            
+            canvas.addEventListener('touchend', () => {
+                isDrawing = false;
+            });
+        }
+
+        function changeColor(color) {
+            currentColor = color;
+            if (drawingContext) {
+                drawingContext.strokeStyle = color;
+            }
+        }
+
+        function clearCanvas() {
+            const canvas = document.getElementById('drawingCanvas');
+            if (canvas && drawingContext) {
+                drawingContext.clearRect(0, 0, canvas.width, canvas.height);
+            }
+            playSound('toggle');
+        }
+
+        function saveDrawing() {
+            const canvas = document.getElementById('drawingCanvas');
+            if (!canvas) return;
+            
+            const drawings = JSON.parse(localStorage.getItem('drawings') || '[]');
+            drawings.push({
+                data: canvas.toDataURL(),
+                date: new Date().toISOString()
+            });
+            localStorage.setItem('drawings', JSON.stringify(drawings));
+            
+            stars++;
+            updateStarsDisplay();
+            localStorage.setItem('stars', stars);
+            
+            showAchievement('Drawing saved! +1 ⭐');
+            playSound('correct');
+        }
+
+        // Story Functions
+        function saveStory() {
+            const inputs = ['story1', 'story2', 'story3', 'story4'];
+            const values = inputs.map(id => document.getElementById(id)?.value || '');
+            
+            if (values.some(v => v.trim() === '')) {
+                alert('Please fill in all the blanks to complete your story!');
+                return;
+            }
+            
+            const stories = JSON.parse(localStorage.getItem('stories') || '[]');
+            stories.push({
+                words: values,
+                date: new Date().toISOString()
+            });
+            localStorage.setItem('stories', JSON.stringify(stories));
+            
+            stars++;
+            updateStarsDisplay();
+            localStorage.setItem('stars', stars);
+            
+            showAchievement('Story saved! +1 ⭐');
+            playSound('correct');
+            
+            inputs.forEach(id => {
+                const input = document.getElementById(id);
+                if (input) input.value = '';
+            });
+        }
+
+        // Emoji Drag and Drop
+        function dragEmoji(event) {
+            event.dataTransfer.setData('text/plain', event.target.textContent);
+        }
+
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+
+        function dropEmoji(event) {
+            event.preventDefault();
+            const emoji = event.dataTransfer.getData('text/plain');
+            const board = document.getElementById('emojiBoard');
+            const rect = board.getBoundingClientRect();
+            
+            const placedEmoji = document.createElement('div');
+            placedEmoji.className = 'placed-emoji';
+            placedEmoji.textContent = emoji;
+            placedEmoji.style.left = (event.clientX - rect.left - 20) + 'px';
+            placedEmoji.style.top = (event.clientY - rect.top - 20) + 'px';
+            
+            board.appendChild(placedEmoji);
+            playSound('select');
+        }
+
+        function clearEmojiBoard() {
+            const board = document.getElementById('emojiBoard');
+            if (board) {
+                board.innerHTML = '';
+            }
+            playSound('toggle');
+        }
+
+        // Mystery of the Day
+        function loadMysteryOfTheDay() {
+            const mysteries = [
+                {
+                    type: 'riddle',
+                    content: "I have keys but no locks. I have space but no room. You can enter, but can't go outside. What am I?",
+                    answer: "A keyboard! 💻"
+                },
+                {
+                    type: 'puzzle',
+                    content: "Can you find the hidden word? 🔍<br><br>C O M _ U T E R<br><br>Fill in the missing letter!",
+                    answer: "P - COMPUTER! 🖥️"
+                },
+                {
+                    type: 'riddle',
+                    content: "I'm invisible but everywhere online. I help websites remember you. I'm sweet but not edible. What am I?",
+                    answer: "A cookie! 🍪 (Internet cookie!)"
+                },
+                {
+                    type: 'code',
+                    content: "Decode this message:<br><br>19-1-6-5-20-25<br>(A=1, B=2, C=3...)",
+                    answer: "SAFETY! Great job, code breaker! 🔐"
+                },
+                {
+                    type: 'puzzle',
+                    content: "Unscramble this internet word:<br><br>RWSAPOSD",
+                    answer: "PASSWORD! 🔑"
+                },
+                {
+                    type: 'riddle',
+                    content: "I connect you to the world, but I'm not a bridge. I'm full of information, but I'm not a book. What am I?",
+                    answer: "The Internet! 🌐"
+                },
+                {
+                    type: 'math',
+                    content: "If you spend 2 hours online each day, how many hours do you spend online in a week?",
+                    answer: "14 hours! Remember to balance screen time! ⏰"
+                }
+            ];
+            
+            const today = new Date().getDay();
+            const mystery = mysteries[today];
+            
+            const contentDiv = document.getElementById('mysteryContent');
+            if (contentDiv) {
+                contentDiv.innerHTML = `
+                    <div style="font-size: 1.2rem; margin-bottom: 1rem;">
+                        ${mystery.type === 'riddle' ? '🤔 Riddle' : mystery.type === 'puzzle' ? '🧩 Puzzle' : '🔍 Challenge'}
+                    </div>
+                    <div style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
+                        ${mystery.content}
+                    </div>
+                    <button class="nav-btn" onclick="revealMysteryAnswer('${mystery.answer.replace(/'/g, "\\'")}')">
+                        Reveal Answer! 💡
+                    </button>
+                    <div id="mysteryAnswer" style="display: none; margin-top: 1rem; font-size: 1.2rem; color: var(--success);"></div>
+                `;
+            }
+        }
+
+        function revealMysteryAnswer(answer) {
+            const answerDiv = document.getElementById('mysteryAnswer');
+            if (answerDiv) {
+                answerDiv.textContent = answer;
+                answerDiv.style.display = 'block';
+                
+                if (!localStorage.getItem(`mystery_${new Date().getDay()}`)) {
+                    stars++;
+                    updateStarsDisplay();
+                    localStorage.setItem('stars', stars);
+                    localStorage.setItem(`mystery_${new Date().getDay()}`, 'solved');
+                    showAchievement('Mystery solved! +1 ⭐');
+                    playSound('correct');
+                }
+            }
+        }
+
+        // Resource Details
+        function showResourceDetail(topic) {
+            const resources = {
+                safety: {
+                    title: "Internet Safety Guide",
+                    content: "Always remember: Think before you click! 🤔 Never download files from unknown sources, always check with an adult before entering personal information, and if something seems too good to be true, it probably is!"
+                },
+                privacy: {
+                    title: "Privacy Tips",
+                    content: "Your personal information is like treasure - keep it safe! 🔒 Use privacy settings on all accounts, never share passwords (except with parents), and remember that once something is online, it's hard to remove!"
+                },
+                cyberbullying: {
+                    title: "Dealing with Cyberbullying",
+                    content: "You're amazing, don't let anyone tell you otherwise! 💪 If someone is mean online: Don't respond, take screenshots as evidence, block the bully, and tell a trusted adult immediately. You deserve kindness!"
+                },
+                passwords: {
+                    title: "Password Power",
+                    content: "Create passwords like a superhero! 🦸 Mix uppercase and lowercase letters, add numbers and symbols, make it at least 8 characters long, and never use personal info like birthdays. Try a passphrase like 'ILove2PlaySoccer!'"
+                }
+            };
+            
+            const resource = resources[topic];
+            if (resource) {
+                alert(`${resource.title}\n\n${resource.content}`);
+            }
+        }
+    </script>
 </body>
 </html>
